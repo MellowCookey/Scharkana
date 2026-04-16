@@ -17,8 +17,8 @@
       --bg-card-2:    #252b36;
       --border:       #2a3040;
       --border-light: #3a4458;
-      --text:         #c8cdd8;
-      --text-muted:   #6b7590;
+      --text:         #f0f2f6;
+      --text-muted:   #d8dce8;
       --text-dim:     #3a4050;
       --accent:       #7a8ab0;
       --accent-glow:  #9baacc;
@@ -93,7 +93,7 @@
     }
     .nav-btn {
       background: none; border: none;
-      color: var(--text-muted);
+      color: #6b7590;
       font-family: inherit; font-size: 0.8rem;
       font-weight: 700; letter-spacing: 0.07em;
       text-transform: uppercase;
@@ -438,6 +438,30 @@
       box-shadow: 0 0 0 2px var(--bg);
     }
     .cl-entry.old::before { background: var(--border-light); }
+    .cl-entry.planned::before { background: var(--accent-glow); border: 1px dashed var(--accent); }
+    .cl-entry.planned .cl-version { color: var(--accent-glow); font-size: 0.69rem; }
+    .cl-entry.planned h3 { color: #f0f2f6; font-size: 1.01rem; }
+    .cl-entry.planned li { color: #d8dce8; font-size: 0.89rem; }
+    .cl-entry.planned strong { color: #f0f2f6; font-weight: 700; }
+
+    .cl-section-label {
+      font-size: 0.78rem; font-weight: 700; letter-spacing: 0.22em;
+      text-transform: uppercase;
+      padding: 7px 14px 7px 14px;
+      margin: 0 0 24px 0;
+      display: inline-flex; align-items: center; gap: 10px;
+      position: relative;
+      background: var(--bg-card);
+      border: 1px dashed var(--border-light);
+      color: var(--accent-glow);
+    }
+    .cl-section-label.label-released {
+      color: var(--gold);
+      border-style: solid;
+      border-color: var(--gold-dim);
+      background: var(--gold-bg);
+      margin-top: 32px;
+    }
     .cl-version {
       font-size: 0.68rem; font-weight: 700; letter-spacing: 0.16em;
       text-transform: uppercase; color: var(--gold); margin-bottom: 4px;
@@ -1199,7 +1223,9 @@
 
       <div class="changelog-list">
 
-        <div class="cl-entry">
+        <div class="cl-section-label">Geplant</div>
+
+        <div class="cl-entry planned">
           <div class="cl-version">v0.1.18 · Geplant</div>
           <h3>Bugfixes &amp; Verbesserungen</h3>
           <div class="cl-tags">
@@ -1213,6 +1239,8 @@
             <li><strong>Violetter Strich im Startmenü entfernt</strong> – Beim Spielstart war im Startmenü ein ungewollter violetter Strich sichtbar. Dieser wird nicht mehr angezeigt.</li>
           </ul>
         </div>
+
+        <div class="cl-section-label label-released">Veröffentlicht</div>
 
         <div class="cl-entry">
           <div class="cl-version">v0.1.17 · Aktuell</div>
