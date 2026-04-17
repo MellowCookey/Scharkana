@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scharcana – Problem melden</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #0a0a1a;
+      color: #c8d8f0;
+      font-family: 'Exo 2', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px;
+    }
+
+    /* Hintergrund-Verlauf */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background: radial-gradient(ellipse at 50% 40%, #1e1040 0%, #0a0a1a 70%);
+      z-index: 0;
+    }
+
+    .container {
+      position: relative; z-index: 1;
+      width: 100%; max-width: 860px;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      margin-bottom: 36px;
+    }
+    .header h1 {
+      font-size: 28px; font-weight: 700;
+      color: #ffcc00;
+      text-shadow: 0 0 24px rgba(255,200,0,.35);
+      margin-bottom: 8px;
+    }
+    .header p {
+      color: #6660aa; font-size: 14px; font-style: italic;
+    }
+    .header .divider {
+      height: 1px; margin: 18px auto 0;
+      width: 320px;
+      background: linear-gradient(90deg, transparent, #9b5de5, transparent);
+    }
+
+    /* Statusboxen */
+    #brSuccess {
+      display: none;
+      background: #0d2010; border: 1px solid #1a4a22;
+      border-radius: 8px; padding: 14px 18px; margin-bottom: 20px;
+      color: #55cc66; font-weight: 700; font-size: 14px;
+    }
+    #brErrorBox {
+      display: none;
+      background: #1a0a0a; border: 1px solid #6a1a1a;
+      border-radius: 8px; padding: 14px 18px; margin-bottom: 20px;
+      color: #ff6644; font-weight: 700; font-size: 14px;
+    }
+
+    /* Formular */
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .form-grp  { display: flex; flex-direction: column; gap: 6px; margin-bottom: 18px; }
+
+    .form-grp label {
+      color: #8880aa; font-size: 11px;
+      text-transform: uppercase; letter-spacing: .07em;
+    }
+    .form-grp label em { text-transform: none; letter-spacing: 0; font-size: 11px; }
+
+    .form-grp input,
+    .form-grp select,
+    .form-grp textarea {
+      background: #0d0b20; color: #c8d8f0;
+      border: 1px solid #3a2868; border-radius: 8px;
+      padding: 12px 14px; font-family: 'Exo 2', sans-serif;
+      font-size: 15px; outline: none;
+      transition: border-color .15s, box-shadow .15s;
+    }
+    .form-grp input:focus,
+    .form-grp select:focus,
+    .form-grp textarea:focus {
+      border-color: #7b4fd4;
+      box-shadow: 0 0 0 3px rgba(123,79,212,.15);
+    }
+    .form-grp textarea  { min-height: 100px; resize: vertical; }
+    .form-grp select option { background: #12102a; }
+
+    /* Buttons */
+    .btn-row {
+      display: flex; gap: 12px; justify-content: flex-end;
+      margin-top: 8px;
+    }
+    .btn {
+      border-radius: 8px; padding: 11px 26px;
+      font-family: 'Exo 2', sans-serif; font-size: 14px;
+      cursor: pointer; border: 1px solid; transition: filter .15s;
+    }
+    .btn:hover { filter: brightness(1.18); }
+    .btn-cancel  { background: #1a1040; color: #8880aa; border-color: #4a3060; }
+    .btn-primary { background: #1a3020; color: #80e8a0; border-color: #40aa60; }
+    .btn-submit  { background: #3a2070; color: #c8a0f0; border-color: #7b4fd4; }
+    .btn:disabled { opacity: .5; cursor: not-allowed; filter: none; }
+
+    @media (max-width: 600px) {
+      .form-row { grid-template-columns: 1fr; }
+      .btn-row  { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>⚠ Problem melden</h1>
+      <p>Hilf uns, Scharcana besser zu machen – beschreibe den Fehler so genau wie möglich.</p>
+      <div class="divider"></div>
+    </div>
+
+    <div id="brSuccess">✓ Bugreport erfolgreich gesendet – vielen Dank!</div>
+    <div id="brErrorBox">Fehler beim Senden – bitte versuche es erneut.</div>
+
+    <form id="bugreport-form">
+      <div class="form-row">
+        <div class="form-grp">
+          <label>Version</label>
+          <select id="br-version" name="version">
+            <option>0.1.18</option>
+            <option>0.1.17</option>
+            <option>0.1.16</option>
+            <option>Andere</option>
+          </select>
+        </div>
+        <div class="form-grp">
+          <label>Kategorie</label>
+          <select id="br-kategorie" name="kategorie">
+            <option value="">– bitte wählen –</option>
+            <option>Spiellogik / Regelverstoß</option>
+            <option>Darstellungsfehler / Grafik</option>
+            <option>Absturz / Einfrieren</option>
+            <option>Speichern &amp; Laden</option>
+            <option>Musik / Ton</option>
+            <option>Sonstiges</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-grp">
+        <label>Erkläre das Problem</label>
+        <textarea id="br-beschreibung" name="beschreibung" placeholder="Was ist passiert? Beschreibe den Fehler so genau wie möglich …" style="min-height: 200px;"></textarea>
+      </div>
+
+      <div class="form-row">
+        <div class="form-grp">
+          <label>Browser</label>
+          <input type="text" id="br-browser" name="browser" placeholder="z. B. Chrome 124, Firefox 126">
+        </div>
+        <div class="form-grp">
+          <label>Spielerzahl</label>
+          <select id="br-spielerzahl" name="spielerzahl">
+            <option value="">– –</option>
+            <option>2</option><option>3</option><option>4</option>
+            <option>5</option><option>6</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-grp">
+        <label>Spielstand-Code <em>(optional)</em></label>
+        <input type="text" id="br-spielstand" name="spielstand" placeholder="Speichercode aus dem Spiel einfügen">
+      </div>
+
+      <div class="btn-row">
+        <button type="button" class="btn btn-cancel" id="btnBack">← Zurück zum Spiel</button>
+        <button type="submit" class="btn btn-submit" id="btnSubmit">Absenden</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    // Spielstand-Code aus URL-Parameter übernehmen
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('code')) {
+      document.getElementById('br-spielstand').value = params.get('code');
+    }
+
+    // Zurück zum Spiel – Tab schließen
+    document.getElementById('btnBack').addEventListener('click', () => {
+      window.close();
+    });
+
+    // Formular absenden
+    document.getElementById('bugreport-form').addEventListener('submit', async e => {
+      e.preventDefault();
+      const btn = document.getElementById('btnSubmit');
+      btn.disabled = true; btn.textContent = 'Wird gesendet …';
+      document.getElementById('brSuccess').style.display  = 'none';
+      document.getElementById('brErrorBox').style.display = 'none';
+      try {
+        const resp = await fetch('https://formspree.io/f/mlgajwyb', {
+          method: 'POST', body: new FormData(e.target),
+          headers: { Accept: 'application/json' }
+        });
+        if (resp.ok) {
+          e.target.reset();
+          document.getElementById('brSuccess').style.display = 'block';
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          setTimeout(() => window.close(), 3000);
+        } else { throw new Error(); }
+      } catch {
+        document.getElementById('brErrorBox').style.display = 'block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } finally {
+        btn.disabled = false; btn.textContent = 'Absenden';
+      }
+    });
+  </script>
+</body>
+</html>

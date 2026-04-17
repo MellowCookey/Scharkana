@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scharcana – Bugreport</title>
+  <link rel="preconnect" href="https://fonts.bunny.net">
+  <link href="https://fonts.bunny.net/css?family=exo-2:400,400i,700,700i,900,900i&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <nav>
+    <div class="nav-inner">
+      <div class="nav-logo">
+        <div class="nav-logo-title">Scharcana</div>
+        <div class="nav-logo-sub">Das Erbe der Zeitenwächterin</div>
+      </div>
+      <a class="nav-btn" href="index.html" data-page="willkommen">Willkommen</a>
+      <a class="nav-btn" href="regelwerk.html" data-page="regelwerk">Regelwerk</a>
+      <a class="nav-btn" href="charaktere.html" data-page="charaktere">Charaktere</a>
+      <a class="nav-btn" href="changelog.html" data-page="changelog">Changelog</a>
+      <a class="nav-btn" href="ueber.html" data-page="ueber">Über mich</a>
+      <a class="nav-btn" href="melden.html" data-page="melden">Bugreport</a>
+      <a href="Scharcana_0.1.18.html" class="nav-play" target="_blank" rel="noopener">▶ Spielen</a>
+    </div>
+  </nav>
+
+  <section class="section active" id="tab-bugreport">
+    <div class="page-wrap">
+      <h2>Bugreport</h2>
+
+      <div class="bug-layout">
+
+        <div class="bug-form">
+
+          <div data-fs-success style="display:none; background:#0d2010; border:1px solid #1a4a22; padding:20px 24px; margin-bottom:24px;">
+            <p style="color:#55cc66; margin:0; font-weight:700;">✓ Bugreport erfolgreich gesendet – vielen Dank!</p>
+          </div>
+          <div data-fs-error style="display:none; background:#0a1530; border:1px solid #1a2e60; padding:20px 24px; margin-bottom:24px;">
+            <p style="color:#66aaff; margin:0; font-weight:700;">Fehler beim Senden – bitte versuche es erneut.</p>
+          </div>
+
+          <form id="bug-report-form">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="version">Version</label>
+                <select id="version" name="version" data-fs-field>
+                  <option>0.1.18</option>
+                  <option>0.1.17</option>
+                  <option>0.1.16</option>
+                  <option>Andere</option>
+                </select>
+                <span data-fs-error="version" style="font-size:0.78rem; color:#ff6644;"></span>
+              </div>
+              <div class="form-group">
+                <label for="kategorie">Kategorie</label>
+                <select id="kategorie" name="kategorie" data-fs-field>
+                  <option value="">– bitte wählen –</option>
+                  <option>Spiellogik / Regelverstoß</option>
+                  <option>Darstellungsfehler / Grafik</option>
+                  <option>Absturz / Einfrieren</option>
+                  <option>Speichern &amp; Laden</option>
+                  <option>Musik / Ton</option>
+                  <option>Sonstiges</option>
+                </select>
+                <span data-fs-error="kategorie" style="font-size:0.78rem; color:#ff6644;"></span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="beschreibung">Erkläre das Problem</label>
+              <textarea id="beschreibung" name="beschreibung" placeholder="Was ist passiert? Beschreibe den Fehler so genau wie möglich …" style="min-height:200px;" data-fs-field></textarea>
+              <span data-fs-error="beschreibung" style="font-size:0.78rem; color:#ff6644;"></span>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="browser">Browser</label>
+                <input type="text" id="browser" name="browser" placeholder="z. B. Chrome 124, Firefox 126" data-fs-field>
+              </div>
+              <div class="form-group">
+                <label for="spielerzahl">Spielerzahl</label>
+                <select id="spielerzahl" name="spielerzahl" data-fs-field>
+                  <option value="">– –</option>
+                  <option>2</option><option>3</option><option>4</option>
+                  <option>5</option><option>6</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="spielstand">Spielstand-Code <em style="font-weight:400; text-transform:none; letter-spacing:0;">(optional)</em></label>
+              <input type="text" id="spielstand" name="spielstand" placeholder="Speichercode aus dem Spiel einfügen" data-fs-field>
+              <p class="form-hint">Den Spielstand-Code findest du im Spiel unter Menü → Speichern.</p>
+            </div>
+
+            <button class="btn btn-primary" type="submit" data-fs-submit-btn>Absenden</button>
+          </form>
+        </div>
+
+        <div class="bug-info">
+          <div class="bug-info-card">
+            <h3>Was hilft beim Debuggen</h3>
+            <ul>
+              <li>Möglichst genaue Beschreibung des Problems</li>
+              <li>Spielstand-Code (falls vorhanden)</li>
+              <li>Browser und Betriebssystem</li>
+              <li>Spielerzahl und Rundenstand</li>
+            </ul>
+          </div>
+          <div class="bug-info-card">
+            <h3>Bekannte Einschränkungen</h3>
+            <ul>
+              <li>Nur für PC/Desktop optimiert</li>
+              <li>Kein mobiles Touchscreen-Support</li>
+              <li>Lokale Datei – kein Multiplayer online</li>
+            </ul>
+          </div>
+          <div class="bug-info-card">
+            <h3>Nicht sicher, ob Bug?</h3>
+            <p style="color:var(--text);">
+              Wirf zuerst einen Blick ins
+              <a href="regelwerk.html" style="color:var(--gold);">Regelwerk</a>
+              – manche Spielmechaniken wirken beim ersten Mal unintuitiv.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-inner">
+      <p>Scharcana – Das Erbe der Zeitenwächterin &nbsp;·&nbsp; created by GoodGooseGames</p>
+      <span class="footer-version">v0.1.18</span>
+    </div>
+  </footer>
+
+  <script>
+    window.formspree = window.formspree || function () { (formspree.q = formspree.q || []).push(arguments); };
+    formspree('initForm', { formElement: '#bug-report-form', formId: 'mlgajwyb' });
+  </script>
+  <script src="https://unpkg.com/@formspree/ajax@1" defer></script>
+  <script src="nav.js"></script>
+</body>
+</html>

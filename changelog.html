@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scharcana – Changelog</title>
+  <link rel="preconnect" href="https://fonts.bunny.net">
+  <link href="https://fonts.bunny.net/css?family=exo-2:400,400i,700,700i,900,900i&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <nav>
+    <div class="nav-inner">
+      <div class="nav-logo">
+        <div class="nav-logo-title">Scharcana</div>
+        <div class="nav-logo-sub">Das Erbe der Zeitenwächterin</div>
+      </div>
+      <a class="nav-btn" href="index.html" data-page="willkommen">Willkommen</a>
+      <a class="nav-btn" href="regelwerk.html" data-page="regelwerk">Regelwerk</a>
+      <a class="nav-btn" href="charaktere.html" data-page="charaktere">Charaktere</a>
+      <a class="nav-btn" href="changelog.html" data-page="changelog">Changelog</a>
+      <a class="nav-btn" href="ueber.html" data-page="ueber">Über mich</a>
+      <a class="nav-btn" href="melden.html" data-page="melden">Bugreport</a>
+      <a href="Scharcana_0.1.18.html" class="nav-play" target="_blank" rel="noopener">▶ Spielen</a>
+    </div>
+  </nav>
+
+  <section class="section active" id="tab-changelog">
+    <div class="page-wrap">
+      <h2>Changelog</h2>
+
+      <div class="changelog-list">
+
+        <div class="cl-section-label">Geplant</div>
+
+        <div class="cl-entry planned">
+          <div class="cl-version">v0.1.18 · Geplant</div>
+          <h3>Maussteuerung, MP-Anzeige &amp; Bugreport</h3>
+          <div class="cl-tags">
+            <span class="tag tag-fix">Fix</span>
+            <span class="tag tag-change">Änderung</span>
+            <span class="tag tag-new">Neu</span>
+          </div>
+          <ul>
+            <li><strong>Spielerauswahl per Maus</strong> – Spieleranzahl und „Spiel starten"-Button sind nun vollständig per Mausklick bedienbar.</li>
+            <li><strong>Charakterauswahl per Maus</strong> – Pfeil-Buttons links und rechts neben der Mittelkarte sowie ein „Auswählen"-Button unterhalb des Charakterbildes ermöglichen die Auswahl ohne Tastatur.</li>
+            <li><strong>Bereits gewählte Charaktere ausgegraut</strong> – Gewählte Charaktere werden im Karussell ausgegraut und beim Navigieren automatisch übersprungen. Nach einer Auswahl springt das Karussell direkt zum nächsten freien Charakter.</li>
+            <li><strong>MP-Anzeige im Vordergrund</strong> – Die Machtpunkte-Anzeige beim Hover über ein Feld in der Aufbauphase wird jetzt über allen anderen Elementen gezeichnet und ist stets lesbar.</li>
+            <li><strong>MP-Vorschau für unerkundete Felder</strong> – Beim Hover über rosa (unerkundete) Nachbarfelder erscheint ein Tooltip außerhalb des Spielfelds mit der voraussichtlichen MP-Zahl. Die Berechnung erfolgt über den kürzesten BFS-Weg durch erkundete Felder zum Zentrum.</li>
+            <li><strong>Übergangsbildschirm neu gestaltet</strong> – Der Bildschirm zwischen Aufbauphase und Spielphase zeigt nun alle Charakterkarten mit Portrait, Spielernummer und MP-Startwert nebeneinander, vertikal zentriert.</li>
+            <li><strong>Bugreport-Button</strong> – Ein ⚠-Button in der Statusleiste unten rechts öffnet das Bugreport-Formular in einem neuen Tab. Der Spielstand-Code wird automatisch übertragen. Der Tab lässt sich über „Zurück zum Spiel" schließen.</li>
+            <li><strong>Statusleiste überarbeitet</strong> – ⚠ und 💾 sind nun eigenständige, größere Buttons mit Hover-Tooltip. Die Versionsnummer ist davon getrennt und nicht mehr klickbar.</li>
+          </ul>
+        </div>
+
+        <div class="cl-section-label label-released">Veröffentlicht</div>
+
+        <div class="cl-entry">
+          <div class="cl-version">v0.1.17 · Aktuell</div>
+          <h3>Homepage</h3>
+          <div class="cl-tags">
+            <span class="tag tag-wip">In Bearbeitung</span>
+          </div>
+          <ul>
+            <li><strong>Homepage erstellt</strong> – Eine eigenständige Projektwebseite wurde entwickelt, die als zentraler Anlaufpunkt für das Spiel dient.</li>
+            <li><strong>Willkommen-Seite</strong> – Startseite mit Spielvorstellung, vollständiger Hintergrundgeschichte und einer Übersicht aller Features.</li>
+            <li><strong>Regelwerk integriert</strong> – Alle Spielregeln wurden vollständig und strukturiert in die Homepage übernommen, inklusive Seitennavigation und Sprunglinks.</li>
+            <li><strong>Charakterseite</strong> – Alle sechs Charaktere werden mit Bild, Biographie, Herkunft und Zitat vorgestellt.</li>
+            <li><strong>Changelog</strong> – Vollständige Versionshistorie ab v0.1.0 ist einsehbar.</li>
+            <li><strong>Bugreport-Formular</strong> – Spieler können Fehler direkt über ein strukturiertes Formular melden.</li>
+            <li><strong>Über mich</strong> – Seite zur Vorstellung des Entwicklers und des Projekts.</li>
+          </ul>
+        </div>
+
+        <div class="cl-entry old">
+          <div class="cl-version">v0.1.16</div>
+          <h3>Charakterbilder, Animationsfix &amp; Rückgängig-Funktion</h3>
+          <div class="cl-tags">
+            <span class="tag tag-new">Neu</span>
+            <span class="tag tag-fix">Fix</span>
+          </div>
+          <ul>
+            <li><strong>Charakterbilder im Auswahlmenü</strong> – Die Charakterkarten zeigen nun das jeweilige Charakterbild direkt im Auswahlfenster an.</li>
+            <li><strong>Animationsfehler behoben</strong> – Eine unsauber ablaufende Animation wurde identifiziert und korrigiert, sodass Übergänge nun flüssig und artefaktfrei dargestellt werden.</li>
+            <li><strong>Rückgängig-Funktion stabilisiert</strong> – Ein Fehler wurde behoben, bei dem zu häufiges Betätigen der Rückgängig-Taste zu einem inkonsistenten oder fehlerhaften Spielzustand führte.</li>
+          </ul>
+        </div>
+
+        <div class="cl-entry old">
+          <div class="cl-version">v0.1.15</div>
+          <h3>Charakterauswahl-Layout</h3>
+          <div class="cl-tags">
+            <span class="tag tag-change">Änderung</span>
+          </div>
+          <ul>
+            <li><strong>Charakterkarten-Übersicht nach links verschoben</strong> – Die Charakterauswahl-Tabelle wurde auf die linke Seite des Bildschirms verlagert, um die Karten kompakter darzustellen und dem Spielfeld deutlich mehr Platz zu geben.</li>
+          </ul>
+        </div>
+
+        <div class="cl-entry old">
+          <div class="cl-version">v0.1.14</div>
+          <h3>Spielbalance &amp; Minenlogik</h3>
+          <div class="cl-tags">
+            <span class="tag tag-change">Änderung</span>
+            <span class="tag tag-fix">Fix</span>
+          </div>
+          <ul>
+            <li><strong>Siegpunktgrenze auf 30 MP angehoben</strong> – Das Spielziel wurde von einem niedrigeren Wert auf 30 Machtpunkte erhöht, um die Spieldauer zu verlängern und strategische Tiefe zu fördern.</li>
+            <li><strong>Neutrale Wächter geben kein Gold mehr</strong> – Das Besiegen neutraler Einheiten belohnt nun ausschließlich mit Machtpunkten: +1 MP für einen Nebelschleicher, +2 MP für einen Schattenwächter.</li>
+            <li><strong>Beschleunigter Minenabbau</strong> – In der Hauptphase kann der Abbau einer Mine gegen den Einsatz von Tränken sofort ausgelöst werden, anstatt auf die Ressourcenphase warten zu müssen.</li>
+            <li><strong>Edelstein-Rotation auch bei feindlicher Präsenz</strong> – Der Edelstein rotiert im Minenstapel nun korrekt weiter, selbst wenn sich eine gegnerische Einheit auf dem Feld befindet.</li>
+            <li><strong>Animation im Hauptmenü ergänzt</strong> – Das Hauptmenü wurde mit einer animierten Hintergrundsequenz aufgewertet, um den atmosphärischen Einstieg ins Spiel zu verstärken.</li>
+            <li><strong>Musikbutton überarbeitet</strong> – Die Steuerung für die Hintergrundmusik wurde optisch und funktional überarbeitet und ist nun intuitiver bedienbar.</li>
+            <li><strong>„Created by Good Goose Games" hinzugefügt</strong> – Der Entwicklerhinweis wurde in das Spiel integriert.</li>
+            <li><strong>Versionsnummer eingeblendet</strong> – Die aktuelle Versionsnummer wird nun dauerhaft unten rechts im Spielfenster angezeigt.</li>
+          </ul>
+        </div>
+
+        <div class="cl-entry old">
+          <div class="cl-version">v0.1.13</div>
+          <h3>Gewinnanimation</h3>
+          <div class="cl-tags">
+            <span class="tag tag-change">Änderung</span>
+          </div>
+          <ul>
+            <li><strong>Gewinnanimation überarbeitet</strong> – Die Siegessequenz wurde visuell neu gestaltet und mit einem Konfetti-Effekt sowie einer animierten Machtpunkt-Einblendung versehen.</li>
+            <li><strong>Machtpunkt-Darstellung im Sieg</strong> – Beim Erreichen von 30 Machtpunkten wird der Endstand nun prominent hervorgehoben und in die Gewinnanimation eingebettet.</li>
+          </ul>
+        </div>
+
+        <div class="cl-entry old">
+          <div class="cl-version">v0.1.12</div>
+          <h3>Speichercode-Optimierung</h3>
+          <div class="cl-tags">
+            <span class="tag tag-change">Änderung</span>
+            <span class="tag tag-fix">Fix</span>
+          </div>
+          <ul>
+            <li><strong>Speichercode drastisch verkürzt</strong> – Das bisherige Format erzeugte Codes mit bis zu 20.000 Zeichen und war damit unpraktisch. Das neue Format wurde auf maximal 280 Zeichen komprimiert.</li>
+            <li><strong>Neues Codierungsformat</strong> – Der Spielstand wird nun in einem effizienten Binärformat kodiert, das alle relevanten Spielinformationen verlustfrei auf einem Bruchteil der ursprünglichen Länge abbildet.</li>
+            <li><strong>Abwärtskompatibilität</strong> – Spielstände aus v0.1 lassen sich weiterhin laden; das neue Format ist mit der späteren Version 1 kompatibel ausgelegt.</li>
+          </ul>
+        </div>
+
+        <div class="cl-entry old">
+          <div class="cl-version">v0.1.11</div>
+          <h3>Speicherfunktion</h3>
+          <div class="cl-tags">
+            <span class="tag tag-new">Neu</span>
+          </div>
+          <ul>
+            <li><strong>Speicherfunktion implementiert</strong> – Der aktuelle Spielstand kann jederzeit als kompakter Code exportiert werden, um die Partie zu einem späteren Zeitpunkt fortzusetzen.</li>
+            <li><strong>Laden per Code</strong> – Ein zuvor gespeicherter Spielstand lässt sich über die Codeeingabe vollständig wiederherstellen, inklusive aller Einheiten, Ressourcen und Gebäude.</li>
+            <li><strong>Startbildschirm erweitert</strong> – Die Lade-Funktion wurde direkt in das Titelbild integriert, sodass ein gespeichertes Spiel bereits vom Hauptmenü aus fortgesetzt werden kann.</li>
+          </ul>
+        </div>
+
+        <div class="cl-entry old">
+          <div class="cl-version">v0.1.10</div>
+          <h3>Kampf-Bugfix &amp; Kartengrenze</h3>
+          <div class="cl-tags">
+            <span class="tag tag-fix">Fix</span>
+            <span class="tag tag-change">Änderung</span>
+          </div>
+          <ul>
+            <li><strong>Kampf-Bugfix (3 Schleicher auf einem Feld)</strong> – Fehler behoben, bei dem Kämpfe mit drei Schleichern auf einem Feld zu einer fehlerhaften Schadensberechnung oder unerwartetem Verhalten führten.</li>
+            <li><strong>Maximale Feldentfernung auf 10 begrenzt</strong> – Die spielbare Kartengröße wurde auf maximal 10 Felder Entfernung vom Zentrum beschränkt, um eine korrekte Darstellung auf PC-Bildschirmen sicherzustellen und übermäßig große Karten zu vermeiden.</li>
+          </ul>
+        </div>
+
+        <div class="cl-entry old">
+          <div class="cl-version">v0.1.9</div>
+          <h3>Zoom entfernt &amp; UI-Anpassungen</h3>
+          <div class="cl-tags">
+            <span class="tag tag-change">Änderung</span>
+            <span class="tag tag-fix">Fix</span>
+          </div>
+          <ul>
+            <li><strong>Zoom-Funktion entfernt</strong> – Die Zoom-Funktion wurde vorerst aus dem Spiel genommen, da das bisherige Konzept technisch nicht zufriedenstellend funktioniert hat.</li>
+            <li><strong>UI-Anpassungen</strong> – Verschiedene Elemente der Benutzeroberfläche wurden im Zuge der Zoom-Entfernung bereinigt und visuell weiter verfeinert.</li>
+          </ul>
+        </div>
+
+        <div class="cl-entry old">
+          <div class="cl-version">v0.1.8</div>
+          <h3>Zoom-Überarbeitung</h3>
+          <div class="cl-tags">
+            <span class="tag tag-change">Änderung</span>
+          </div>
+          <ul>
+            <li><strong>Zoom-Funktion überarbeitet</strong> – Die Zoom-Stufen wurden auf exakt 10 gleichmäßige Sprünge umgestellt, um eine konsistentere und präzisere Kartennavigation zu gewährleisten.</li>
+          </ul>
+        </div>
+
+        <div class="cl-entry old">
+          <div class="cl-version">v0.1.7</div>
+          <h3>Zoom &amp; Kartennavigation</h3>
+          <div class="cl-tags">
+            <span class="tag tag-new">Neu</span>
+            <span class="tag tag-fix">Fix</span>
+          </div>
+          <ul>
+            <li><strong>Zoom-Funktion implementiert</strong> – Die Spielkarte lässt sich über die Zoom-Leiste in 10 Stufen vergrößern und verkleinern; Funktion ausgiebig getestet und stabilisiert.</li>
+            <li><strong>Karte per Maus ziehen</strong> – Der Kartenausschnitt kann durch Klicken und Ziehen frei verschoben werden; Verhalten bei Randfeldern und nach dem Zoomen getestet und korrigiert.</li>
+          </ul>
+        </div>
+
+        <div class="cl-entry old">
+          <div class="cl-version">v0.1.6</div>
+          <h3>Erweiterte In-Game-Spielanleitung</h3>
+          <div class="cl-tags">
+            <span class="tag tag-new">Neu</span>
+            <span class="tag tag-change">Änderung</span>
+          </div>
+          <ul>
+            <li><strong>Spielanleitung ausgebaut</strong> – Die In-Game-Regelreferenz wurde deutlich erweitert und deckt nun alle Mechaniken detaillierter und strukturierter ab.</li>
+            <li><strong>Suchfunktion hinzugefügt</strong> – Spieler können innerhalb der Anleitung gezielt nach Begriffen suchen und werden direkt zum entsprechenden Abschnitt geführt.</li>
+          </ul>
+        </div>
+
+        <div class="cl-entry old">
+          <div class="cl-version">v0.1.5</div>
+          <h3>Startmenü, Geschichte &amp; Spielanleitung</h3>
+          <div class="cl-tags">
+            <span class="tag tag-new">Neu</span>
+          </div>
+          <ul>
+            <li><strong>Startmenü implementiert</strong> – Spieler werden beim Start über ein dediziertes Menü empfangen; von hier aus werden Charakterauswahl und Spielstart gesteuert.</li>
+            <li><strong>Geschichte ergänzt</strong> – Die Hintergrundgeschichte von Scharcana und den sechs Auserwählten wurde in das Spiel integriert und ist im Startbereich einsehbar.</li>
+            <li><strong>Spielanleitung hinzugefügt</strong> – Eine vollständige Regelreferenz mit allen Spielphasen, Einheiten, Gebäuden und Mechaniken steht als In-Game-Anleitung zur Verfügung.</li>
+          </ul>
+        </div>
+
+        <div class="cl-entry old">
+          <div class="cl-version">v0.1.4</div>
+          <h3>Musik &amp; Neutrale Wächter</h3>
+          <div class="cl-tags">
+            <span class="tag tag-new">Neu</span>
+          </div>
+          <ul>
+            <li><strong>Hintergrundmusik hinzugefügt</strong> – Atmosphärische Musik läuft während des Spiels im Hintergrund; Lautstärke und Stummschaltung sind über das Musikpanel steuerbar.</li>
+            <li><strong>Neutrale Wächter im Zentrum implementiert</strong> – Das violette Zentrumsfeld wird nun rundenweise mit neutralen Wächtern besetzt; Erscheinen, Regeneration und MP-Belohnungen beim Bekämpfen sind vollständig implementiert.</li>
+          </ul>
+        </div>
+
+        <div class="cl-entry old">
+          <div class="cl-version">v0.1.3</div>
+          <h3>Interface &amp; Overlays</h3>
+          <div class="cl-tags">
+            <span class="tag tag-change">Änderung</span>
+          </div>
+          <ul>
+            <li><strong>Interface überarbeitet</strong> – Spielfeldoberfläche und HUD-Elemente wurden neu strukturiert und visuell vereinheitlicht.</li>
+            <li><strong>Overlays angepasst</strong> – Eingeblendte Panels (Phasenübergänge, Infoanzeigen, Menüs) wurden hinsichtlich Layout, Lesbarkeit und Positionierung überarbeitet.</li>
+          </ul>
+        </div>
+
+        <div class="cl-entry old">
+          <div class="cl-version">v0.1.2</div>
+          <h3>Kampfsystem &amp; Gebäude</h3>
+          <div class="cl-tags">
+            <span class="tag tag-new">Neu</span>
+            <span class="tag tag-fix">Fix</span>
+          </div>
+          <ul>
+            <li><strong>Kampfmechanik implementiert</strong> – Einheiten können feindliche Felder angreifen; Schaden, Degradierung und Tod werden anhand der Einheitenwerte (Wächter 2 / Schleicher 1) korrekt berechnet.</li>
+            <li><strong>Kampfberechnung korrigiert</strong> – Mehrziel-Angriffe (Wächter gegen mehrere Schleicher) sowie gegenseitige Treffer werden nun regelkonform ausgewertet.</li>
+            <li><strong>Gebäude implementiert</strong> – Minen und Brunnen können von Schleichern errichtet werden; Abbaulogik, Stapelrotation und Ressourcengutschrift in der Ressourcenphase sind funktionsfähig.</li>
+          </ul>
+        </div>
+
+        <div class="cl-entry old">
+          <div class="cl-version">v0.1.1</div>
+          <h3>Bewegung &amp; Spieler-UI</h3>
+          <div class="cl-tags">
+            <span class="tag tag-fix">Fix</span>
+            <span class="tag tag-change">Änderung</span>
+          </div>
+          <ul>
+            <li><strong>Bewegungsmechanik überarbeitet</strong> – Berechnung der Reichweite und Tränkeverbrauch pro Schritt korrigiert; Einheiten können nun keine ungültigen Felder mehr ansteuern.</li>
+            <li><strong>Tränke-Berechnung korrigiert</strong> – Verbrauchswerte werden jetzt zuverlässig aktualisiert und korrekt auf das verbleibende Kontingent angerechnet.</li>
+            <li><strong>Farbgebung der Spieler überarbeitet</strong> – Spielerfarben wurden visuell geschärft und konsistenter über alle UI-Elemente hinweg eingesetzt.</li>
+          </ul>
+        </div>
+
+        <div class="cl-entry old">
+          <div class="cl-version">v0.1.0</div>
+          <h3>Erstes Konzept &amp; Hexagonfelder</h3>
+          <div class="cl-tags">
+            <span class="tag tag-new">Neu</span>
+          </div>
+          <ul>
+            <li><strong>Erstes Konzept</strong> – Grundlegende Spielidee und Struktur wurden entwickelt und als erster Prototyp umgesetzt.</li>
+            <li><strong>Hexagonfelder erstellt</strong> – Das hexagonale Spielfeld wurde implementiert; Felder können erkundet und dargestellt werden.</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-inner">
+      <p>Scharcana – Das Erbe der Zeitenwächterin &nbsp;·&nbsp; created by GoodGooseGames</p>
+      <span class="footer-version">v0.1.18</span>
+    </div>
+  </footer>
+
+  <script src="nav.js"></script>
+</body>
+</html>
