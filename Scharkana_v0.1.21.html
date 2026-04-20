@@ -303,7 +303,7 @@
       ];
 
       const rows = _trackTurnLog.map(t => [
-        gameId, _trackGameStart.dateStr, '0.1.20', players.length,
+        gameId, _trackGameStart.dateStr, '0.1.21', players.length,
         CHARACTERS[winner.charIdx].name, siegbed, dauer,
         t.runde, t.spielerNr, t.charakter,
         t.mp_start, t.mp_ende ?? '', t.gold_start, t.gold_ende ?? '',
@@ -2705,7 +2705,7 @@
       ctx.textAlign    = 'center';
       ctx.fillText('created by Good Goose Games', canvas.width / 2, footerY);
       ctx.textAlign    = 'right';
-      ctx.fillText('Version 0.1.20', canvas.width - 16, footerY);
+      ctx.fillText('Version 0.1.21', canvas.width - 16, footerY);
       ctx.restore();
     }
 
@@ -4743,10 +4743,10 @@
           ctx.fillStyle    = '#9988bb';
           ctx.textAlign    = 'right';
           ctx.textBaseline = 'middle';
-          ctx.fillText('Version 0.1.20', canvas.width - 14, cy2);
+          ctx.fillText('Version 0.1.21', canvas.width - 14, cy2);
           ctx.restore();
-          const verW = ctx.measureText('Version 0.1.20') === undefined ? 100 :
-            (() => { ctx.font = 'italic 14px "Exo 2",sans-serif'; return ctx.measureText('Version 0.1.20').width; })();
+          const verW = ctx.measureText('Version 0.1.21') === undefined ? 100 :
+            (() => { ctx.font = 'italic 14px "Exo 2",sans-serif'; return ctx.measureText('Version 0.1.21').width; })();
 
           // 💾 Speichern-Button
           const sbW   = 44, sbX = canvas.width - 14 - verW - 10 - sbW;
@@ -5867,7 +5867,7 @@
       // ── Statusleiste-Buttons unten rechts ───────────────────────────────
       {
         ctx.font = 'italic 14px "Exo 2",sans-serif';
-        const verW = ctx.measureText('Version 0.1.20').width;
+        const verW = ctx.measureText('Version 0.1.21').width;
         const cy2  = canvas.height - 20, btnH = 30;
         const sbW  = 44, sbX = canvas.width - 14 - verW - 10 - sbW, sbY = cy2 - btnH / 2;
         const brW  = 44, brX = sbX - 8 - brW,                       brY = cy2 - btnH / 2;
@@ -6431,7 +6431,7 @@
       // Cursor über Statusleiste-Buttons
       {
         ctx.font = 'italic 14px "Exo 2",sans-serif';
-        const verW = ctx.measureText('Version 0.1.20').width;
+        const verW = ctx.measureText('Version 0.1.21').width;
         const cy2  = canvas.height - 20, btnH = 30;
         const sbW  = 44, sbX = canvas.width - 14 - verW - 10 - sbW, sbY = cy2 - btnH / 2;
         const brW  = 44, brX = sbX - 8 - brW,                       brY = cy2 - btnH / 2;
