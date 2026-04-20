@@ -78,7 +78,8 @@
 <div id="subtitle"></div>
 <div id="victory-overlay">
   <p style="font-family:'Exo 2',sans-serif; color:#c8c0e0; font-size:18px; font-style:italic; margin:0 0 8px; text-shadow:0 0 20px rgba(120,80,200,.6);">Vielen Dank fürs Spielen!</p>
-  <button class="vbtn vbtn-log" id="btnSendLog">📊  Log senden</button>
+  <button class="vbtn vbtn-log" id="btnSendLog">📥  Log als CSV herunterladen</button>
+  <p style="font-family:'Exo 2',sans-serif; color:#9080b0; font-size:13px; font-style:italic; margin:-4px 0 4px; text-align:center;">Ich würde mich freuen, wenn ihr mir die Datei<br>an folgende Adresse schicken könntet:<br><span style="color:#c8a0f0; font-style:normal;">goodgoosegames@mailbox.org</span></p>
   <button class="vbtn vbtn-close" id="btnClose">✕  Spiel beenden</button>
 </div>
 <script>
@@ -607,38 +608,29 @@ document.getElementById('btnClose').addEventListener('click', () => {
   window.close();
 });
 
-document.getElementById('btnSendLog').addEventListener('click', async function() {
+document.getElementById('btnSendLog').addEventListener('click', function() {
   const btn = this;
-  btn.disabled = true;
-  btn.textContent = '⏳  Wird gesendet …';
-
   try {
     const raw = localStorage.getItem('scharkana_stats');
     if (!raw) throw new Error('Keine Spieldaten in localStorage gefunden');
-    const { csvStr, summary, gameId } = JSON.parse(raw);
+    const { csvStr, gameId } = JSON.parse(raw);
 
-    const fd = new FormData();
-    fd.append('payload_json', JSON.stringify({
-      content: `**Scharkana Spielstatistik**\n${summary}`
-    }));
     const blob = new Blob([csvStr], { type: 'text/csv' });
-    fd.append('files[0]', blob, `scharkana_${gameId}.csv`);
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href     = url;
+    a.download = `scharkana_${gameId}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
 
-    const resp = await fetch(
-      'https://discord.com/api/webhooks/1495883584408518849/jO79NHBZl7L7lu57bp7Qk3IQjgEglaJ3r2IBY98771pn5L-kLcQbaIgl9B31HH-qQGWB',
-      { method: 'POST', body: fd }
-    );
-    if (!resp.ok) {
-      const errText = await resp.text().catch(() => resp.status);
-      throw new Error(`Discord ${resp.status}: ${errText}`);
-    }
-
-    btn.textContent = '✓  Log gesendet';
+    btn.textContent = '✓  CSV heruntergeladen';
     btn.classList.add('sent');
+    btn.disabled = true;
     localStorage.removeItem('scharkana_stats');
   } catch (e) {
-    console.error('Log senden fehlgeschlagen:', e);
-    btn.disabled = false;
+    console.error('CSV-Download fehlgeschlagen:', e);
     btn.textContent = '⚠  Fehler – erneut versuchen';
     btn.title = e.message;
   }
