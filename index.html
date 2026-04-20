@@ -10,6 +10,8 @@
 </head>
 <body>
 
+  <canvas id="hex-bg" aria-hidden="true"></canvas>
+
   <nav>
     <div class="nav-inner">
       <div class="nav-logo">
@@ -33,26 +35,35 @@
 
   <section class="section active" id="tab-willkommen">
     <div class="page-wrap">
+      <div class="content-panel">
 
       <!-- Hero -->
       <div class="hero">
-        <div class="hero-badge">Version 0.1.20 · Open Alpha</div>
-        <h1>
-          <span class="eyebrow">Das Erbe der Zeitenwächterin</span>
-          Scharkana
-        </h1>
-        <p>
-          Ein rundenbasiertes Hex-Strategiespiel für 2–6 Spieler. Erkunde eine fremde Schattenwelt,
-          baue dein Territorium aus, kämpfe um Ressourcen – und finde als Einziger den Weg zurück.
-        </p>
-        <div class="hero-btns">
-          <a href="Scharkana_v0.1.20.html" class="btn btn-primary" target="_blank" rel="noopener">▶ Jetzt spielen</a>
-          <a href="regelwerk.html" class="btn btn-outline">Regelwerk lesen</a>
-          <a href="charaktere.html" class="btn btn-outline">Die Charaktere</a>
-          <a href="https://github.com/MellowCookey/Scharkana/raw/main/Scharkana%20-%20Alpha%20v0.1.20a.zip" class="btn btn-download" download="Scharkana - Alpha v0.1.20a.zip">⬇ Spiel herunterladen</a>
+        <div class="hero-body">
+          <div class="hero-title-row">
+            <div class="hero-badge">Version 0.1.20 · Open Alpha</div>
+            <a href="https://github.com/MellowCookey/Scharkana/raw/main/Scharkana%20-%20Alpha%20v0.1.20a.zip"
+               class="hero-download-btn" download="Scharkana - Alpha v0.1.20a.zip"
+               title="Spiel herunterladen">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              <span>Download</span>
+            </a>
+          </div>
+          <h1>
+            <span class="eyebrow">Das Erbe der Zeitenwächterin</span>
+            Scharkana
+          </h1>
+          <p>
+            Ein rundenbasiertes Hex-Strategiespiel für 2–6 Spieler. Erkunde eine fremde Schattenwelt,
+            baue dein Territorium aus, kämpfe um Ressourcen – und finde als Einziger den Weg zurück.
+          </p>
+          <div class="hero-btns">
+            <a href="Scharkana_v0.1.20.html" class="btn btn-primary" target="_blank" rel="noopener">▶ Jetzt spielen</a>
+            <a href="regelwerk.html" class="btn btn-outline">Regelwerk lesen</a>
+            <a href="charaktere.html" class="btn btn-outline">Die Charaktere</a>
+          </div>
         </div>
       </div>
-
 
       <!-- Auf einen Blick -->
       <h2>Auf einen Blick</h2>
@@ -99,51 +110,166 @@
         </div>
       </div>
 
-      <hr class="divider">
+      <!-- Charaktere Vorschau -->
+      <div class="char-preview-section">
+      <h2>Die Charaktere</h2>
+      <div class="char-preview-grid">
 
-      <!-- Geschichte -->
-      <h2>Die Geschichte</h2>
-      <div class="story-block">
-        <p>
-          Lange bevor die ersten Stämme ihre Namen kannten, gab es sie: <strong>Seraphia, die Zeitenwächterin.</strong>
-          Nicht gekrönt, nicht gewählt – sie war einfach da. Hoch oben in den vereisten Gipfeln von Khareth hielt sie
-          das Gleichgewicht zwischen Licht und Dunkelheit, zwischen Leben und Tod.
-        </p>
-        <p>
-          Dann kam jene Nacht, in der die Welt aufhörte, sich richtig anzufühlen. Die ewigen Feuer erloschen.
-          Die Gletscher weinten. Der Ewige Wald verstummte. Seraphia war tot – und ohne sie begann das Gleichgewicht
-          zu zerbrechen, langsam und unaufhaltsam wie ein Riss im Eis.
-        </p>
-        <p>Aus jedem Land, aus jedem Volk, wurde eine*r gewählt – durch einen Ruf, den man nicht ignorieren kann:</p>
-        <div class="story-names">
-          <div class="story-name-item"><strong>Tarrak Feuerfaust</strong> – dessen ewiges Feuer erloschen war.</div>
-          <div class="story-name-item"><strong>Jana Frostwind</strong> – deren Gletscher zu schmelzen begannen.</div>
-          <div class="story-name-item"><strong>Nadoris Waldgeist</strong> – dessen Ewiger Wald zum ersten Mal schwieg.</div>
-          <div class="story-name-item"><strong>Thorgrim Donneraxt</strong> – dessen Berge den Donner verloren hatten.</div>
-          <div class="story-name-item"><strong>Morvina Aschegrund</strong> – deren Existenz selbst am Gleichgewicht hing.</div>
-          <div class="story-name-item"><strong>Illyria Mondlicht</strong> – deren Licht für einen Herzschlag erloschen war.</div>
-        </div>
-        <p>
-          In der Halle der Zeitenwächterin trat der schweigende Wächter – zum ersten Mal seit Anbeginn – vor die Sechs.
-          Seine kalten grauen Augen glitten über sie, dann sprach er:
-        </p>
-        <div class="story-quote">
-          „Ihr seid gekommen, um ihren Thron zu besteigen. Doch wie ich sehe, seid ihr nicht würdig."
-        </div>
-        <p>
-          Mit einem uralten Zauber schleuderte er sie durch ein Portal – in die <strong>Schattenwelt</strong>. Eine leere,
-          fremde Welt ohne Himmel, ohne Leben. Ihre Kräfte versiegten. Das Portal schloss sich. Nur ein letztes
-          Wort hallte nach:
-        </p>
-        <div class="story-quote">
-          „Nur wer es aus der Schattenwelt schafft, kann den Thron besteigen."
-        </div>
-        <p>
-          Sechs Auserwählte. Eine fremde Welt. Ein Wächter, der euch bereits aufgegeben hat.<br>
-          <em>Was bist du bereit zu tun, um nach Hause zu kommen?</em>
-        </p>
+        <a href="charaktere.html" class="char-preview-card" style="--c: #c0281a;">
+          <div class="char-preview-img">
+            <img src="Charakterbilder/Tarrak Feuerfaust.jpg" alt="Tarrak Feuerfaust">
+          </div>
+          <div class="char-preview-info">
+            <div class="char-preview-name">Tarrak</div>
+            <div class="char-preview-sub">Feuerfaust · Feuer</div>
+          </div>
+        </a>
+
+        <a href="charaktere.html" class="char-preview-card" style="--c: #1a55c0;">
+          <div class="char-preview-img">
+            <img src="Charakterbilder/Jana Frostwind.jpg" alt="Jana Frostwind">
+          </div>
+          <div class="char-preview-info">
+            <div class="char-preview-name">Jana</div>
+            <div class="char-preview-sub">Frostwind · Eis</div>
+          </div>
+        </a>
+
+        <a href="charaktere.html" class="char-preview-card" style="--c: #1a7a28;">
+          <div class="char-preview-img">
+            <img src="Charakterbilder/Nadoris Waldgeist.jpg" alt="Nadoris Waldgeist">
+          </div>
+          <div class="char-preview-info">
+            <div class="char-preview-name">Nadoris</div>
+            <div class="char-preview-sub">Waldgeist · Natur</div>
+          </div>
+        </a>
+
+        <a href="charaktere.html" class="char-preview-card" style="--c: #b08800;">
+          <div class="char-preview-img">
+            <img src="Charakterbilder/Thorgrim Donneraxt.jpg" alt="Thorgrim Donneraxt">
+          </div>
+          <div class="char-preview-info">
+            <div class="char-preview-name">Thorgrim</div>
+            <div class="char-preview-sub">Donneraxt · Donner</div>
+          </div>
+        </a>
+
+        <a href="charaktere.html" class="char-preview-card" style="--c: #7722cc;">
+          <div class="char-preview-img">
+            <img src="Charakterbilder/Morvina Aschegrund.jpg" alt="Morvina Aschegrund">
+          </div>
+          <div class="char-preview-info">
+            <div class="char-preview-name">Morvina</div>
+            <div class="char-preview-sub">Aschegrund · Dunkel</div>
+          </div>
+        </a>
+
+        <a href="charaktere.html" class="char-preview-card" style="--c: #8899bb;">
+          <div class="char-preview-img">
+            <img src="Charakterbilder/Illyria Mondlicht.jpg" alt="Illyria Mondlicht">
+          </div>
+          <div class="char-preview-info">
+            <div class="char-preview-name">Illyria</div>
+            <div class="char-preview-sub">Mondlicht · Licht</div>
+          </div>
+        </a>
+
+      </div>
+      <div class="char-preview-cta">
+        <a href="charaktere.html" class="btn btn-outline">Alle Charaktere entdecken →</a>
+      </div>
       </div>
 
+      <!-- Geschichte -->
+      <h2 class="section-gap">Die Geschichte</h2>
+      <div class="story-block">
+
+        <!-- Sichtbarer Anfang -->
+        <div class="story-preview">
+          <p>
+            Lange bevor die ersten Stämme ihre Namen kannten, gab es sie: <strong>Seraphia, die Zeitenwächterin.</strong>
+            Nicht gekrönt, nicht gewählt – sie war einfach da. Hoch oben in den vereisten Gipfeln von Khareth webte sie
+            das Gleichgewicht zwischen Licht und Dunkelheit, zwischen Leben und Tod, zwischen Vergangenheit und Zukunft.
+            Für Jahrtausende war sie das stille Fundament der Welt – unsichtbar, unantastbar, ewig.
+          </p>
+          <p>
+            Dann kam jene Nacht, in der die Welt aufhörte, sich richtig anzufühlen.
+            Die ewigen Feuer erloschen. Die Gletscher weinten schwarze Tränen.
+            Der Ewige Wald verstummte – kein Wind, kein Knacken, kein Atem.
+            <strong>Seraphia war tot.</strong> Und ohne sie begann das Gleichgewicht zu zerbrechen,
+            langsam und unaufhaltsam wie ein Riss im Eis, der sich in der Stille der Nacht ausdehnt.
+          </p>
+          <div class="story-fade"></div>
+        </div>
+
+        <!-- Versteckter Rest -->
+        <div class="story-rest" id="story-rest" hidden>
+          <p>
+            Die Welt reagierte nicht mit einem Schrei, sondern mit Stille. Ernten verrotteten über Nacht.
+            Flüsse verloren ihre Richtung. Menschen wachten morgens auf und erinnerten sich nicht mehr an ihre Träume –
+            als hätte jemand leise begonnen, die Welt von innen auszuhöhlen.
+            Die Weisen sprachen von einem <em>Riss im Gefüge</em>. Die Einfachen nannten es schlicht: das Ende.
+          </p>
+          <p>Doch in dieser Dunkelheit ertönte ein Ruf – aus jedem Land, aus jedem Volk, wurde eine*r gewählt.
+          Nicht durch Wahl, nicht durch Verdienst. Einfach so. Ein Ziehen im Brustkorb, das man nicht ignorieren kann,
+          das einen aus dem Schlaf reißt und sagt: <em>Geh.</em></p>
+          <div class="story-names">
+            <div class="story-name-item"><strong>Tarrak Feuerfaust</strong> – dessen ewiges Feuer in jener Nacht erloschen war.</div>
+            <div class="story-name-item"><strong>Jana Frostwind</strong> – deren Gletscher zum ersten Mal zu weinen begannen.</div>
+            <div class="story-name-item"><strong>Nadoris Waldgeist</strong> – dessen Ewiger Wald zum ersten Mal in der Geschichte schwieg.</div>
+            <div class="story-name-item"><strong>Thorgrim Donneraxt</strong> – dessen Berge den Donner verloren hatten.</div>
+            <div class="story-name-item"><strong>Morvina Aschegrund</strong> – deren Existenz selbst am seidenen Faden des Gleichgewichts hing.</div>
+            <div class="story-name-item"><strong>Illyria Mondlicht</strong> – deren Licht für einen einzigen Herzschlag erloschen war.</div>
+          </div>
+          <p>
+            Sie fanden sich in der <strong>Halle der Zeitenwächterin</strong> wieder – einem Ort, den keiner von ihnen
+            je betreten hatte, und doch kannten sie jeden Stein. Die Halle war leer.
+            Der Thron Seraphias stand unbesetzt, von schwarzem Frost überzogen.
+            Und dann trat er hervor.
+          </p>
+          <p>
+            Der schweigende Wächter – seit Anbeginn der einzige Zeuge von Seraphias Wirken –
+            trat zum ersten Mal aus dem Schatten. Seine Gestalt war aus kaltem Licht gewoben,
+            sein Gesicht ausdruckslos wie gemeißelter Stein. Seine grauen Augen glitten langsam über die Sechs.
+            Er brauchte nur einen Moment.
+          </p>
+          <div class="story-quote">
+            „Ihr seid gekommen, um ihren Thron zu besteigen. Doch wie ich sehe, seid ihr nicht würdig."
+          </div>
+          <p>
+            Bevor einer von ihnen sprechen konnte, hob er die Hand. Ein uralter Zauber –
+            älter als Sprache, älter als Feuer – riss den Boden unter ihren Füßen auf.
+            Ein Portal aus reiner Dunkelheit verschluckte sie. Keine Zeit zum Schreien.
+            Kein Widerstand. Nur Fall.
+          </p>
+          <p>
+            Sie landeten in der <strong>Schattenwelt</strong>. Eine leere, fremde Welt ohne Himmel, ohne Sonne,
+            ohne den Geruch von Leben. Der Boden war aus versteinertem Grau, der Horizont ein ewiges Nichts.
+            Ihre Kräfte versiegten sofort – als hätte jemand eine Flamme ausgeblasen.
+            Das Portal schloss sich hinter ihnen, lautlos wie ein zugedrücktes Auge.
+            Nur ein letztes Wort des Wächters hallte nach, leiser als ein Flüstern und lauter als ein Donnerschlag:
+          </p>
+          <div class="story-quote">
+            „Nur wer es aus der Schattenwelt schafft, kann den Thron besteigen."
+          </div>
+          <p>
+            Sechs Auserwählte. Eine fremde, leblose Welt. Keine Kräfte. Kein Portal.
+            Und irgendwo da draußen in diesem grauen Nichts lauern Dinge, die schon viel länger hier sind als sie.
+            <br><br>
+            <em>Sechs kamen. Nur einer kommt zurück. Was bist du bereit zu tun, um nach Hause zu kommen?</em>
+          </p>
+        </div>
+
+        <!-- Knopf -->
+        <button class="story-expand-btn" id="story-expand-btn" onclick="toggleStory()">
+          <span class="story-btn-text">Geschichte weiterlesen</span>
+          <span class="story-btn-arrow">↓</span>
+        </button>
+
+      </div>
+
+      </div>
     </div>
   </section>
 
@@ -155,5 +281,186 @@
   </footer>
 
   <script src="nav.js"></script>
+  <script>
+  /* ── Seitenweiter Hex-Hintergrund ───────────────────────────── */
+  (function () {
+    var canvas = document.getElementById('hex-bg');
+    if (!canvas) return;
+    var ctx = canvas.getContext('2d');
+    var W, H, hexes = [], fog = [], lastT = null;
+
+    /* ── Hintergrund-Presets ──────────────────────────────────── */
+    var BG_PRESETS = {
+
+      /* Preset 1: Spielfeld-Optik — erkundet, versiegelt, lila, rot */
+      1: {
+        hs: 34,
+        baseAlpha: 0.12,
+        maxFog:    0.60,
+        types: [
+          { fill: '#0a0a0a', stroke: '#1e1e1e', w: 48 },
+          { fill: '#0a0a0a', stroke: '#1e1e1e', w: 48 },
+          { fill: '#1a3d2b', stroke: '#2d7a4f', w: 28 },
+          { fill: '#1a3d2b', stroke: '#2d7a4f', w: 28 },
+          { fill: '#5b2d8e', stroke: '#9b5de5', w: 10 },
+          { fill: '#5a1a1a', stroke: '#8b2020', w:  6 },
+          { fill: '#3c0064', stroke: '#a000ff', w:  2 }
+        ],
+        fog: [
+          { xF: 1.0, speed: 0.055, widthF: 0.38, intensity: 0.55, vFreq: 0.007, vPhase: 0.0 },
+          { xF: 1.6, speed: 0.080, widthF: 0.22, intensity: 0.45, vFreq: 0.011, vPhase: 2.1 },
+          { xF: 0.5, speed: 0.038, widthF: 0.50, intensity: 0.38, vFreq: 0.005, vPhase: 4.4 },
+          { xF: 2.1, speed: 0.110, widthF: 0.16, intensity: 0.30, vFreq: 0.015, vPhase: 1.3 }
+        ]
+      },
+
+      /* Preset 2: Startbildschirm-Optik — exakte Farben aus drawMenu() */
+      2: {
+        hs: 34,
+        baseAlpha: 0.20,
+        maxFog:    0.68,
+        types: [
+          /* außen fast schwarz — hsl(265,45%,3%) */
+          { fill: 'hsl(265,45%,3%)',  stroke: 'rgba(110,55,200,0.04)', w: 30 },
+          { fill: 'hsl(265,45%,3%)',  stroke: 'rgba(110,55,200,0.04)', w: 30 },
+          /* mid — hsl(265,45%,7%) */
+          { fill: 'hsl(265,45%,7%)',  stroke: 'rgba(110,55,200,0.13)', w: 24 },
+          /* innen dunkelviolett — hsl(265,45%,10%) */
+          { fill: 'hsl(265,45%,10%)', stroke: 'rgba(110,55,200,0.20)', w: 12 },
+          /* hellste Randfelder — hsl(265,45%,14%) */
+          { fill: 'hsl(265,45%,14%)', stroke: 'rgba(110,55,200,0.25)', w:  4 }
+        ],
+        fog: [
+          { xF: 1.0, speed: 0.048, widthF: 0.42, intensity: 0.50, vFreq: 0.006, vPhase: 0.0 },
+          { xF: 1.7, speed: 0.072, widthF: 0.26, intensity: 0.42, vFreq: 0.010, vPhase: 1.8 },
+          { xF: 0.4, speed: 0.034, widthF: 0.55, intensity: 0.35, vFreq: 0.004, vPhase: 3.9 },
+          { xF: 2.3, speed: 0.095, widthF: 0.18, intensity: 0.28, vFreq: 0.014, vPhase: 5.2 }
+        ]
+      }
+
+    };
+
+    var ACTIVE = BG_PRESETS[2];
+    var HS = ACTIVE.hs;
+    function mulberry32(a) { return function() { a|=0; a=a+0x6D2B79F5|0; var t=Math.imul(a^a>>>15,1|a); t=t+Math.imul(t^t>>>7,61|t)^t; return((t^t>>>14)>>>0)/4294967296; }; }
+    var rand = mulberry32(12345);
+
+    function pickType() {
+      var total = 0;
+      for (var i = 0; i < ACTIVE.types.length; i++) total += ACTIVE.types[i].w;
+      var r = rand() * total, acc = 0;
+      for (var i = 0; i < ACTIVE.types.length; i++) {
+        acc += ACTIVE.types[i].w;
+        if (r < acc) return ACTIVE.types[i];
+      }
+      return ACTIVE.types[0];
+    }
+
+    function initFog() {
+      fog = [];
+      var now = Date.now();
+      for (var i = 0; i < ACTIVE.fog.length; i++) {
+        var f = ACTIVE.fog[i];
+        var w = W * f.widthF;
+        var period = (W + w * 4.0) / f.speed;
+        var x = (W + w * 1.5) - f.speed * (now % period);
+        fog.push({ x: x, speed: f.speed, width: w,
+                   intensity: f.intensity, vFreq: f.vFreq, vPhase: f.vPhase });
+      }
+    }
+
+    function init() {
+      W = canvas.width  = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+      var hexW = Math.sqrt(3) * HS;
+      var rowH = HS * 1.5;
+      var cols = Math.ceil(W / hexW) + 2;
+      var rows = Math.ceil(H / rowH) + 2;
+      hexes = [];
+      for (var row = -1; row <= rows; row++) {
+        for (var col = -1; col <= cols; col++) {
+          var px = hexW * col + (row & 1) * hexW / 2;
+          var py = rowH * row + HS;
+          if (px < -HS * 2 || px > W + HS * 2 || py < -HS * 2 || py > H + HS * 2) continue;
+          var t = pickType();
+          hexes.push({ px: px, py: py, fill: t.fill, stroke: t.stroke });
+        }
+      }
+      initFog();
+      lastT = null;
+    }
+
+    function frame(now) {
+      var dt = lastT ? Math.min(now - lastT, 50) : 0;
+      lastT = now;
+
+      for (var fi = 0; fi < fog.length; fi++) {
+        fog[fi].x -= fog[fi].speed * dt;
+        if (fog[fi].x < -fog[fi].width * 2.5) fog[fi].x = W + fog[fi].width * 1.5;
+      }
+
+      ctx.clearRect(0, 0, W, H);
+
+      for (var i = 0; i < hexes.length; i++) {
+        var h = hexes[i];
+        var fogVal = 0;
+        for (var fi = 0; fi < fog.length; fi++) {
+          var fb    = fog[fi];
+          var dx    = h.px - fb.x;
+          var gauss = Math.exp(-(dx * dx) / (2 * fb.width * fb.width));
+          var vert  = (Math.sin(h.py * fb.vFreq + fb.vPhase + Date.now() * 0.00025) + 1) / 2;
+          fogVal += fb.intensity * gauss * vert;
+        }
+
+        var alpha = ACTIVE.baseAlpha + Math.min(ACTIVE.maxFog, fogVal);
+        if (alpha < 0.01) continue;
+
+        ctx.save();
+        ctx.globalAlpha = alpha;
+        ctx.beginPath();
+        for (var j = 0; j < 6; j++) {
+          var a  = Math.PI / 3 * j - Math.PI / 6;
+          var hx = h.px + (HS - 1.5) * Math.cos(a);
+          var hy = h.py + (HS - 1.5) * Math.sin(a);
+          if (j === 0) ctx.moveTo(hx, hy); else ctx.lineTo(hx, hy);
+        }
+        ctx.closePath();
+        ctx.fillStyle   = h.fill;
+        ctx.fill();
+        ctx.strokeStyle = h.stroke;
+        ctx.lineWidth   = 0.9;
+        ctx.stroke();
+        ctx.restore();
+      }
+      requestAnimationFrame(frame);
+    }
+
+    var rto;
+    window.addEventListener('resize', function () { clearTimeout(rto); rto = setTimeout(init, 180); });
+    init();
+    requestAnimationFrame(frame);
+  })();
+  </script>
+  <script>
+    function toggleStory() {
+      var rest = document.getElementById('story-rest');
+      var btn  = document.getElementById('story-expand-btn');
+      var preview = document.querySelector('.story-preview');
+      var open = !rest.hidden;
+      if (open) {
+        rest.hidden = true;
+        preview.classList.remove('story-preview--open');
+        btn.querySelector('.story-btn-text').textContent = 'Geschichte weiterlesen';
+        btn.querySelector('.story-btn-arrow').textContent = '↓';
+        btn.classList.remove('open');
+      } else {
+        rest.hidden = false;
+        preview.classList.add('story-preview--open');
+        btn.querySelector('.story-btn-text').textContent = 'Geschichte einklappen';
+        btn.querySelector('.story-btn-arrow').textContent = '↑';
+        btn.classList.add('open');
+      }
+    }
+  </script>
 </body>
 </html>
