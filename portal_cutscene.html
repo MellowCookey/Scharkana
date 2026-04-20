@@ -595,7 +595,7 @@ function frame(now) {
     requestAnimationFrame(frame);
   } else {
     running = false;
-    setTimeout(showVictoryButtons, 5000);
+    setTimeout(showVictoryButtons, 2000);
   }
 }
 
@@ -614,7 +614,7 @@ document.getElementById('btnSendLog').addEventListener('click', async function()
 
   try {
     const raw = localStorage.getItem('scharkana_stats');
-    if (!raw) throw new Error('Keine Daten');
+    if (!raw) throw new Error('Keine Spieldaten in localStorage gefunden');
     const { csvStr, summary, gameId } = JSON.parse(raw);
 
     const fd = new FormData();
@@ -628,14 +628,19 @@ document.getElementById('btnSendLog').addEventListener('click', async function()
       'https://discord.com/api/webhooks/1495883584408518849/jO79NHBZl7L7lu57bp7Qk3IQjgEglaJ3r2IBY98771pn5L-kLcQbaIgl9B31HH-qQGWB',
       { method: 'POST', body: fd }
     );
-    if (!resp.ok) throw new Error('Fehler');
+    if (!resp.ok) {
+      const errText = await resp.text().catch(() => resp.status);
+      throw new Error(`Discord ${resp.status}: ${errText}`);
+    }
 
     btn.textContent = '✓  Log gesendet';
     btn.classList.add('sent');
     localStorage.removeItem('scharkana_stats');
-  } catch (_e) {
+  } catch (e) {
+    console.error('Log senden fehlgeschlagen:', e);
     btn.disabled = false;
     btn.textContent = '⚠  Fehler – erneut versuchen';
+    btn.title = e.message;
   }
 });
 
