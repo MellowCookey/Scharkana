@@ -324,6 +324,11 @@ Der Angreifer erhält das Doppelte seiner Angriffskraft als MP:
   Schattenwächter greift an  →  +4 MP für den Angreifer
   Nebelschleicher greift an  →  +2 MP für den Angreifer
 
+Sonderfall – Feind hat nur 1 MP:
+  Greift ein Schattenwächter ein Lager mit genau 1 MP an,
+  reicht ein Treffer zum Töten. Der Wächter überlebt dabei
+  als Schleicher (er nimmt nur 1 Treffer statt 2).
+
 Fällt ein Spieler auf 0 Machtpunkte, scheidet er aus.
 Alle seine Einheiten und Gebäude verschwinden.
 
@@ -574,5 +579,5 @@ Maximum: 30 MP. Wer 30 MP erreicht, gewinnt sofort.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Scharkana – Erbe des Zeitwächters  |  Version 0.1.16
+Scharkana – Erbe des Zeitwächters  |  Version 0.1.21
 „Nur einer wird sich als würdig erweisen."
