@@ -64,7 +64,7 @@
           </ul>
         </div>
 
-        <div class="cl-entry">
+        <div class="cl-entry old">
           <div class="cl-version">v0.1.18</div>
           <h3>Maussteuerung, MP-Anzeige &amp; Bugreport</h3>
           <div class="cl-tags">
@@ -457,5 +457,55 @@
   })();
   </script>
   <script src="nav.js"></script>
+
+  <style>
+    .cl-entry.old .cl-header {
+      display: flex; align-items: baseline; gap: 10px;
+      cursor: pointer; user-select: none;
+    }
+    .cl-entry.old .cl-header:hover h3 { color: #c8e8ff; }
+    .cl-entry.old .cl-header .cl-version { flex-shrink: 0; }
+    .cl-toggle {
+      margin-left: auto; font-size: 11px; color: #6680aa;
+      transition: transform .25s; display: inline-block;
+      flex-shrink: 0;
+    }
+    .cl-entry.old.open .cl-toggle { transform: rotate(90deg); }
+    .cl-body {
+      overflow: hidden; max-height: 0;
+      transition: max-height .35s ease;
+    }
+    .cl-entry.old.open .cl-body { max-height: 2000px; }
+  </style>
+
+  <script>
+    document.querySelectorAll('.cl-entry.old').forEach(function(entry) {
+      var ver  = entry.querySelector('.cl-version');
+      var h3   = entry.querySelector('h3');
+
+      // Header-Wrapper
+      var header = document.createElement('div');
+      header.className = 'cl-header';
+      var toggle = document.createElement('span');
+      toggle.className = 'cl-toggle';
+      toggle.textContent = '▶';
+      entry.insertBefore(header, ver);
+      header.appendChild(ver);
+      header.appendChild(h3);
+      header.appendChild(toggle);
+
+      // Body-Wrapper für Tags + Liste
+      var body = document.createElement('div');
+      body.className = 'cl-body';
+      Array.from(entry.querySelectorAll('.cl-tags, ul')).forEach(function(el) {
+        body.appendChild(el);
+      });
+      entry.appendChild(body);
+
+      header.addEventListener('click', function() {
+        entry.classList.toggle('open');
+      });
+    });
+  </script>
 </body>
 </html>

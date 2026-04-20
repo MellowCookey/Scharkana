@@ -100,6 +100,13 @@
     let cardAnim           = null; // { startTime, duration, prevOrder } – Karten-Übergangsanimation
     let phase3TimeoutId    = null; // Timeout-ID für automatisches Überspringen der Beutephase
 
+    // ── Spielstatistik-Tracking ──────────────────────────────────────────────
+    let _trackGameStart = null; // { ms, dateStr }
+    let _trackTurnLog   = [];   // abgeschlossene Zug-Datensätze
+    let _trackTurn      = null; // laufender Zug
+
+
+
     // ── Phase 2: Abbauphase ───────────────────────────────────────────────────
     function runPhase2(pIdx) {
       const p = players[pIdx];
@@ -145,6 +152,14 @@
         }
       }
       checkEliminations();
+      if (_trackTurn) {
+        for (const r of spielPhase2Result) {
+          if (r.label.includes('Machtpunkte')) _trackTurn.mp_brunnen += 5;
+          else if (r.label.includes('Edelstein')) _trackTurn.abbau_edelsteine++;
+          else if (r.label.includes('Gold'))  _trackTurn.abbau_gold++;
+          else if (r.label.includes('Trank')) _trackTurn.abbau_traenke++;
+        }
+      }
       return spielPhase2Result.map(r => r.label).join(' · ');
     }
 
@@ -159,6 +174,18 @@
       if      (unitCount <= 3) { g = 3; t = 3; }  // 1–3 Einheiten  → +3 Gold, +3 Tränke
       else if (unitCount <= 5) { g = 2; t = 2; }  // 4–5 Einheiten  → +2 Gold, +2 Tränke
       else                     { g = 1; t = 1; }  // 6+  Einheiten  → +1 Gold, +1 Trank
+      _trackTurn = {
+        runde: spielRunde, spielerNr: pIdx + 1,
+        charakter: CHARACTERS[p.charIdx].name,
+        mp_start: p.machtsteine,
+        gold_start: p.gold, traenke_start: p.nachtrank,
+        einheiten_start: unitCount,
+        einkommen_gold: g, einkommen_traenke: t,
+        abbau_gold: 0, abbau_traenke: 0, abbau_edelsteine: 0, mp_brunnen: 0,
+        beute_gold: 0, waechter_kills: 0, schleicher_kills: 0,
+        mp_ende: null, gold_ende: null, traenke_ende: null, einheiten_ende: null,
+        zugdauer_sek: 0, turnStartMs: Date.now(),
+      };
       p.gold      += g;
       p.nachtrank += t;
       spielPhase1Result = { gold: g, trank: t, unitCount };
@@ -228,8 +255,10 @@
       if (victoryWinnerIdx !== null) return; // bereits ausgelöst
       victoryWinnerIdx = winnerIdx;
       spielPhaseStep   = 99;
+      _prepareGameStats(winnerIdx);
       spielLog = `🏆 ${CHARACTERS[players[winnerIdx].charIdx].name} hat gewonnen!`;
       victoryFadeStart = performance.now();
+      const _allPlayerIdxs = players.map(p => p.charIdx).join(',');
       function fadeTick() {
         render();
         const elapsed = performance.now() - victoryFadeStart;
@@ -238,14 +267,70 @@
         } else {
           victoryFadeRafId = null;
           victoryFadeStart = null;
-          window.location.href = `portal_cutscene.html?charIdx=${players[winnerIdx].charIdx}`;
+          window.location.href = `portal_cutscene.html?charIdx=${players[winnerIdx].charIdx}&players=${_allPlayerIdxs}`;
         }
       }
       victoryFadeRafId = requestAnimationFrame(fadeTick);
     }
 
+    function _prepareGameStats(winnerIdx) {
+      if (!_trackGameStart) return;
+      const winner  = players[winnerIdx];
+      const dauer   = Math.round((Date.now() - _trackGameStart.ms) / 1000);
+      const siegbed = winner.machtsteine >= 30 ? '30_MP' : 'letzter_ueberlebender';
+      const gameId  = _trackGameStart.dateStr.replace(/[:.]/g, '-').slice(0, 19);
+
+      const cols = [
+        'spiel_id','datum','version','anzahl_spieler','sieger_charakter',
+        'siegbedingung','spieldauer_sek',
+        'runde','spieler_nr','charakter',
+        'mp_start','mp_ende','gold_start','gold_ende',
+        'traenke_start','traenke_ende','einheiten_start','einheiten_ende',
+        'einkommen_gold','einkommen_traenke',
+        'abbau_gold','abbau_traenke','abbau_edelsteine','mp_brunnen',
+        'beute_gold','waechter_kills','schleicher_kills','zugdauer_sek'
+      ];
+
+      const rows = _trackTurnLog.map(t => [
+        gameId, _trackGameStart.dateStr, '0.1.20', players.length,
+        CHARACTERS[winner.charIdx].name, siegbed, dauer,
+        t.runde, t.spielerNr, t.charakter,
+        t.mp_start, t.mp_ende ?? '', t.gold_start, t.gold_ende ?? '',
+        t.traenke_start, t.traenke_ende ?? '',
+        t.einheiten_start, t.einheiten_ende ?? '',
+        t.einkommen_gold, t.einkommen_traenke,
+        t.abbau_gold, t.abbau_traenke, t.abbau_edelsteine, t.mp_brunnen,
+        t.beute_gold, t.waechter_kills, t.schleicher_kills, t.zugdauer_sek
+      ]);
+
+      const csvStr = [cols.join(','), ...rows.map(r => r.join(','))].join('\n');
+      const lastRunde = _trackTurnLog.length > 0 ? _trackTurnLog[_trackTurnLog.length - 1].runde : '?';
+      const summary = `🏆 Sieger: **${CHARACTERS[winner.charIdx].name}** · ${siegbed.replace('_', ' ')} · ` +
+        `${Math.floor(dauer / 60)}m ${dauer % 60}s · ${players.length} Spieler · Runde ${lastRunde}`;
+
+      try {
+        localStorage.setItem('scharkana_stats', JSON.stringify({ csvStr, summary, gameId }));
+      } catch (_e) { /* localStorage nicht verfügbar */ }
+    }
+
     // ── Zum nächsten Spieler wechseln (nach Phase 4 Bestätigung) ─────────────
     function advanceToNextPlayer() {
+      if (_trackTurn) {
+        const _p  = players[currentPlayerIdx];
+        const _rp = spielRecoveryPanel;
+        _trackTurn.mp_ende        = _p.machtsteine;
+        _trackTurn.gold_ende      = _p.gold;
+        _trackTurn.traenke_ende   = _p.nachtrank;
+        _trackTurn.einheiten_ende = spielUnits.filter(u => u.ownerIdx === currentPlayerIdx).length;
+        if (_rp) {
+          _trackTurn.beute_gold      = _rp.goldEarned;
+          _trackTurn.waechter_kills  = _rp.wKills;
+          _trackTurn.schleicher_kills = _rp.sKills;
+        }
+        _trackTurn.zugdauer_sek = Math.round((Date.now() - _trackTurn.turnStartMs) / 1000);
+        _trackTurnLog.push(Object.assign({}, _trackTurn));
+        _trackTurn = null;
+      }
       spielRecoveryPanel = null;
       if (spielResourcePopup) {
         clearTimeout(spielResourcePopup.timeout);
@@ -1307,6 +1392,9 @@
       spielSelectedIdx      = null;
       spielReachable        = new Map();
       spielCampMenuOpen     = false;
+      _trackGameStart = { ms: Date.now(), dateStr: new Date().toISOString() };
+      _trackTurnLog   = [];
+      _trackTurn      = null;
       runPhase1(0);
       spielLog = 'Spielphase gestartet. Spieler 1 – Phase 1: Versorgung.';
       render();

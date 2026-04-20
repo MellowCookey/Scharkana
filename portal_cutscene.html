@@ -31,11 +31,56 @@
       font-size: clamp(13px, 1.4vw, 15px); color: #9080b0; line-height: 1.8; margin-top: 2px;
       text-shadow: 0 1px 10px #000;
     }
+
+    #victory-overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.82);
+      align-items: center; justify-content: center;
+      flex-direction: column; gap: 20px;
+      font-family: 'Exo 2', sans-serif;
+      z-index: 10;
+      animation: fadeInOverlay 1s ease forwards;
+    }
+    @keyframes fadeInOverlay {
+      from { opacity: 0; } to { opacity: 1; }
+    }
+    #victory-overlay.visible { display: flex; }
+
+    .vbtn {
+      width: 240px; padding: 14px 0;
+      border-radius: 10px; border: 1.5px solid;
+      font-family: 'Exo 2', sans-serif; font-size: 15px; font-weight: 700;
+      cursor: pointer; letter-spacing: .03em;
+      transition: filter .15s, transform .1s;
+    }
+    .vbtn:hover  { filter: brightness(1.2); transform: translateY(-1px); }
+    .vbtn:active { transform: translateY(0); }
+    .vbtn-log  {
+      background: rgba(15,20,50,0.95); color: #c8a0f0;
+      border-color: #7b4fd4;
+      box-shadow: 0 0 12px rgba(90,40,170,.4);
+    }
+    .vbtn-log.sent {
+      background: rgba(10,40,15,0.95); color: #66dd88;
+      border-color: #40aa60; cursor: default;
+      box-shadow: 0 0 12px rgba(40,160,70,.3);
+    }
+    .vbtn-close {
+      background: rgba(40,10,10,0.95); color: #ee8888;
+      border-color: #aa3333;
+      box-shadow: 0 0 12px rgba(160,30,30,.3);
+    }
   </style>
 </head>
 <body>
 <canvas id="c"></canvas>
 <div id="subtitle"></div>
+<div id="victory-overlay">
+  <p style="font-family:'Exo 2',sans-serif; color:#c8c0e0; font-size:18px; font-style:italic; margin:0 0 8px; text-shadow:0 0 20px rgba(120,80,200,.6);">Vielen Dank fürs Spielen!</p>
+  <button class="vbtn vbtn-log" id="btnSendLog">📊  Log senden</button>
+  <button class="vbtn vbtn-close" id="btnClose">✕  Spiel beenden</button>
+</div>
 <script>
 'use strict';
 
@@ -550,9 +595,49 @@ function frame(now) {
     requestAnimationFrame(frame);
   } else {
     running = false;
-    // Canvas bleibt sichtbar
+    setTimeout(showVictoryButtons, 5000);
   }
 }
+
+function showVictoryButtons() {
+  document.getElementById('victory-overlay').classList.add('visible');
+}
+
+document.getElementById('btnClose').addEventListener('click', () => {
+  window.close();
+});
+
+document.getElementById('btnSendLog').addEventListener('click', async function() {
+  const btn = this;
+  btn.disabled = true;
+  btn.textContent = '⏳  Wird gesendet …';
+
+  try {
+    const raw = localStorage.getItem('scharkana_stats');
+    if (!raw) throw new Error('Keine Daten');
+    const { csvStr, summary, gameId } = JSON.parse(raw);
+
+    const fd = new FormData();
+    fd.append('payload_json', JSON.stringify({
+      content: `**Scharkana Spielstatistik**\n${summary}`
+    }));
+    const blob = new Blob([csvStr], { type: 'text/csv' });
+    fd.append('files[0]', blob, `scharkana_${gameId}.csv`);
+
+    const resp = await fetch(
+      'https://discord.com/api/webhooks/1495883584408518849/jO79NHBZl7L7lu57bp7Qk3IQjgEglaJ3r2IBY98771pn5L-kLcQbaIgl9B31HH-qQGWB',
+      { method: 'POST', body: fd }
+    );
+    if (!resp.ok) throw new Error('Fehler');
+
+    btn.textContent = '✓  Log gesendet';
+    btn.classList.add('sent');
+    localStorage.removeItem('scharkana_stats');
+  } catch (_e) {
+    btn.disabled = false;
+    btn.textContent = '⚠  Fehler – erneut versuchen';
+  }
+});
 
 requestAnimationFrame(frame);
 </script>
