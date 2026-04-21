@@ -608,16 +608,13 @@ document.getElementById('btnClose').addEventListener('click', () => {
   window.close();
 });
 
-document.getElementById('btnSendLog').addEventListener('click', async function() {
+document.getElementById('btnSendLog').addEventListener('click', function() {
   const btn = this;
-  btn.disabled = true;
-  btn.textContent = '⏳  Wird gesendet …';
   try {
     const raw = localStorage.getItem('scharkana_stats');
     if (!raw) throw new Error('Keine Spieldaten in localStorage gefunden');
-    const { csvStr, summary, gameId } = JSON.parse(raw);
+    const { csvStr, gameId } = JSON.parse(raw);
 
-    // Lokaler Download
     const blob = new Blob([csvStr], { type: 'text/csv' });
     const url  = URL.createObjectURL(blob);
     const a    = document.createElement('a');
@@ -628,27 +625,12 @@ document.getElementById('btnSendLog').addEventListener('click', async function()
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
 
-    // Per Formspree senden
-    const fd = new FormData();
-    fd.append('game_id', gameId);
-    fd.append('winner',  WIN_NAME);
-    fd.append('summary', summary ?? '');
-    fd.append('csv_data', csvStr);
-
-    const resp = await fetch('https://formspree.io/f/DEIN_FORMSPREE_KEY', {
-      method: 'POST', body: fd,
-      headers: { Accept: 'application/json' },
-    });
-    if (!resp.ok) throw new Error(`Formspree: ${resp.status}`);
-
-    btn.textContent = '✓  Log gesendet';
+    btn.textContent = '✓  Log heruntergeladen';
     btn.classList.add('sent');
-    localStorage.removeItem('scharkana_stats');
   } catch (e) {
-    console.error('Log senden fehlgeschlagen:', e);
+    console.error('Download fehlgeschlagen:', e);
     btn.textContent = '⚠  Fehler – erneut versuchen';
     btn.title = e.message;
-    btn.disabled = false;
   }
 });
 
