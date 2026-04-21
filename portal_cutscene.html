@@ -50,7 +50,7 @@
     .vbtn {
       width: 240px; padding: 14px 0;
       border-radius: 10px; border: 1.5px solid;
-      font-family: 'Exo 2', sans-serif; font-size: 15px; font-weight: 700;
+      font-family: 'Exo 2', sans-serif; font-size: 30px; font-weight: 700;
       cursor: pointer; letter-spacing: .03em;
       transition: filter .15s, transform .1s;
     }
@@ -77,9 +77,9 @@
 <canvas id="c"></canvas>
 <div id="subtitle"></div>
 <div id="victory-overlay">
-  <p style="font-family:'Exo 2',sans-serif; color:#c8c0e0; font-size:18px; font-style:italic; margin:0 0 8px; text-shadow:0 0 20px rgba(120,80,200,.6);">Vielen Dank fürs Spielen!</p>
+  <p style="font-family:'Exo 2',sans-serif; color:#c8c0e0; font-size:36px; font-style:italic; margin:0 0 8px; text-shadow:0 0 20px rgba(120,80,200,.6);">Vielen Dank fürs Spielen!</p>
   <button class="vbtn vbtn-log" id="btnSendLog">📥  Log als CSV herunterladen</button>
-  <p style="font-family:'Exo 2',sans-serif; color:#9080b0; font-size:13px; font-style:italic; margin:-4px 0 4px; text-align:center;">Ich würde mich freuen, wenn ihr mir die Datei<br>an folgende Adresse schicken könntet:<br><span style="color:#c8a0f0; font-style:normal;">goodgoosegames@mailbox.org</span></p>
+  <p style="font-family:'Exo 2',sans-serif; color:#9080b0; font-size:26px; font-style:italic; margin:-4px 0 4px; text-align:center;">Ich würde mich freuen, wenn ihr mir die Datei<br>an folgende Adresse schickt:<br><span style="color:#c8a0f0; font-style:normal;">goodgoosegames@mailbox.org</span></p>
   <button class="vbtn vbtn-close" id="btnClose">✕  Spiel beenden</button>
 </div>
 <script>
@@ -608,13 +608,16 @@ document.getElementById('btnClose').addEventListener('click', () => {
   window.close();
 });
 
-document.getElementById('btnSendLog').addEventListener('click', function() {
+document.getElementById('btnSendLog').addEventListener('click', async function() {
   const btn = this;
+  btn.disabled = true;
+  btn.textContent = '⏳  Wird gesendet …';
   try {
     const raw = localStorage.getItem('scharkana_stats');
     if (!raw) throw new Error('Keine Spieldaten in localStorage gefunden');
-    const { csvStr, gameId } = JSON.parse(raw);
+    const { csvStr, summary, gameId } = JSON.parse(raw);
 
+    // Lokaler Download
     const blob = new Blob([csvStr], { type: 'text/csv' });
     const url  = URL.createObjectURL(blob);
     const a    = document.createElement('a');
@@ -625,14 +628,27 @@ document.getElementById('btnSendLog').addEventListener('click', function() {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
 
-    btn.textContent = '✓  CSV heruntergeladen';
+    // Per Formspree senden
+    const fd = new FormData();
+    fd.append('game_id', gameId);
+    fd.append('winner',  WIN_NAME);
+    fd.append('summary', summary ?? '');
+    fd.append('csv_data', csvStr);
+
+    const resp = await fetch('https://formspree.io/f/DEIN_FORMSPREE_KEY', {
+      method: 'POST', body: fd,
+      headers: { Accept: 'application/json' },
+    });
+    if (!resp.ok) throw new Error(`Formspree: ${resp.status}`);
+
+    btn.textContent = '✓  Log gesendet';
     btn.classList.add('sent');
-    btn.disabled = true;
     localStorage.removeItem('scharkana_stats');
   } catch (e) {
-    console.error('CSV-Download fehlgeschlagen:', e);
+    console.error('Log senden fehlgeschlagen:', e);
     btn.textContent = '⚠  Fehler – erneut versuchen';
     btn.title = e.message;
+    btn.disabled = false;
   }
 });
 
