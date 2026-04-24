@@ -3,10 +3,255 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Scharkana – Die Charaktere</title>
+  <title>Scharkana – Charakterfähigkeiten</title>
   <link rel="preconnect" href="https://fonts.bunny.net">
   <link href="https://fonts.bunny.net/css?family=exo-2:400,400i,700,700i,900,900i&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <style>
+    /* ── Charakter-Akzentfarben ───────────────────────────────────── */
+    .tarrak  { --c: var(--fire-l);    --c-glow: rgba(255,102,68,0.18);  --c-glow-h: rgba(255,102,68,0.55); }
+    .jana    { --c: var(--ice-l);     --c-glow: rgba(102,170,255,0.18); --c-glow-h: rgba(102,170,255,0.55); }
+    .nadoris { --c: var(--nature-l);  --c-glow: rgba(85,204,102,0.18);  --c-glow-h: rgba(85,204,102,0.55); }
+    .thorgrim{ --c: var(--thunder-l); --c-glow: rgba(255,221,68,0.18);  --c-glow-h: rgba(255,221,68,0.55); }
+    .morvina { --c: var(--dark-l);    --c-glow: rgba(187,119,255,0.18); --c-glow-h: rgba(187,119,255,0.55); }
+    .illyria { --c: var(--light-l);   --c-glow: rgba(221,238,255,0.18); --c-glow-h: rgba(221,238,255,0.55); }
+
+    /* ── Grid-Override (breitere Karten als Standard) ─────────────── */
+    .char-grid {
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 20px;
+    }
+
+    /* ── Karte ────────────────────────────────────────────────────── */
+    .char-card {
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+      border-top: 3px solid var(--c, var(--border));
+      transition: border-color 0.25s, box-shadow 0.25s, background 0.25s;
+    }
+
+    .char-card:hover {
+      background: var(--bg-card-2);
+      border-color: var(--c);
+      box-shadow: 0 0 0 1px var(--c), 0 0 32px var(--c-glow-h, rgba(0,0,0,0.5));
+    }
+
+    /* ── Bild ─────────────────────────────────────────────────────── */
+    .char-card-header {
+      position: relative;
+      height: 300px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .char-card-header img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      filter: brightness(0.6) saturate(0.85);
+      transition: filter 0.3s, transform 0.3s;
+    }
+
+    .char-card:hover .char-card-header img {
+      filter: brightness(0.75) saturate(1.05);
+      transform: scale(1.04);
+    }
+
+    .char-card-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 40%, var(--bg-card) 100%);
+    }
+
+    .char-card-label {
+      position: absolute;
+      bottom: 16px;
+      left: 20px;
+      right: 20px;
+    }
+
+    .char-card-label .char-name {
+      font-size: 1.25rem;
+      font-weight: 900;
+      color: #fff;
+      letter-spacing: 0.02em;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.9);
+      margin-bottom: 0;
+    }
+
+    .char-card-label .char-traits {
+      font-size: 0.74rem;
+      color: var(--c);
+      letter-spacing: 0.06em;
+      margin-top: 3px;
+      font-style: italic;
+      margin-bottom: 0;
+    }
+
+    /* ── Karten-Body ──────────────────────────────────────────────── */
+    .char-card-body {
+      padding: 20px 22px 22px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    /* ── Fähigkeit ────────────────────────────────────────────────── */
+    .ability-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--c);
+      margin-bottom: 6px;
+    }
+
+    .ability-text {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+      margin-bottom: 0;
+    }
+
+    .ability-sub {
+      margin-top: 10px;
+      padding-left: 12px;
+      border-left: 2px solid var(--c);
+    }
+
+    .ability-sub p {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 4px;
+    }
+
+    .ability-sub p:last-child { margin-bottom: 0; }
+
+    /* ── Stärken / Schwächen ──────────────────────────────────────── */
+    .pros-cons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .pros, .cons {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+    }
+
+    .pros { border-top: 2px solid #3a7a3a; }
+    .cons { border-top: 2px solid #7a3a3a; }
+
+    .pros h4 {
+      color: var(--nature-l);
+      font-size: 0.66rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 7px;
+    }
+    .cons h4 {
+      color: #e07070;
+      font-size: 0.66rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 7px;
+    }
+
+    .pros ul, .cons ul { list-style: none; padding: 0; }
+
+    .pros li, .cons li {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      padding-left: 14px;
+      position: relative;
+      margin-bottom: 3px;
+    }
+
+    .pros li::before { content: '+'; position: absolute; left: 0; color: var(--nature-l); font-weight: 700; }
+    .cons li::before { content: '−'; position: absolute; left: 0; color: #e07070; font-weight: 700; }
+
+    /* ── Stats-Leiste ─────────────────────────────────────────────── */
+    .char-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .stat-badge {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      padding: 8px 12px;
+      font-size: 0.72rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .stat-badge span:first-child {
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+
+    .stat-badge span:last-child {
+      color: #fff;
+      font-weight: 700;
+    }
+
+    /* ── Divider ──────────────────────────────────────────────────── */
+    .char-divider {
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── Marker-Box ───────────────────────────────────────────────── */
+    .marker-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--gold-dim);
+      padding: 22px 26px;
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      margin-bottom: 40px;
+    }
+
+    .marker-icon {
+      font-size: 2.4rem;
+      flex-shrink: 0;
+      line-height: 1;
+    }
+
+    .marker-text h3 {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--gold);
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .marker-text p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+      margin-bottom: 0;
+    }
+
+    .marker-text p strong {
+      color: var(--gold);
+    }
+  </style>
 </head>
 <body>
 
@@ -18,125 +263,352 @@
         <div class="nav-logo-title">Scharkana</div>
         <div class="nav-logo-sub">Das Erbe der Zeitenwächterin</div>
       </div>
-      <a class="nav-btn" href="index.html" data-page="willkommen">Willkommen</a>
-      <a class="nav-btn" href="regelwerk.html" data-page="regelwerk">Regelwerk</a>
-      <a class="nav-btn" href="charaktere.html" data-page="charaktere">Charaktere</a>
-      <a class="nav-btn" href="changelog.html" data-page="changelog">Changelog</a>
-      <a class="nav-btn" href="ueber.html" data-page="ueber">Über mich</a>
-      <a class="nav-btn" href="melden.html" data-page="melden">Bugreport</a>
-      <a href="Scharkana_v0.1.21.html" class="nav-play" target="_blank" rel="noopener">▶ Spielen</a>
+      <div class="nav-links">
+        <a class="nav-btn" href="index.html" data-page="willkommen">Willkommen</a>
+        <a class="nav-btn" href="regelwerk.html" data-page="regelwerk">Regelwerk</a>
+        <a class="nav-btn" href="charaktere.html" data-page="charaktere">Charaktere</a>
+        <a class="nav-btn" href="changelog.html" data-page="changelog">Changelog</a>
+        <a class="nav-btn" href="ueber.html" data-page="ueber">Über mich</a>
+        <a class="nav-btn" href="melden.html" data-page="melden">Bugreport</a>
+      </div>
+      <a href="../Scharkana_v0.1.22.html" class="nav-play" target="_blank" rel="noopener">▶ Spielen</a>
+      <button class="nav-hamburger" aria-label="Menü öffnen" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </nav>
 
   <section class="section active" id="tab-charaktere">
     <div class="page-wrap">
       <div class="content-panel">
-      <h2>Die Auserwählten</h2>
-      <p style="color:var(--text-muted); margin-bottom:36px; font-style:italic;">
-        Zu Beginn wählt jeder Spieler einen Charakter. Die Wahl ist rein persönlich – alle Charaktere spielen sich gleich.
-      </p>
 
-      <div class="char-grid">
+        <h2>Charakterfähigkeiten</h2>
 
-        <div class="char-card" style="--c: #c0281a;">
-          <div class="char-img-wrap"><img src="Charakterbilder/Tarrak Feuerfaust.jpg" alt="Tarrak Feuerfaust"></div>
-          <div class="char-header">
-            <div>
-              <div class="char-name">Tarrak Feuerfaust</div>
-              <div class="char-element-badge">Feuer &amp; Wut</div>
-            </div>
-            <span class="char-race-tag">Trollschamane</span>
+        <!-- Marker-Erklärung -->
+        <div class="marker-box">
+          <div class="marker-icon">🪙</div>
+          <div class="marker-text">
+            <h3>Das Markersystem</h3>
+            <p>
+              Jeder Spieler erhält eine <span>Münze</span> mit einer aktiven und einer inaktiven Seite.
+              Die Fähigkeit kann <span>einmal pro Runde</span> eingesetzt werden – danach wird die Münze auf die inaktive Seite gedreht.
+              Zu Beginn der eigenen <span>Versorgungsphase</span> wird die Münze automatisch zurückgesetzt.
+              Solange die Münze noch aktiv ist, kann die Fähigkeit auch <span>reaktiv während eines Gegnerzuges</span> eingesetzt werden.
+            </p>
           </div>
-          <div class="char-origin">Die brennenden Ebenen von Ashkara</div>
-          <div class="char-traits">Wild · Direkt · Unbeugsam</div>
-          <p class="char-bio">Der mächtige Trollschamane spürte den Ruf, als die ewigen Feuer seines Stammes erloschen. Er ließ sein Volk zurück – denn er wusste: Stirbt das Gleichgewicht, stirbt auch das Feuer.</p>
-          <div class="char-quote">„Das Feuer fragt nicht, ob du bereit bist. Es brennt einfach."</div>
         </div>
 
-        <div class="char-card" style="--c: #1a55c0;">
-          <div class="char-img-wrap"><img src="Charakterbilder/Jana Frostwind.jpg" alt="Jana Frostwind"></div>
-          <div class="char-header">
-            <div>
-              <div class="char-name">Jana Frostwind</div>
-              <div class="char-element-badge" style="color:#66aaff;">Eis &amp; Wille</div>
-            </div>
-            <span class="char-race-tag">Nordländerin</span>
-          </div>
-          <div class="char-origin">Die Eisfelder von Valdrun</div>
-          <div class="char-traits">Ruhig · Strategisch · Unnachgiebig</div>
-          <p class="char-bio">Sie vernahm den Ruf im Heulen des Nordwinds. Als die Gletscher ihrer Heimat schmolzen und ihr Volk verzweifelte, ergriff sie ihren Speer – die Entschlossenheit in ihr leuchtete wie das Nordlicht.</p>
-          <div class="char-quote">„Der Norden tötet nicht die Schwachen. Er offenbart, wer schon immer stark war."</div>
-        </div>
+        <!-- Charakter-Grid -->
+        <div class="char-grid">
 
-        <div class="char-card" style="--c: #1a7a28;">
-          <div class="char-img-wrap"><img src="Charakterbilder/Nadoris Waldgeist.jpg" alt="Nadoris Waldgeist"></div>
-          <div class="char-header">
-            <div>
-              <div class="char-name">Nadoris Waldgeist</div>
-              <div class="char-element-badge" style="color:#55cc66;">Natur &amp; Weisheit</div>
+          <!-- ── TARRAK ───────────────────────────────────────────── -->
+          <div class="char-card tarrak">
+            <div class="char-card-header">
+              <img src="Charakterbilder/Tarrak Feuerfaust.jpg" alt="Tarrak Feuerfaust">
+              <div class="char-card-overlay"></div>
+              <div class="char-card-label">
+                <h3>Tarrak Feuerfaust</h3>
+                <div class="char-traits">Wild · Direkt · Unbeugsam</div>
+              </div>
             </div>
-            <span class="char-race-tag">Druide</span>
-          </div>
-          <div class="char-origin">Der Ewige Wald von Elyndra</div>
-          <div class="char-traits">Weise · Geduldig · Gefährlich unterschätzt</div>
-          <p class="char-bio">Der weise Druide hörte den Ruf in dem Augenblick, in dem die Bäume verstummten. Er wusste: Wenn der Wald noch eine Stimme haben soll, muss er selbst zur Stimme werden.</p>
-          <div class="char-quote">„Der Wald rächt sich nie. Er erinnert sich nur."</div>
-        </div>
-
-        <div class="char-card" style="--c: #b08800;">
-          <div class="char-img-wrap"><img src="Charakterbilder/Thorgrim Donneraxt.jpg" alt="Thorgrim Donneraxt"></div>
-          <div class="char-header">
-            <div>
-              <div class="char-name">Thorgrim Donneraxt</div>
-              <div class="char-element-badge" style="color:#ffdd44;">Blitz &amp; Stolz</div>
+            <div class="char-card-body">
+              <div class="char-stats">
+                <div class="stat-badge"><span>Schwierigkeit</span><span>Einfach</span></div>
+                <div class="stat-badge"><span>Typ</span><span>Aggressiv</span></div>
+              </div>
+              <div class="char-divider"></div>
+              <div>
+                <div class="ability-label">⚔ Fähigkeit – Feuerinfusion</div>
+                <p class="ability-text">
+                  Eine eigene Einheit (Schleicher oder Wächter) erhält bis zum Ende des Zuges <strong>+1 Angriffskraft</strong>.
+                  Einsetzbar beim Angriff und bei der Verteidigung. Kein Lagerangriff.
+                </p>
+                <div class="ability-sub">
+                  <p><strong>Schleicher (2 ATK):</strong> Kann einen Wächter töten statt ihn nur zu degradieren.</p>
+                  <p><strong>Wächter (3 ATK):</strong> Kann 3 feindliche Schleicher gleichzeitig treffen statt 2.</p>
+                </div>
+              </div>
+              <div class="char-divider"></div>
+              <div class="pros-cons">
+                <div class="pros">
+                  <h4>Stärken</h4>
+                  <ul>
+                    <li>Schleicher tötet Wächter</li>
+                    <li>Offensiv &amp; defensiv</li>
+                    <li>Keine Bedingung nötig</li>
+                  </ul>
+                </div>
+                <div class="cons">
+                  <h4>Schwächen</h4>
+                  <ul>
+                    <li>Kein Lagerangriff</li>
+                    <li>W vs W: kein Unterschied</li>
+                    <li>Situationsabhängig</li>
+                  </ul>
+                </div>
+              </div>
             </div>
-            <span class="char-race-tag">Zwerg</span>
           </div>
-          <div class="char-origin">Die Sturmgipfel von Kharak</div>
-          <div class="char-traits">Laut · Stolz · Loyal — aber nie vergessend</div>
-          <p class="char-bio">Der stolze Zwerg vernahm den Ruf im Verstummen des Himmelsambosses. Erfüllt vom Donner der Blitze schulterte er seine legendäre Axt. Kein Sturm hatte ihn je gebrochen.</p>
-          <div class="char-quote">„Ein Zwerg beugt sich dem Blitz nicht. Er schmiedet ihn."</div>
-        </div>
 
-        <div class="char-card" style="--c: #7722cc;">
-          <div class="char-img-wrap"><img src="Charakterbilder/Morvina Aschegrund.jpg" alt="Morvina Aschegrund"></div>
-          <div class="char-header">
-            <div>
-              <div class="char-name">Morvina Aschegrund</div>
-              <div class="char-element-badge" style="color:#bb77ff;">Erde &amp; Dunkel</div>
+          <!-- ── JANA ─────────────────────────────────────────────── -->
+          <div class="char-card jana">
+            <div class="char-card-header">
+              <img src="Charakterbilder/Jana Frostwind.jpg" alt="Jana Frostwind">
+              <div class="char-card-overlay"></div>
+              <div class="char-card-label">
+                <h3>Jana Frostwind</h3>
+                <div class="char-traits">Ruhig · Strategisch · Unnachgiebig</div>
+              </div>
             </div>
-            <span class="char-race-tag">Untote</span>
-          </div>
-          <div class="char-origin">Das Unterreich von Veltharr</div>
-          <div class="char-traits">Kalt · Berechnend · Alt — sehr alt</div>
-          <p class="char-bio">Sie öffnete die Augen aus einem jahrhundertelangen Schlaf. Das Gleichgewicht, das sie als Untote am Leben hielt, war am Zerbrechen. Wenn es fiel, würde auch sie vergehen.</p>
-          <div class="char-quote">„Ich bin nicht zurückgekehrt, weil ich wollte. Ich bin zurückgekehrt, weil etwas noch nicht fertig ist."</div>
-        </div>
-
-        <div class="char-card" style="--c: #8899bb;">
-          <div class="char-img-wrap"><img src="Charakterbilder/Illyria Mondlicht.jpg" alt="Illyria Mondlicht"></div>
-          <div class="char-header">
-            <div>
-              <div class="char-name">Illyria Mondlicht</div>
-              <div class="char-element-badge" style="color:#ddeeff;">Licht &amp; Gerechtigkeit</div>
+            <div class="char-card-body">
+              <div class="char-stats">
+                <div class="stat-badge"><span>Schwierigkeit</span><span>Einfach</span></div>
+                <div class="stat-badge"><span>Typ</span><span>Mobil</span></div>
+              </div>
+              <div class="char-divider"></div>
+              <div>
+                <div class="ability-label">❄ Fähigkeit – Nordwind</div>
+                <p class="ability-text">
+                  Jana erhält diese Runde <strong>2 kostenlose Bewegungen</strong>.
+                  Jede Bewegung bewegt eine beliebige eigene Einheit ein Feld weiter – ohne Tränke zu zahlen.
+                  Beide Bewegungen können auf dieselbe oder auf zwei verschiedene Einheiten angewendet werden.
+                  Werden die Züge nicht verbraucht, verfallen sie in der Beutephase –
+                  dafür erhält Jana <strong>+1 Trank</strong> als Rohstoff gutgeschrieben.
+                </p>
+              </div>
+              <div class="char-divider"></div>
+              <div class="pros-cons">
+                <div class="pros">
+                  <h4>Stärken</h4>
+                  <ul>
+                    <li>Flexibel auf 1 oder 2 Einheiten</li>
+                    <li>Spart 2 Tränke pro Runde</li>
+                    <li>Keine Bedingung nötig</li>
+                  </ul>
+                </div>
+                <div class="cons">
+                  <h4>Schwächen</h4>
+                  <ul>
+                    <li>Nur Bewegungsvorteil</li>
+                    <li>Kein Kampfeinfluss</li>
+                    <li>Kein Ressourcenvorteil</li>
+                  </ul>
+                </div>
+              </div>
             </div>
-            <span class="char-race-tag">Hochelfe</span>
           </div>
-          <div class="char-origin">Die Hallen von Silbermond</div>
-          <div class="char-traits">Anmutig · Prinzipientreu · Innerlich zerrissen</div>
-          <p class="char-bio">Sie sah den Ruf in dem Moment, als das Licht für einen Herzschlag erlosch. Anmutig und unerschütterlich, zog sie ihre silberne Klinge und sprach ein stilles Versprechen: Solange ich leuchte, wird die Dunkelheit nicht siegen.</p>
-          <div class="char-quote">„Das Licht urteilt nicht. Es zeigt nur, was immer schon da war."</div>
-        </div>
 
-      </div>
-      </div>
-    </div>
+          <!-- ── NADORIS ───────────────────────────────────────────── -->
+          <div class="char-card nadoris">
+            <div class="char-card-header">
+              <img src="Charakterbilder/Nadoris Waldgeist.jpg" alt="Nadoris Waldgeist">
+              <div class="char-card-overlay"></div>
+              <div class="char-card-label">
+                <h3>Nadoris Waldgeist</h3>
+                <div class="char-traits">Weise · Geduldig · Gefährlich unterschätzt</div>
+              </div>
+            </div>
+            <div class="char-card-body">
+              <div class="char-stats">
+                <div class="stat-badge"><span>Schwierigkeit</span><span>Mittel</span></div>
+                <div class="stat-badge"><span>Typ</span><span>Kontrolle</span></div>
+              </div>
+              <div class="char-divider"></div>
+              <div>
+                <div class="ability-label">🌿 Fähigkeit – Dornenbusch</div>
+                <p class="ability-text">
+                  Beschwört einen <strong>permanenten Dornenbusch</strong> (unbeweglich) auf einem Feld mit eigenem Schleicher.
+                  Befinden sich Busch und Schleicher gemeinsam auf einem Feld, agieren sie als <strong>Wächter-Kombo</strong> (2 ATK, 2 HP).
+                </p>
+                <div class="ability-sub">
+                  <p><strong>1 Schaden auf die Kombo:</strong> Busch wird temporär zerstört, Schleicher überlebt – der Busch regeneriert am Ende des Angreifer-Zuges.</p>
+                  <p><strong>2 Schaden auf die Kombo:</strong> Busch und Schleicher sterben permanent.</p>
+                  <p><strong>2 Spieler:</strong> max. 1 · <strong>3–4 Spieler:</strong> max. 2 · <strong>5–6 Spieler:</strong> max. 3 Büsche</p>
+                </div>
+              </div>
+              <div class="char-divider"></div>
+              <div class="pros-cons">
+                <div class="pros">
+                  <h4>Stärken</h4>
+                  <ul>
+                    <li>Kombo wirkt wie ein Wächter</li>
+                    <li>Busch regeneriert bei 1 Schaden</li>
+                    <li>Permanente Feldkontrolle</li>
+                  </ul>
+                </div>
+                <div class="cons">
+                  <h4>Schwächen</h4>
+                  <ul>
+                    <li>Braucht eigenen Schleicher</li>
+                    <li>2 Schaden = alles verloren</li>
+                    <li>Belegt Feldplatz</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── THORGRIM ──────────────────────────────────────────── -->
+          <div class="char-card thorgrim">
+            <div class="char-card-header">
+              <img src="Charakterbilder/Thorgrim Donneraxt.jpg" alt="Thorgrim Donneraxt">
+              <div class="char-card-overlay"></div>
+              <div class="char-card-label">
+                <h3>Thorgrim Donneraxt</h3>
+                <div class="char-traits">Laut · Stolz · Loyal – aber nie vergessend</div>
+              </div>
+            </div>
+            <div class="char-card-body">
+              <div class="char-stats">
+                <div class="stat-badge"><span>Schwierigkeit</span><span>Mittel</span></div>
+                <div class="stat-badge"><span>Typ</span><span>Positionell</span></div>
+              </div>
+              <div class="char-divider"></div>
+              <div>
+                <div class="ability-label">⚡ Fähigkeit – Donnerblitz</div>
+                <p class="ability-text">
+                  Ein eigener <strong>Wächter</strong> feuert einen Blitz auf ein direkt <strong>angrenzendes Feld</strong>.
+                  Der Schaden entspricht einem Schleicher-Angriff.
+                </p>
+                <div class="ability-sub">
+                  <p><strong>Trifft Schleicher:</strong> Feindlicher Schleicher stirbt sofort.</p>
+                  <p><strong>Trifft Wächter:</strong> Feindlicher Wächter wird zu einem Schleicher degradiert.</p>
+                  <p><strong>Der eigene Wächter</strong> bewegt sich nicht und erleidet keinen Schaden.</p>
+                </div>
+              </div>
+              <div class="char-divider"></div>
+              <div class="pros-cons">
+                <div class="pros">
+                  <h4>Stärken</h4>
+                  <ul>
+                    <li>Fernkampf ohne eigene Verluste</li>
+                    <li>Wächter degradieren möglich</li>
+                    <li>Keine Ketten-Bedingung</li>
+                  </ul>
+                </div>
+                <div class="cons">
+                  <h4>Schwächen</h4>
+                  <ul>
+                    <li>Nur angrenzendes Feld</li>
+                    <li>Wächter muss positioniert werden</li>
+                    <li>Teurer Wächter wird riskiert</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── MORVINA ───────────────────────────────────────────── -->
+          <div class="char-card morvina">
+            <div class="char-card-header">
+              <img src="Charakterbilder/Morvina Aschegrund.jpg" alt="Morvina Aschegrund">
+              <div class="char-card-overlay"></div>
+              <div class="char-card-label">
+                <h3>Morvina Aschegrund</h3>
+                <div class="char-traits">Kalt · Berechnend · Alt – sehr alt</div>
+              </div>
+            </div>
+            <div class="char-card-body">
+              <div class="char-stats">
+                <div class="stat-badge"><span>Schwierigkeit</span><span>Schwer</span></div>
+                <div class="stat-badge"><span>Typ</span><span>Defensiv–Reaktiv</span></div>
+              </div>
+              <div class="char-divider"></div>
+              <div>
+                <div class="ability-label">💀 Fähigkeit – Wiedererweckung</div>
+                <p class="ability-text">
+                  Stirbt ein eigener Schleicher (in Morvinas oder einem Gegnerzug), erscheint nach dem nächsten
+                  <strong>„Zug beenden"</strong> eine Abfrage: Soll ein neuer Schleicher ins Lager gerufen werden?
+                  Voraussetzung: Münze ist aktiv und das Lager hat weniger als 3 Einheiten.
+                </p>
+                <div class="ability-sub">
+                  <p><strong>Bedingung:</strong> Mind. 1 eigener Schleicher muss in dieser Runde gestorben sein.</p>
+                  <p><strong>Lager voll:</strong> Die Fähigkeit kann nicht eingesetzt werden, wenn bereits 3 Einheiten im Lager stehen.</p>
+                  <p><strong>Trägt der Schleicher einen Edelstein</strong>, fällt dieser auf das Feld – er geht verloren.</p>
+                </div>
+              </div>
+              <div class="char-divider"></div>
+              <div class="pros-cons">
+                <div class="pros">
+                  <h4>Stärken</h4>
+                  <ul>
+                    <li>Kostenlose neue Einheit</li>
+                    <li>Auch nach Gegnerzügen aktiv</li>
+                    <li>Verweigert Gegner den endgültigen Kill</li>
+                  </ul>
+                </div>
+                <div class="cons">
+                  <h4>Schwächen</h4>
+                  <ul>
+                    <li>Nur bei Lager &lt; 3 Einheiten</li>
+                    <li>Edelstein geht verloren</li>
+                    <li>Nur für Schleicher</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── ILLYRIA ───────────────────────────────────────────── -->
+          <div class="char-card illyria">
+            <div class="char-card-header">
+              <img src="Charakterbilder/Illyria Mondlicht.jpg" alt="Illyria Mondlicht">
+              <div class="char-card-overlay"></div>
+              <div class="char-card-label">
+                <h3>Illyria Mondlicht</h3>
+                <div class="char-traits">Anmutig · Prinzipientreu · Innerlich zerrissen</div>
+              </div>
+            </div>
+            <div class="char-card-body">
+              <div class="char-stats">
+                <div class="stat-badge"><span>Schwierigkeit</span><span>Schwer</span></div>
+                <div class="stat-badge"><span>Typ</span><span>Taktisch–Mobil</span></div>
+              </div>
+              <div class="char-divider"></div>
+              <div>
+                <div class="ability-label">🌙 Fähigkeit – Mondsprung</div>
+                <p class="ability-text">
+                  Teleportiert einen eigenen Schleicher <strong>in beide Richtungen</strong> – vom Lager auf ein Feld oder vom Feld zurück ins Lager.
+                  Treffen sich dabei zwei Schleicher, <strong>verschmelzen sie sofort zu einem Wächter</strong>.
+                  Schleicher mit Edelstein können nicht teleportiert werden.
+                </p>
+                <div class="ability-sub">
+                  <p><strong>Lager → Feld:</strong> Lager-Schleicher springt zu einem Feld-Schleicher (kein Edelstein) → beide werden Wächter.</p>
+                  <p><strong>Feld → Lager:</strong> Feld-Schleicher (kein Edelstein) kehrt ins Lager zurück → steht dort ein Schleicher, werden beide Wächter.</p>
+                </div>
+              </div>
+              <div class="char-divider"></div>
+              <div class="pros-cons">
+                <div class="pros">
+                  <h4>Stärken</h4>
+                  <ul>
+                    <li>Wächter ohne Tränke erzeugen</li>
+                    <li>Beide Richtungen nutzbar</li>
+                    <li>Unbegrenzte Reichweite</li>
+                  </ul>
+                </div>
+                <div class="cons">
+                  <h4>Schwächen</h4>
+                  <ul>
+                    <li>Kein Schleicher mit Edelstein</li>
+                    <li>Zwei Schleicher nötig für W</li>
+                    <li>Früh im Spiel schwer nutzbar</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /char-grid -->
+
+      </div><!-- /content-panel -->
+    </div><!-- /page-wrap -->
   </section>
 
   <footer>
     <div class="footer-inner">
       <p>Scharkana – Das Erbe der Zeitenwächterin &nbsp;·&nbsp; created by GoodGooseGames</p>
-      <span class="footer-version">v0.1.21</span>
+      <span class="footer-version">v0.1.22</span>
     </div>
   </footer>
 

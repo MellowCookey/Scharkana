@@ -7,6 +7,92 @@
   <link rel="preconnect" href="https://fonts.bunny.net">
   <link href="https://fonts.bunny.net/css?family=exo-2:400,400i,700,700i,900,900i&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <style>
+    /* ── Charakterfähigkeiten ────────────────────────────────────────── */
+    .fa-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 14px;
+    }
+    @media (max-width: 700px) { .fa-grid { grid-template-columns: 1fr; } }
+
+    .fa-card {
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--c, var(--border));
+      background: var(--bg-card);
+      padding: 16px 18px 18px;
+    }
+    .fa-card.tarrak  { --c: var(--fire-l);    --ct: #ff8866; }
+    .fa-card.jana    { --c: var(--ice-l);     --ct: #88bbff; }
+    .fa-card.nadoris { --c: var(--nature-l);  --ct: #77dd88; }
+    .fa-card.thorgrim{ --c: var(--thunder-l); --ct: #ffee77; }
+    .fa-card.morvina { --c: var(--dark-l);    --ct: #cc99ff; }
+    .fa-card.illyria { --c: var(--light-l);   --ct: #ccd8ee; }
+
+    .fa-header {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .fa-icon { font-size: 1.1rem; }
+    .fa-charname {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--c);
+    }
+    .fa-name {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--ct);
+      margin-bottom: 6px;
+    }
+    .fa-desc {
+      font-size: 0.84rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 8px;
+    }
+    .fa-rules {
+      border-left: 2px solid var(--c);
+      padding-left: 10px;
+      margin-top: 8px;
+    }
+    .fa-rules p {
+      font-size: 0.80rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+      margin-bottom: 4px;
+    }
+    .fa-rules p:last-child { margin-bottom: 0; }
+    .fa-tag {
+      display: inline-block;
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--c);
+      border: 1px solid var(--c);
+      padding: 1px 6px;
+      margin-right: 4px;
+      vertical-align: middle;
+      opacity: 0.85;
+    }
+    .marker-intro {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--gold);
+      padding: 14px 18px;
+      margin-bottom: 14px;
+      font-size: 0.84rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+    }
+    .marker-intro strong { color: var(--gold); }
+  </style>
 </head>
 <body>
 
@@ -24,7 +110,7 @@
       <a class="nav-btn" href="changelog.html" data-page="changelog">Changelog</a>
       <a class="nav-btn" href="ueber.html" data-page="ueber">Über mich</a>
       <a class="nav-btn" href="melden.html" data-page="melden">Bugreport</a>
-      <a href="Scharkana_v0.1.21.html" class="nav-play" target="_blank" rel="noopener">▶ Spielen</a>
+      <a href="../Scharkana_v0.1.22.html" class="nav-play" target="_blank" rel="noopener">▶ Spielen</a>
     </div>
   </nav>
 
@@ -49,6 +135,7 @@
           <a href="#regel-gebaeude">Gebäude</a>
           <a href="#regel-edelsteine">Edelsteine</a>
           <a href="#regel-mp">Machtpunkte</a>
+          <a href="#regel-faehigkeiten">Charakterfähigkeiten</a>
           <a href="#regel-steuerung">Steuerung</a>
           <a href="#regel-tipps">Tipps</a>
         </aside>
@@ -353,6 +440,117 @@
             </div>
           </div>
 
+          <!-- Charakterfähigkeiten -->
+          <div class="regel-section" id="regel-faehigkeiten">
+            <div class="regel-section-title">Charakterfähigkeiten</div>
+
+            <div class="regel-block">
+              <h3>Das Markersystem</h3>
+              <div class="marker-intro">
+                Jeder Spieler besitzt eine <strong>Fähigkeitsmünze</strong> mit einer aktiven und einer inaktiven Seite.
+                Die Fähigkeit kann <strong>einmal pro Runde</strong> eingesetzt werden – danach dreht sich die Münze auf die inaktive Seite.
+                Zu Beginn der eigenen <strong>Versorgungsphase</strong> wird sie automatisch zurückgesetzt.
+                Solange die Münze noch aktiv ist, kann die Fähigkeit auch <strong>reaktiv während eines Gegnerzuges</strong> eingesetzt werden.
+              </div>
+
+              <div class="fa-grid">
+
+                <!-- TARRAK -->
+                <div class="fa-card tarrak">
+                  <div class="fa-header">
+                    <span class="fa-icon">⚔</span>
+                    <span class="fa-charname">Tarrak Feuerfaust</span>
+                  </div>
+                  <div class="fa-name">Feuerinfusion</div>
+                  <p class="fa-desc">Eine eigene Einheit erhält für diesen Zug <strong>+1 Angriffskraft</strong>. Kein Lagerangriff möglich. Einsetzbar beim Angriff und bei der Verteidigung.</p>
+                  <div class="fa-rules">
+                    <p><strong>Schleicher (2 ATK):</strong> Kann einen Wächter töten statt ihn nur zu degradieren.</p>
+                    <p><strong>Wächter (3 ATK):</strong> Kann 3 feindliche Schleicher gleichzeitig treffen statt 2.</p>
+                  </div>
+                  <p style="margin-top:8px;"><span class="fa-tag">Aktiv</span><span class="fa-tag">Offensiv</span></p>
+                </div>
+
+                <!-- JANA -->
+                <div class="fa-card jana">
+                  <div class="fa-header">
+                    <span class="fa-icon">❄</span>
+                    <span class="fa-charname">Jana Frostwind</span>
+                  </div>
+                  <div class="fa-name">Nordwind</div>
+                  <p class="fa-desc">Jana erhält <strong>2 kostenlose Bewegungen</strong>. Jede Bewegung bewegt eine beliebige eigene Einheit ein Feld weiter, ohne Tränke zu kosten. Beide Züge können auf dieselbe oder auf zwei verschiedene Einheiten angewendet werden.</p>
+                  <div class="fa-rules">
+                    <p><strong>Ungenutzte Züge:</strong> Verfallen in der Beutephase – dafür erhält Jana <strong>+1 Trank</strong>.</p>
+                  </div>
+                  <p style="margin-top:8px;"><span class="fa-tag">Aktiv</span><span class="fa-tag">Mobil</span></p>
+                </div>
+
+                <!-- NADORIS -->
+                <div class="fa-card nadoris">
+                  <div class="fa-header">
+                    <span class="fa-icon">🌿</span>
+                    <span class="fa-charname">Nadoris Waldgeist</span>
+                  </div>
+                  <div class="fa-name">Dornenbusch</div>
+                  <p class="fa-desc">Beschwört einen <strong>permanenten Dornenbusch</strong> auf einem Feld mit eigenem Schleicher. Busch und Schleicher agieren gemeinsam als <strong>Kombo (2 ATK, 2 HP)</strong> und verhalten sich wie ein Wächter.</p>
+                  <div class="fa-rules">
+                    <p><strong>1 Schaden:</strong> Busch wird temporär zerstört, Schleicher überlebt – Busch regeneriert am Ende des Angreifer-Zuges.</p>
+                    <p><strong>2 Schaden:</strong> Busch und Schleicher sterben permanent.</p>
+                    <p><strong>Max. Büsche:</strong> 2 Spieler → 1 · 3–4 Spieler → 2 · 5–6 Spieler → 3</p>
+                  </div>
+                  <p style="margin-top:8px;"><span class="fa-tag">Aktiv</span><span class="fa-tag">Kontrolle</span></p>
+                </div>
+
+                <!-- THORGRIM -->
+                <div class="fa-card thorgrim">
+                  <div class="fa-header">
+                    <span class="fa-icon">⚡</span>
+                    <span class="fa-charname">Thorgrim Donneraxt</span>
+                  </div>
+                  <div class="fa-name">Donnerblitz</div>
+                  <p class="fa-desc">Aktivieren setzt einen <strong>gelben Donnerblitz-Marker</strong>. Über den Marker kann ein eigener Wächter ein direkt <strong>angrenzendes Feld</strong> mit Schleicher-Stärke (1 ATK) angreifen – ohne eigenen Verlust oder Gegentreffer.</p>
+                  <div class="fa-rules">
+                    <p><strong>Trifft Schleicher:</strong> Feindlicher Schleicher stirbt sofort.</p>
+                    <p><strong>Trifft Wächter:</strong> Feindlicher Wächter wird zu einem Schleicher degradiert.</p>
+                    <p><strong>Marker ungenutzt:</strong> Wird in der Beutephase in <strong>+1 Gold</strong> umgewandelt.</p>
+                  </div>
+                  <p style="margin-top:8px;"><span class="fa-tag">Marker</span><span class="fa-tag">Positionell</span></p>
+                </div>
+
+                <!-- MORVINA -->
+                <div class="fa-card morvina">
+                  <div class="fa-header">
+                    <span class="fa-icon">💀</span>
+                    <span class="fa-charname">Morvina Aschegrund</span>
+                  </div>
+                  <div class="fa-name">Wiedererweckung</div>
+                  <p class="fa-desc">Stirbt ein eigener Schleicher (im eigenen oder im Gegnerzug), erscheint nach dem nächsten <strong>„Zug beenden"</strong> eine Abfrage: Ein neuer Schleicher kann kostenlos ins Lager gerufen werden.</p>
+                  <div class="fa-rules">
+                    <p><strong>Bedingung:</strong> Münze muss aktiv sein und das Lager darf höchstens 2 Einheiten haben.</p>
+                    <p><strong>Edelstein:</strong> Trug der gestorbene Schleicher einen Edelstein, fällt dieser auf das Feld – er geht verloren.</p>
+                    <p><strong>Neue Einheit:</strong> Erst im nächsten Zug einsatzbereit.</p>
+                  </div>
+                  <p style="margin-top:8px;"><span class="fa-tag">Reaktiv</span><span class="fa-tag">Defensiv</span></p>
+                </div>
+
+                <!-- ILLYRIA -->
+                <div class="fa-card illyria">
+                  <div class="fa-header">
+                    <span class="fa-icon">🌙</span>
+                    <span class="fa-charname">Illyria Mondlicht</span>
+                  </div>
+                  <div class="fa-name">Mondsprung</div>
+                  <p class="fa-desc">Ein Lager-Schleicher springt auf ein Feld mit <strong>genau einem freien Schleicher</strong> (kein Wächter, kein Gebäude, kein Edelstein-Träger) – beide verschmelzen sofort zu einem <strong>Wächter</strong>.</p>
+                  <div class="fa-rules">
+                    <p><strong>Mondschild (passiv):</strong> Solange die Münze aktiv ist, wird der nächste eingehende Lagerangriff um <strong>1 Schaden reduziert</strong>. Der Angreifer erhält seine volle Belohnung. Nach dem Abfangen dreht sich die Münze um.</p>
+                    <p><strong>Schleicher → Wächter:</strong> S + S = W, ohne Tränke zu kosten.</p>
+                  </div>
+                  <p style="margin-top:8px;"><span class="fa-tag">Aktiv</span><span class="fa-tag">Defensiv</span><span class="fa-tag">Taktisch</span></p>
+                </div>
+
+              </div><!-- /fa-grid -->
+            </div>
+          </div>
+
           <!-- Steuerung -->
           <div class="regel-section" id="regel-steuerung">
             <div class="regel-section-title">Steuerung (PC)</div>
@@ -401,7 +599,7 @@
   <footer>
     <div class="footer-inner">
       <p>Scharkana – Das Erbe der Zeitenwächterin &nbsp;·&nbsp; created by GoodGooseGames</p>
-      <span class="footer-version">v0.1.21</span>
+      <span class="footer-version">v0.1.22</span>
     </div>
   </footer>
 
