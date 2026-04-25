@@ -49,14 +49,26 @@
         </div>
 
         <div class="cl-entry old">
-          <div class="cl-version">v0.1.23</div>
+          <div class="cl-version">v0.1.22</div>
+          <h3>Charakterfähigkeiten (Draft) &amp; Logs entfernt</h3>
+          <div class="cl-tags">
+            <span class="tag tag-wip">In Bearbeitung</span>
+            <span class="tag tag-change">Änderung</span>
+          </div>
+          <ul>
+            <li><strong>Charakterfähigkeiten (Draft)</strong> – Die ersten Fähigkeiten der Charaktere wurden hinzugefügt. Bisher sind 3 von 6 Charakteren implementiert.</li>
+            <li><strong>Logs entfernt</strong> – Die Funktion zum Speichern von Spiellogs wurde wieder herausgenommen. Sie funktioniert nicht wie erhofft und wird zu einem späteren Zeitpunkt überarbeitet und erneut ergänzt.</li>
+          </ul>
+        </div>
+
+        <div class="cl-entry old">
+          <div class="cl-version">v0.1.21</div>
           <h3>Bugreport-Versand</h3>
           <div class="cl-tags">
             <span class="tag tag-new">Neu</span>
             <span class="tag tag-change">Änderung</span>
           </div>
           <ul>
-            <li><strong>Logs speichern</strong> – Spiellogs können nun am Ende des Spiels als CSV-Datei heruntergeladen und gespeichert werden.</li>
             <li><strong>Töten bei 1 MP</strong> – Die Mechanik zum Töten eines Gegners, der nur noch 1 MP besitzt, wurde angepasst.</li>
           </ul>
         </div>
@@ -527,6 +539,8 @@
         body.appendChild(el);
       });
       entry.appendChild(body);
+
+      entry.classList.add('open');
 
       header.addEventListener('click', function() {
         entry.classList.toggle('open');

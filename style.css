@@ -263,6 +263,20 @@ a.btn-download:hover { background: #34894e; border-color: #4db870; }
 .feature-card h3 { font-size: 0.92rem; margin-bottom: 6px; }
 .feature-card p { font-size: 0.84rem; color: var(--text-muted); max-width: none; margin: 0; }
 
+.einsteiger-cta {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px;
+  margin-top: 28px;
+  padding: 16px 22px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--gold-dim);
+}
+.einsteiger-cta span { font-size: 0.92rem; color: var(--text-muted); }
+@media (max-width: 480px) {
+  .einsteiger-cta { flex-direction: column; align-items: flex-start; }
+}
+
 /* Story */
 .story-block {
   background: var(--bg-card); border: 1px solid var(--border);
@@ -384,6 +398,12 @@ a.btn-download:hover { background: #34894e; border-color: #4db870; }
 }
 
 /* Tipps */
+.tip-category {
+  font-size: 0.68rem; font-weight: 700; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--gold);
+  margin: 20px 0 8px;
+}
+.tip-category:first-of-type { margin-top: 0; }
 .tip-list { display: flex; flex-direction: column; gap: 8px; }
 .tip-item {
   display: flex; gap: 14px; align-items: flex-start;
