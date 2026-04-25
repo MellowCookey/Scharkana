@@ -35,7 +35,6 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  overflow-y: scroll;
 }
 
 section.section { flex: 1; }
@@ -297,7 +296,9 @@ a.btn-download:hover { background: #34894e; border-color: #4db870; }
   gap: 40px; align-items: start;
 }
 .regel-toc {
-  position: sticky; top: 70px;
+  position: sticky; top: 72px;
+  max-height: calc(100vh - 90px);
+  overflow-y: auto;
   background: var(--bg-card); border: 1px solid var(--border);
   padding: 20px;
 }

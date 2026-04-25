@@ -42,13 +42,17 @@
     .char-card-header {
       position: relative;
       height: 300px;
+      max-height: 300px;
       overflow: hidden;
       flex-shrink: 0;
+      transform: translateZ(0);
     }
 
     .char-card-header img {
+      display: block;
       width: 100%;
       height: 100%;
+      max-height: 300px;
       object-fit: cover;
       object-position: center top;
       filter: brightness(0.6) saturate(0.85);
@@ -200,7 +204,7 @@
       font-size: 0.6rem;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: var(--text-dim);
+      color: var(--text-muted);
     }
 
     .stat-badge span:last-child {
@@ -271,7 +275,7 @@
         <a class="nav-btn" href="ueber.html" data-page="ueber">Über mich</a>
         <a class="nav-btn" href="melden.html" data-page="melden">Bugreport</a>
       </div>
-      <a href="../Scharkana_v0.1.22.html" class="nav-play" target="_blank" rel="noopener">▶ Spielen</a>
+      <a href="Scharkana_v0.1.23.html" class="nav-play" target="_blank" rel="noopener">▶ Spielen</a>
       <button class="nav-hamburger" aria-label="Menü öffnen" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
@@ -313,9 +317,10 @@
             </div>
             <div class="char-card-body">
               <div class="char-stats">
-                <div class="stat-badge"><span>Schwierigkeit</span><span>Einfach</span></div>
+                <div class="stat-badge"><span>Schwierigkeit</span><span>Intuitiv</span></div>
                 <div class="stat-badge"><span>Typ</span><span>Aggressiv</span></div>
               </div>
+              <p class="ability-text" style="margin-top:12px; font-style:italic;">Für Spieler:innen, die direkt ins Geschehen eingreifen und Kämpfe aktiv erzwingen wollen.</p>
               <div class="char-divider"></div>
               <div>
                 <div class="ability-label">⚔ Fähigkeit – Feuerinfusion</div>
@@ -326,25 +331,6 @@
                 <div class="ability-sub">
                   <p><strong>Schleicher (2 ATK):</strong> Kann einen Wächter töten statt ihn nur zu degradieren.</p>
                   <p><strong>Wächter (3 ATK):</strong> Kann 3 feindliche Schleicher gleichzeitig treffen statt 2.</p>
-                </div>
-              </div>
-              <div class="char-divider"></div>
-              <div class="pros-cons">
-                <div class="pros">
-                  <h4>Stärken</h4>
-                  <ul>
-                    <li>Schleicher tötet Wächter</li>
-                    <li>Offensiv &amp; defensiv</li>
-                    <li>Keine Bedingung nötig</li>
-                  </ul>
-                </div>
-                <div class="cons">
-                  <h4>Schwächen</h4>
-                  <ul>
-                    <li>Kein Lagerangriff</li>
-                    <li>W vs W: kein Unterschied</li>
-                    <li>Situationsabhängig</li>
-                  </ul>
                 </div>
               </div>
             </div>
@@ -362,9 +348,10 @@
             </div>
             <div class="char-card-body">
               <div class="char-stats">
-                <div class="stat-badge"><span>Schwierigkeit</span><span>Einfach</span></div>
+                <div class="stat-badge"><span>Schwierigkeit</span><span>Intuitiv</span></div>
                 <div class="stat-badge"><span>Typ</span><span>Mobil</span></div>
               </div>
+              <p class="ability-text" style="margin-top:12px; font-style:italic;">Für Spieler:innen, die mit Tempo und Beweglichkeit Felder besetzen, bevor andere reagieren können.</p>
               <div class="char-divider"></div>
               <div>
                 <div class="ability-label">❄ Fähigkeit – Nordwind</div>
@@ -375,25 +362,6 @@
                   Werden die Züge nicht verbraucht, verfallen sie in der Beutephase –
                   dafür erhält Jana <strong>+1 Trank</strong> als Rohstoff gutgeschrieben.
                 </p>
-              </div>
-              <div class="char-divider"></div>
-              <div class="pros-cons">
-                <div class="pros">
-                  <h4>Stärken</h4>
-                  <ul>
-                    <li>Flexibel auf 1 oder 2 Einheiten</li>
-                    <li>Spart 2 Tränke pro Runde</li>
-                    <li>Keine Bedingung nötig</li>
-                  </ul>
-                </div>
-                <div class="cons">
-                  <h4>Schwächen</h4>
-                  <ul>
-                    <li>Nur Bewegungsvorteil</li>
-                    <li>Kein Kampfeinfluss</li>
-                    <li>Kein Ressourcenvorteil</li>
-                  </ul>
-                </div>
               </div>
             </div>
           </div>
@@ -410,39 +378,22 @@
             </div>
             <div class="char-card-body">
               <div class="char-stats">
-                <div class="stat-badge"><span>Schwierigkeit</span><span>Mittel</span></div>
+                <div class="stat-badge"><span>Schwierigkeit</span><span>Strategisch</span></div>
                 <div class="stat-badge"><span>Typ</span><span>Kontrolle</span></div>
               </div>
+              <p class="ability-text" style="margin-top:12px; font-style:italic;">Für Spieler:innen, die geduldig Kontrolle aufbauen und Felder dauerhaft sichern wollen.</p>
               <div class="char-divider"></div>
               <div>
                 <div class="ability-label">🌿 Fähigkeit – Dornenbusch</div>
                 <p class="ability-text">
-                  Beschwört einen <strong>permanenten Dornenbusch</strong> (unbeweglich) auf einem Feld mit eigenem Schleicher.
-                  Befinden sich Busch und Schleicher gemeinsam auf einem Feld, agieren sie als <strong>Wächter-Kombo</strong> (2 ATK, 2 HP).
+                  Beschwört einen <strong>permanenten Dornenbusch</strong> auf einem Feld mit eigenem Schleicher.
+                  Busch + Schleicher agieren gemeinsam als <strong>Wächter-Kombo</strong> (2 ATK, 2 HP) – der Schleicher bleibt dabei voll aktiv.
                 </p>
                 <div class="ability-sub">
-                  <p><strong>1 Schaden auf die Kombo:</strong> Busch wird temporär zerstört, Schleicher überlebt – der Busch regeneriert am Ende des Angreifer-Zuges.</p>
-                  <p><strong>2 Schaden auf die Kombo:</strong> Busch und Schleicher sterben permanent.</p>
-                  <p><strong>2 Spieler:</strong> max. 1 · <strong>3–4 Spieler:</strong> max. 2 · <strong>5–6 Spieler:</strong> max. 3 Büsche</p>
-                </div>
-              </div>
-              <div class="char-divider"></div>
-              <div class="pros-cons">
-                <div class="pros">
-                  <h4>Stärken</h4>
-                  <ul>
-                    <li>Kombo wirkt wie ein Wächter</li>
-                    <li>Busch regeneriert bei 1 Schaden</li>
-                    <li>Permanente Feldkontrolle</li>
-                  </ul>
-                </div>
-                <div class="cons">
-                  <h4>Schwächen</h4>
-                  <ul>
-                    <li>Braucht eigenen Schleicher</li>
-                    <li>2 Schaden = alles verloren</li>
-                    <li>Belegt Feldplatz</li>
-                  </ul>
+                  <p><strong>1 Schaden:</strong> Busch temporär zerstört, Schleicher überlebt – regeneriert am Rundenende, sofern Schleicher noch auf dem Feld.</p>
+                  <p><strong>2 Schaden:</strong> Busch und Schleicher sterben permanent.</p>
+                  <p><strong>Schleicher weg bei Zugend:</strong> Busch verschwindet.</p>
+                  <p><strong>Limit:</strong> 2 Spieler = 1 · 3–4 = 2 · 5–6 = 3 Büsche</p>
                 </div>
               </div>
             </div>
@@ -460,9 +411,10 @@
             </div>
             <div class="char-card-body">
               <div class="char-stats">
-                <div class="stat-badge"><span>Schwierigkeit</span><span>Mittel</span></div>
+                <div class="stat-badge"><span>Schwierigkeit</span><span>Strategisch</span></div>
                 <div class="stat-badge"><span>Typ</span><span>Positionell</span></div>
               </div>
+              <p class="ability-text" style="margin-top:12px; font-style:italic;">Für Spieler:innen, die mit cleverer Positionierung Feinde aus sicherer Distanz schwächen.</p>
               <div class="char-divider"></div>
               <div>
                 <div class="ability-label">⚡ Fähigkeit – Donnerblitz</div>
@@ -474,25 +426,6 @@
                   <p><strong>Trifft Schleicher:</strong> Feindlicher Schleicher stirbt sofort.</p>
                   <p><strong>Trifft Wächter:</strong> Feindlicher Wächter wird zu einem Schleicher degradiert.</p>
                   <p><strong>Der eigene Wächter</strong> bewegt sich nicht und erleidet keinen Schaden.</p>
-                </div>
-              </div>
-              <div class="char-divider"></div>
-              <div class="pros-cons">
-                <div class="pros">
-                  <h4>Stärken</h4>
-                  <ul>
-                    <li>Fernkampf ohne eigene Verluste</li>
-                    <li>Wächter degradieren möglich</li>
-                    <li>Keine Ketten-Bedingung</li>
-                  </ul>
-                </div>
-                <div class="cons">
-                  <h4>Schwächen</h4>
-                  <ul>
-                    <li>Nur angrenzendes Feld</li>
-                    <li>Wächter muss positioniert werden</li>
-                    <li>Teurer Wächter wird riskiert</li>
-                  </ul>
                 </div>
               </div>
             </div>
@@ -510,9 +443,10 @@
             </div>
             <div class="char-card-body">
               <div class="char-stats">
-                <div class="stat-badge"><span>Schwierigkeit</span><span>Schwer</span></div>
+                <div class="stat-badge"><span>Schwierigkeit</span><span>Komplex</span></div>
                 <div class="stat-badge"><span>Typ</span><span>Defensiv–Reaktiv</span></div>
               </div>
+              <p class="ability-text" style="margin-top:12px; font-style:italic;">Für Spieler:innen, die sich nicht unterkriegen lassen und Verluste in Vorteile verwandeln.</p>
               <div class="char-divider"></div>
               <div>
                 <div class="ability-label">💀 Fähigkeit – Wiedererweckung</div>
@@ -525,25 +459,6 @@
                   <p><strong>Bedingung:</strong> Mind. 1 eigener Schleicher muss in dieser Runde gestorben sein.</p>
                   <p><strong>Lager voll:</strong> Die Fähigkeit kann nicht eingesetzt werden, wenn bereits 3 Einheiten im Lager stehen.</p>
                   <p><strong>Trägt der Schleicher einen Edelstein</strong>, fällt dieser auf das Feld – er geht verloren.</p>
-                </div>
-              </div>
-              <div class="char-divider"></div>
-              <div class="pros-cons">
-                <div class="pros">
-                  <h4>Stärken</h4>
-                  <ul>
-                    <li>Kostenlose neue Einheit</li>
-                    <li>Auch nach Gegnerzügen aktiv</li>
-                    <li>Verweigert Gegner den endgültigen Kill</li>
-                  </ul>
-                </div>
-                <div class="cons">
-                  <h4>Schwächen</h4>
-                  <ul>
-                    <li>Nur bei Lager &lt; 3 Einheiten</li>
-                    <li>Edelstein geht verloren</li>
-                    <li>Nur für Schleicher</li>
-                  </ul>
                 </div>
               </div>
             </div>
@@ -561,9 +476,10 @@
             </div>
             <div class="char-card-body">
               <div class="char-stats">
-                <div class="stat-badge"><span>Schwierigkeit</span><span>Schwer</span></div>
-                <div class="stat-badge"><span>Typ</span><span>Taktisch–Mobil</span></div>
+                <div class="stat-badge"><span>Schwierigkeit</span><span>Komplex</span></div>
+                <div class="stat-badge"><span>Typ</span><span>Taktisch</span></div>
               </div>
+              <p class="ability-text" style="margin-top:12px; font-style:italic;">Für Spieler:innen, die durch langfristige Planung starke Einheiten ohne Ressourcenaufwand erschaffen.</p>
               <div class="char-divider"></div>
               <div>
                 <div class="ability-label">🌙 Fähigkeit – Mondsprung</div>
@@ -573,27 +489,8 @@
                   Schleicher mit Edelstein können nicht teleportiert werden.
                 </p>
                 <div class="ability-sub">
-                  <p><strong>Lager → Feld:</strong> Lager-Schleicher springt zu einem Feld-Schleicher (kein Edelstein) → beide werden Wächter.</p>
-                  <p><strong>Feld → Lager:</strong> Feld-Schleicher (kein Edelstein) kehrt ins Lager zurück → steht dort ein Schleicher, werden beide Wächter.</p>
-                </div>
-              </div>
-              <div class="char-divider"></div>
-              <div class="pros-cons">
-                <div class="pros">
-                  <h4>Stärken</h4>
-                  <ul>
-                    <li>Wächter ohne Tränke erzeugen</li>
-                    <li>Beide Richtungen nutzbar</li>
-                    <li>Unbegrenzte Reichweite</li>
-                  </ul>
-                </div>
-                <div class="cons">
-                  <h4>Schwächen</h4>
-                  <ul>
-                    <li>Kein Schleicher mit Edelstein</li>
-                    <li>Zwei Schleicher nötig für W</li>
-                    <li>Früh im Spiel schwer nutzbar</li>
-                  </ul>
+                  <p><strong>Lager → Feld:</strong> Lager-Schleicher springt zu einem Feld-Schleicher (kein Edelstein, kein Busch, kein Wächter auf dem Feld) → beide verschmelzen zu einem Wächter.</p>
+                  <p><strong>Feld → Lager:</strong> Feld-Schleicher (kein Edelstein) kehrt ins Lager zurück → steht dort ein Schleicher, werden beide zu einem Wächter.</p>
                 </div>
               </div>
             </div>
@@ -608,7 +505,7 @@
   <footer>
     <div class="footer-inner">
       <p>Scharkana – Das Erbe der Zeitenwächterin &nbsp;·&nbsp; created by GoodGooseGames</p>
-      <span class="footer-version">v0.1.22</span>
+      <span class="footer-version">v0.1.23</span>
     </div>
   </footer>
 
