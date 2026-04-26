@@ -110,7 +110,7 @@
       <a class="nav-btn" href="changelog.html" data-page="changelog">Changelog</a>
       <a class="nav-btn" href="ueber.html" data-page="ueber">Über mich</a>
       <a class="nav-btn" href="melden.html" data-page="melden">Bugreport</a>
-      <a href="Scharkana_v0.1.24.html" class="nav-play" target="_blank" rel="noopener">▶ Spielen</a>
+      <a href="Scharkana_v0.1.25.html" class="nav-play" target="_blank" rel="noopener">▶ Spielen</a>
     </div>
   </nav>
 
@@ -487,17 +487,18 @@
                 <!-- NADORIS -->
                 <div class="fa-card nadoris">
                   <div class="fa-header">
-                    <span class="fa-icon">🌿</span>
+                    <span class="fa-icon">🌳</span>
                     <span class="fa-charname">Nadoris Waldgeist</span>
                   </div>
-                  <div class="fa-name">Dornenbusch</div>
-                  <p class="fa-desc">Beschwört einen <strong>permanenten Dornenbusch</strong> auf einem Feld mit eigenem Schleicher. Busch und Schleicher agieren gemeinsam als <strong>Kombo (2 ATK, 2 HP)</strong> und verhalten sich wie ein Wächter.</p>
+                  <div class="fa-name">Treant</div>
+                  <p class="fa-desc">Nadoris beschwört einen <strong>Treant</strong> auf einem Feld mit eigenem Schleicher. Der Treant ist mit dem Boden verwurzelt und kann sich nicht bewegen – er verleiht dem Feld <strong>+1 ATK</strong> und <strong>+1 Leben</strong> und bewahrt den letzten Schleicher vor dem Tod.</p>
                   <div class="fa-rules">
-                    <p><strong>1 Schaden:</strong> Busch wird temporär zerstört, Schleicher überlebt – Busch regeneriert am Ende des Angreifer-Zuges.</p>
-                    <p><strong>2 Schaden:</strong> Busch und Schleicher sterben permanent.</p>
-                    <p><strong>Max. Büsche:</strong> 2 Spieler → 1 · 3–4 Spieler → 2 · 5–6 Spieler → 3</p>
+                    <p><strong>Auto-Regen:</strong> Steht nach einem Angriff noch ein Schleicher auf dem Feld, erwacht der Treant erneut – kostenlos.</p>
+                    <p><strong>Kein Schleicher:</strong> Ist kein Schleicher mehr auf dem Feld, kann Nadoris 1 Trank zahlen um den Treant neu zu erwecken.</p>
+                    <p><strong>Reaktive Münze:</strong> Greift ein Gegner den Treant an, solange die Münze aktiv ist, kann Nadoris ihn unmittelbar danach erneut beschwören.</p>
+                    <p><strong>Max. Treants:</strong> 2 Spieler → 1 · 3–4 Spieler → 2 · 5–6 Spieler → 3</p>
                   </div>
-                  <p style="margin-top:8px;"><span class="fa-tag">Aktiv</span><span class="fa-tag">Kontrolle</span></p>
+                  <p style="margin-top:8px;"><span class="fa-tag">Aktiv</span><span class="fa-tag">Reaktiv</span><span class="fa-tag">Kontrolle</span></p>
                 </div>
 
                 <!-- THORGRIM -->
@@ -522,14 +523,15 @@
                     <span class="fa-icon">💀</span>
                     <span class="fa-charname">Morvina Aschegrund</span>
                   </div>
-                  <div class="fa-name">Wiedererweckung</div>
-                  <p class="fa-desc">Stirbt ein eigener Schleicher (im eigenen oder im Gegnerzug), erscheint nach dem nächsten <strong>„Zug beenden"</strong> eine Abfrage: Ein neuer Schleicher kann kostenlos ins Lager gerufen werden.</p>
+                  <div class="fa-name">Totenerweckung</div>
+                  <p class="fa-desc">Morvinas Münze startet jeden Zug <strong>deaktiviert</strong>. Sobald ein eigener Schleicher stirbt, wird sie aktiviert. Dann hat Morvina zwei Optionen.</p>
                   <div class="fa-rules">
-                    <p><strong>Bedingung:</strong> Münze muss aktiv sein und das Lager darf höchstens 2 Einheiten haben.</p>
-                    <p><strong>Edelstein:</strong> Trug der gestorbene Schleicher einen Edelstein, fällt dieser auf das Feld – er geht verloren.</p>
-                    <p><strong>Neue Einheit:</strong> Erst im nächsten Zug einsatzbereit.</p>
+                    <p><strong>Option A – eigener Zug:</strong> Münze einsetzen → ein <strong>Wächter</strong> erscheint kostenlos im Lager. Münze wird deaktiviert. (Lager muss Platz haben.)</p>
+                    <p><strong>Option B – warten:</strong> Münze bleibt aktiv für reaktiven Einsatz im Gegnerzug.</p>
+                    <p><strong>Reaktiv (Gegnerzug):</strong> Stirbt ein Schleicher auf dem Feld, kann Morvina ihn kurz zurückrufen – er erwacht, schlägt einmal zurück (1 ATK) und stirbt endgültig. Trifft Wächter: W → S. Trifft Schleicher: Angreifer stirbt.</p>
+                    <p><strong>Kein zweites Erwachen:</strong> Der zweite Tod aktiviert die Münze nicht erneut.</p>
                   </div>
-                  <p style="margin-top:8px;"><span class="fa-tag">Reaktiv</span><span class="fa-tag">Defensiv</span></p>
+                  <p style="margin-top:8px;"><span class="fa-tag">Reaktiv</span><span class="fa-tag">Konter</span></p>
                 </div>
 
                 <!-- ILLYRIA -->
@@ -539,12 +541,12 @@
                     <span class="fa-charname">Illyria Mondlicht</span>
                   </div>
                   <div class="fa-name">Mondsprung</div>
-                  <p class="fa-desc">Ein Lager-Schleicher springt auf ein Feld mit <strong>genau einem freien Schleicher</strong> (kein Wächter, kein Gebäude, kein Edelstein-Träger) – beide verschmelzen sofort zu einem <strong>Wächter</strong>.</p>
+                  <p class="fa-desc">Illyria teleportiert Schleicher augenblicklich – überall auf der Karte. Zwei Richtungen wählbar.</p>
                   <div class="fa-rules">
-                    <p><strong>Mondschild (passiv):</strong> Solange die Münze aktiv ist, wird der nächste eingehende Lagerangriff um <strong>1 Schaden reduziert</strong>. Der Angreifer erhält seine volle Belohnung. Nach dem Abfangen dreht sich die Münze um.</p>
-                    <p><strong>Schleicher → Wächter:</strong> S + S = W, ohne Tränke zu kosten.</p>
+                    <p><strong>Lager → Feld:</strong> Ein Schleicher springt vom Lager auf ein beliebiges Feld mit genau einem eigenen Schleicher. Beim Landen erscheint ein dritter Schleicher – <strong>3 Schleicher</strong> auf dem Feld. (Kein Wächter, kein Busch auf dem Zielfeld.)</p>
+                    <p><strong>Feld → Lager:</strong> Einen beliebigen eigenen Schleicher <strong>ohne Edelstein</strong> sofort ins Lager zurückrufen.</p>
                   </div>
-                  <p style="margin-top:8px;"><span class="fa-tag">Aktiv</span><span class="fa-tag">Defensiv</span><span class="fa-tag">Taktisch</span></p>
+                  <p style="margin-top:8px;"><span class="fa-tag">Aktiv</span><span class="fa-tag">Taktisch</span></p>
                 </div>
 
               </div><!-- /fa-grid -->
@@ -620,7 +622,7 @@
   <footer>
     <div class="footer-inner">
       <p>Scharkana – Das Erbe der Zeitenwächterin &nbsp;·&nbsp; created by GoodGooseGames</p>
-      <span class="footer-version">v0.1.24</span>
+      <span class="footer-version">v0.1.25</span>
     </div>
   </footer>
 
