@@ -257,7 +257,9 @@ a.btn-download:hover { background: #34894e; border-color: #4db870; }
   background: var(--bg-card); border: 1px solid var(--border);
   padding: 22px 18px;
   transition: border-color .18s, background .18s;
+  display: block; color: inherit; text-decoration: none; cursor: default;
 }
+a.feature-card { cursor: pointer; }
 .feature-card:hover { background: var(--bg-card-2); border-color: var(--border-light); }
 .feature-card .f-icon { font-size: 1.5rem; margin-bottom: 10px; display: block; }
 .feature-card h3 { font-size: 0.92rem; margin-bottom: 6px; }

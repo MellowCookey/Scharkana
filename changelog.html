@@ -24,7 +24,7 @@
       <a class="nav-btn" href="changelog.html" data-page="changelog">Changelog</a>
       <a class="nav-btn" href="ueber.html" data-page="ueber">Über mich</a>
       <a class="nav-btn" href="melden.html" data-page="melden">Bugreport</a>
-      <a href="Scharkana_v0.1.23.html" class="nav-play" target="_blank" rel="noopener">▶ Spielen</a>
+      <a href="Scharkana_v0.1.24.html" class="nav-play" target="_blank" rel="noopener">▶ Spielen</a>
     </div>
   </nav>
 
@@ -38,7 +38,26 @@
         <div class="cl-section-label label-released">Veröffentlicht</div>
 
         <div class="cl-entry">
-          <div class="cl-version">v0.1.23 · Aktuell</div>
+          <div class="cl-version">v0.1.24 · Aktuell</div>
+          <h3>Nadoris – Dornenbusch vollständig implementiert &amp; Gold-System</h3>
+          <div class="cl-tags">
+            <span class="tag tag-new">Neu</span>
+            <span class="tag tag-change">Änderung</span>
+            <span class="tag tag-fix">Fix</span>
+          </div>
+          <ul>
+            <li><strong>Dornenbusch → Stumpf (BD)</strong> – Ein Dornenbusch wird bei jedem Schaden (Schleicher, Wächter, Fähigkeit) zum Stumpf 🪵. Er wird nie vollständig entfernt.</li>
+            <li><strong>Auto-Regen</strong> – Steht ein eigener Schleicher auf einem Stumpf, wenn Nadoris seinen Zug beginnt, treibt der Busch kostenlos neu aus.</li>
+            <li><strong>Manuell regenerieren</strong> – Nadoris kann während seines Zuges auf einen Stumpf klicken. Ein Bestätigungsdialog zeigt die Kosten (–1 Trank) und erlaubt Abbrechen. Steht ein Feind auf dem Feld, kommt es sofort zum Kampf (Busch bleibt danach Stumpf); solange Tränke vorhanden sind, kann dies mehrfach pro Zug genutzt werden.</li>
+            <li><strong>Reaktive Münze</strong> – Greift ein Gegner in seinem Zug einen Dornenbusch an, wird Nadoris nach Zugende gefragt, ob er mit seiner Münze den Busch reaktiv regenerieren möchte. Sind mehrere Stümpfe betroffen, wählt Nadoris durch Klick. Nur ein Busch pro Münzen-Einsatz.</li>
+            <li><strong>Schleicher + Busch Kombo-Fix</strong> – Wenn ein Wächter ein Feld mit Schleicher + Dornenbusch angreift, werden beide korrekt als Wächter-Kombo (2 ATK / 2 HP) behandelt. Nach dem Kampf bleibt immer ein Stumpf sichtbar.</li>
+            <li><strong>Gold-System</strong> – Wächter tötet Wächter: +2 Gold (Beutephase). Wächter/Schleicher degradiert Wächter: +1 Gold. Gegnerischen Schleicher getötet: +1 Gold. Büsche geben kein Gold.</li>
+            <li><strong>Sortier-Fix enemiesOnField</strong> – Priorität W &gt; S &gt; B verhindert, dass ein Busch vor einem Schleicher als Verteidiger gewertet wird.</li>
+          </ul>
+        </div>
+
+        <div class="cl-entry old">
+          <div class="cl-version">v0.1.23</div>
           <h3>Charakterfähigkeiten</h3>
           <div class="cl-tags">
             <span class="tag tag-new">Neu</span>
@@ -371,7 +390,7 @@
   <footer>
     <div class="footer-inner">
       <p>Scharkana – Das Erbe der Zeitenwächterin &nbsp;·&nbsp; created by GoodGooseGames</p>
-      <span class="footer-version">v0.1.23</span>
+      <span class="footer-version">v0.1.24</span>
     </div>
   </footer>
 
