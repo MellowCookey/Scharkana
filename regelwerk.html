@@ -110,7 +110,7 @@
       <a class="nav-btn" href="changelog.html" data-page="changelog">Changelog</a>
       <a class="nav-btn" href="ueber.html" data-page="ueber">Über mich</a>
       <a class="nav-btn" href="melden.html" data-page="melden">Bugreport</a>
-      <a href="Scharkana_v0.1.25.html" class="nav-play" target="_blank" rel="noopener">▶ Spielen</a>
+      <a href="Scharkana_v0.1.26.html" class="nav-play" target="_blank" rel="noopener">▶ Spielen</a>
     </div>
   </nav>
 
@@ -149,7 +149,21 @@
             <div class="regel-block">
               <h3>Siegbedingungen</h3>
               <p>Wer als Erster <strong>30 Machtpunkte (MP)</strong> erreicht, gewinnt sofort.<br>
-              Alternativ gewinnt der letzte Spieler, der noch nicht auf 0 MP gesunken ist.</p>
+              Alternativ gewinnt der letzte Spieler, der noch <strong>mehr als 0 MP</strong> hat – während alle anderen bei 0 MP sind.</p>
+            </div>
+            <div class="regel-block">
+              <h3>0-MP-Zustand (Geschwächt)</h3>
+              <p>Fällt ein Spieler auf 0 MP, scheidet er <strong>nicht aus</strong> – er ist geschwächt. Solange er 0 MP hat, gelten folgende Einschränkungen:</p>
+              <ul>
+                <li>Kein Lagerangriff auf feindliche Lager möglich.</li>
+                <li>Münze und Sonderfähigkeiten sind deaktiviert.</li>
+                <li>Einheitenfähigkeiten (Wächter aufteilen / Schleicher zusammenführen) gesperrt.</li>
+                <li>Minen und Brunnen können nicht genutzt werden (kein Abbau, kein Sofortabbau).</li>
+                <li>Treants (Nadoris) verschwinden vom Feld.</li>
+                <li>Einheiten können sich bewegen und kämpfen (auch feindliche Einheiten und feindliche Lager angreifen).</li>
+              </ul>
+              <p style="margin-top:8px;"><strong>Grundeinkommen bei 0 MP:</strong> Immer +3 Gold und +3 Tränke pro Runde, unabhängig von der Einheitenzahl. Kein Abbau über Gebäude.</p>
+              <p style="margin-top:8px;"><strong>Erholung:</strong> Sobald der Spieler wieder 1 MP erhält (z.&nbsp;B. durch Angriff auf neutrale Einheiten im Zentrum oder feindliche Lager), wird die Münze sofort aktiviert – noch bevor der nächste Zug beginnt.</p>
             </div>
             <div class="regel-block">
               <h3>Startpunkte</h3>
@@ -347,7 +361,7 @@
                 <li>Nebelschleicher greift an – Feind verliert 1 MP · Angreifer erhält <strong>+2 MP</strong></li>
               </ul>
               <p style="margin-top:8px;"><strong>Sonderfall – Feind hat nur 1 MP:</strong> Greift ein Schattenwächter ein Lager mit genau 1 MP an, reicht ein Treffer zum Töten. Der Wächter überlebt dabei als Schleicher (er nimmt nur 1 Treffer statt 2).</p>
-              <p style="margin-top:8px;">Fällt ein Spieler auf 0 MP, scheidet er sofort aus. Alle seine Einheiten und Gebäude verschwinden.</p>
+              <p style="margin-top:8px;">Fällt ein Spieler auf 0 MP, tritt der <strong>0-MP-Zustand</strong> ein – er scheidet nicht aus (→ siehe Spielziel).</p>
             </div>
           </div>
 
@@ -600,6 +614,7 @@
 
             <div class="tip-category">Endspiel &amp; Siegplanung</div>
             <div class="tip-list">
+              <div class="tip-item"><span class="tip-num">10</span><span>Bei 0 MP: Schleicher ins Zentrum schicken und neutralen Wächter degradieren → sofort +1 MP und Münze aktiv. Oder ein feindliches Lager angreifen für +4 MP – riskanter, aber schneller.</span></div>
               <div class="tip-item"><span class="tip-num">11</span><span>30 MP ist das Ziel. Behalte den Punktestand aller Spieler im Blick – wer nahe dran ist, muss aktiv gebremst werden.</span></div>
               <div class="tip-item"><span class="tip-num">12</span><span>Plane den letzten Push: Ein Lagerangriff mit Wächter (+4 MP) kombiniert mit einem Edelstein am Brunnen (+5 MP) kann in einer einzigen Runde entscheidend sein.</span></div>
               <div class="tip-item"><span class="tip-num">13</span><span>Charakterfähigkeiten im Endspiel gezielt einsetzen – eine gut getimte Reaktion in einem Gegnerzug kann den eigenen Sieg retten oder den des Gegners verhindern.</span></div>
@@ -622,7 +637,7 @@
   <footer>
     <div class="footer-inner">
       <p>Scharkana – Das Erbe der Zeitenwächterin &nbsp;·&nbsp; created by GoodGooseGames</p>
-      <span class="footer-version">v0.1.25</span>
+      <span class="footer-version">v0.1.26</span>
     </div>
   </footer>
 
