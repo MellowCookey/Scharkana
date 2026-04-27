@@ -110,16 +110,14 @@
     let thorgrimBlitzPending  = null;
     let tarrakFireGold        = 0;
     let thorgrimBlitzMode     = null;
-    let movinaSchleicherTod   = false;
     let movinaRevivePrompt    = false;
-    let movinaFeldTod         = null;  // { q, r } – Feld-Tod im Gegnerzug (reaktive Münze)
-    let movinaReaktivUsed     = false; // verhindert zweite Münzen-Aktivierung nach Gegenschlag
-    let nadorRegenPrompt      = null; // { bdIdx, bq, br }
-    let nadorBuschAngegriffen = [];   // [{q,r}] – Büsche die in diesem Gegnerzug zu BD wurden
+    let movinaFeldTod         = null;  // { q, r } – Feld wo Schleicher starb
+    let movinaReviveIsOwnTurn = false; // Prompt erschien während Morvinas eigenem Zug
+    let nadorRegenPrompt      = null; // { bdIdx, bq, br, canUseMünze }
+    let nadorBuschAngegriffen = [];   // [{q,r}] – Treants die in diesem Gegnerzug zu BD wurden
     let nadorReaktivPrompt    = null; // { positions:[{q,r}] } – reaktiver Münze-Prompt
     let nadorReaktivSelect    = null; // { eligibleKeys:[str], nPIdx } – Auswahl welche Ruine
     let mondsprungMode        = null;
-    let pendingBushRegen      = [];
 
     // ── Spielstatistik-Tracking ──────────────────────────────────────────────
     let _trackGameStart = null; // { ms, dateStr }
@@ -232,15 +230,6 @@
 
     // ── Phase 4: Erholungsphase auslösen (nach Zug beenden) ──────────────────
     function triggerPhase4() {
-      for (const regen of pendingBushRegen) {
-        const hasSchleicher = spielUnits.some(
-          u => u.type === 'S' && u.q === regen.q && u.r === regen.r && u.ownerIdx === regen.ownerIdx
-        );
-        if (hasSchleicher) {
-          spielUnits.push({ q: regen.q, r: regen.r, type: 'B', ownerIdx: regen.ownerIdx });
-        }
-      }
-      pendingBushRegen = [];
 
       const wKills     = spielTurnKills.filter(t => t === 'W').length;
       const wDegrades  = spielTurnKills.filter(t => t === 'WD').length;
@@ -262,13 +251,7 @@
         thorgrimMarker = false;
       }
 
-      const tarrakFireBonus = tarrakFireGold;
-      if (tarrakFireBonus > 0) {
-        players[currentPlayerIdx].gold += tarrakFireBonus;
-        tarrakFireGold = 0;
-      }
-
-      spielRecoveryPanel = { wKills, wDegrades, sKills, goldEarned, nordwindTrank, thorgrimGold, tarrakFireBonus };
+      spielRecoveryPanel = { wKills, wDegrades, sKills, goldEarned, nordwindTrank, thorgrimGold };
       spielPhaseStep     = 4;
       spielSelectedIdx   = null; spielReachable = new Map(); spielCampMenuOpen = false;
       // Phase 3 automatisch nach 3 Sekunden überspringen
@@ -283,7 +266,7 @@
           return;
         }
         const movPIdxT = useAbilities ? players.findIndex(p => p.charIdx === 4 && !p.eliminated) : -1;
-        if (movPIdxT !== -1 && players[movPIdxT].abilityReady && movinaFeldTod && movPIdxT !== currentPlayerIdx) {
+        if (movPIdxT !== -1 && players[movPIdxT].abilityReady && movinaFeldTod && movPIdxT !== currentPlayerIdx && !movinaReviveIsOwnTurn) {
           movinaRevivePrompt = true;
           render();
           return;
@@ -452,12 +435,11 @@
       nadorBuschReplaceMode = null;
       thorgrimMarker        = false;
       thorgrimBlitzPending = null;
-      pendingBushRegen   = [];
       tarrakFireGold     = 0;
       spielUnits.forEach(u => { delete u.revivedThisTurn; });
       movinaRevivePrompt    = false;
       movinaFeldTod         = null;
-      movinaReaktivUsed     = false;
+      movinaReviveIsOwnTurn = false;
       nadorRegenPrompt      = null;
       nadorBuschAngegriffen = [];
       nadorReaktivPrompt    = null;
@@ -484,16 +466,6 @@
           // Neuen Wächter hinzufügen
           spielUnits.push({ q: 0, r: 0, type: 'W', ownerIdx: -1 });
         }
-      }
-
-      // ── Nadoris: Dornenbusch-Ruine auto-regenerieren wenn Schleicher auf Feld ──
-      if (useAbilities && players[currentPlayerIdx]?.charIdx === 2) {
-        spielUnits.forEach((u, i) => {
-          if (u.type === 'BD' && u.ownerIdx === currentPlayerIdx) {
-            const hasSchl = spielUnits.some(s => s.type === 'S' && s.q === u.q && s.r === u.r && s.ownerIdx === currentPlayerIdx);
-            if (hasSchl) spielUnits[i].type = 'B';
-          }
-        });
       }
 
       runPhase1(currentPlayerIdx);
@@ -535,13 +507,10 @@
         spielLog = `Hauptphase. Spieler ${currentPlayerIdx + 1} ist dran.`;
         // Fähigkeitsmünze aktivieren (nach Ressourcenphase – einmal pro Runde)
         if (useAbilities && !players[currentPlayerIdx].knocked) {
+          players[currentPlayerIdx].abilityReady = true;
           if (players[currentPlayerIdx].charIdx === 4) {
-            players[currentPlayerIdx].abilityReady = false; // Morvina startet deaktiviert
-            movinaSchleicherTod = false;
-            movinaFeldTod       = null;
-            movinaReaktivUsed   = false;
-          } else {
-            players[currentPlayerIdx].abilityReady = true;
+            movinaFeldTod = null;
+            movinaReviveIsOwnTurn = false;
           }
         }
       }
@@ -559,10 +528,7 @@
         janaFreeMoves,
         thorgrimMarker,
         tarrakFireGold,
-        pendingBushRegen: pendingBushRegen.map(r => ({ ...r })),
-        movinaSchleicherTod,
         movinaFeldTod,
-        movinaReaktivUsed,
       });
     }
 
@@ -582,10 +548,7 @@
       janaFreeMoves       = state.janaFreeMoves ?? 0;
       thorgrimMarker      = state.thorgrimMarker ?? false;
       tarrakFireGold      = state.tarrakFireGold ?? 0;
-      pendingBushRegen    = state.pendingBushRegen ? state.pendingBushRegen.map(r => ({ ...r })) : [];
-      movinaSchleicherTod = state.movinaSchleicherTod ?? false;
       movinaFeldTod       = state.movinaFeldTod ?? null;
-      movinaReaktivUsed   = state.movinaReaktivUsed ?? false;
       nadorBuschMode        = null;
       nadorBuschReplaceMode = null;
       thorgrimBlitzMode     = null;
@@ -1181,7 +1144,6 @@
         details: [
           'Schleicher (2 ATK): Kann einen Wächter töten statt ihn nur zu degradieren.',
           'Wächter (3 ATK): Kann 3 feindliche Schleicher gleichzeitig treffen statt 2.',
-          'Glutbeute (passiv): Tötet ein Schleicher mit Feuerinfusion einen feindlichen Wächter, gibt es +1 Gold extra (beide sterben dabei).',
         ],
         pros: ['Schleicher tötet Wächter', 'Offensiv & defensiv einsetzbar', 'Keine Bedingung nötig'],
         cons: ['Kein Lagerangriff', 'W vs W: kein Unterschied', 'Situationsabhängig'],
@@ -1200,19 +1162,20 @@
         typ: 'Mobil', schwierigkeit: 'Intuitiv',
       },
       {
-        abilityName: 'Dornenbusch',
+        abilityName: 'Treant',
         icon: '🌿',
-        desc: 'Beschwört einen permanenten Dornenbusch auf einem Feld mit eigenem Schleicher. Busch + Schleicher agieren gemeinsam als Kombo (2 ATK, 2 HP) – wie ein Wächter. Der Schleicher bleibt voll aktiv.',
+        desc: 'Beschwört einen Treant auf einem Feld mit eigener Einheit. Aktiver Treant schützt das Feld und wird zuerst angegriffen. Stirbt er, bleibt er inaktiv (💀) auf dem Feld.',
         details: [
-          '1 Schaden: Busch → Ruine (💀), Schleicher überlebt.',
-          '2 Schaden (selbe Runde): Busch → Ruine (💀), Schleicher stirbt.',
-          'Auto-Regen: Steht ein eigener Schleicher auf der Ruine, wenn Nadoris seinen Zug beginnt, erwacht der Busch automatisch.',
-          'Manuell regenerieren: Ruine anklicken – für 1 Trank wird die Ruine wieder zum Busch. Falls ein Feind auf dem Feld steht, greift der Busch beim Erwachen mit 1 ATK an.',
-          'Ruine auf Feld: Verhindert neue Busch-Beschwörung auf demselben Feld; zählt zum Busch-Maximum.',
-          '2 Spieler: max. 1  ·  3–4 Spieler: max. 2  ·  5–6 Spieler: max. 3 Büsche/Ruinen',
+          '— Im eigenen Zug (aktiv) —',
+          'Neuer Treant: Münze einsetzen → Feld mit eigener Einheit wählen.',
+          'Wiederbelebung per Münze: inaktiven Treant anklicken → Münze (kostenlos, 1× pro Runde).',
+          'Wiederbelebung per Trank: inaktiven Treant anklicken → 1 Trank (mehrmals möglich).',
+          'Feind auf Feld beim Erwachen: Treant greift sofort mit 1 ATK an.',
+          '— Im Gegnerzug (reaktiv) —',
+          'Münze bereit + Treant wird inaktiv → sofortige Abfrage: Münze einsetzen?',
         ],
-        pros: ['Kombo wirkt wie ein Wächter', 'Ruine bleibt persistent – kein Totalverlust', 'Auto-Regen bei eigenem Schleicher'],
-        cons: ['Manuell 1 Trank für Regen ohne Schleicher', 'Ruine blockiert Feld', 'Braucht Schleicher für Kombo'],
+        pros: ['Feldbeschützter ohne Einheitenkosten', 'Trank-Wiederbelebung mehrmals pro Runde', 'Reaktive Münze bei Angriff'],
+        cons: ['Inaktiver Treant schützt nicht', 'Münze nur 1× pro Runde', 'Kein Lagerangriff'],
         typ: 'Kontrolle', schwierigkeit: 'Strategisch',
       },
       {
@@ -1231,16 +1194,19 @@
       {
         abilityName: 'Totenerweckung',
         icon: '💀',
-        desc: 'Münze startet deaktiviert. Sobald ein Schleicher stirbt, wird sie aktiviert. Option A (eigener Zug): Münze einsetzen → ein Wächter erscheint im Lager. Option B: Münze behalten für reaktiven Gegenschlag.',
+        desc: 'Münze aktiviert sich zu Beginn von Morvinas Zug. Stirbt ein Schleicher und die Münze ist aktiv, kann Morvina ihn sofort auf dem Kampffeld wiederbeleben.',
         details: [
-          'Reaktiv (Gegnerzug): Schleicher stirbt auf Feld → Münze einsetzen → er erwacht, schlägt 1× zurück, stirbt endgültig.',
-          'Trifft Wächter: W → Schleicher. Trifft Schleicher: Angreifer stirbt.',
-          'Der zweite Tod aktiviert die Münze nicht erneut.',
-          'Option A: Lager muss weniger als 3 Einheiten haben.',
+          '— Im eigenen Zug —',
+          'Stirbt ein eigener Schleicher im Kampf → sofortige Abfrage: Münze einsetzen?',
+          '— Im Gegnerzug —',
+          'Stirbt ein eigener Schleicher → Abfrage am Zugende: Münze einsetzen?',
+          '— Nach der Wiederbelebung —',
+          'Feind auf Feld → Schleicher greift sofort automatisch an (1 ATK). Kein Feind → Schleicher bleibt am Leben.',
+          'In beiden Fällen: Münze wird deaktiviert.',
         ],
-        pros: ['Toter Schleicher wird zum Wächter', 'Reaktiver Gegenschlag im Gegnerzug', 'Gegner riskiert Konter beim Angriff'],
-        cons: ['Münze startet immer deaktiviert', 'Reaktiver Schleicher stirbt sowieso', 'Kein Einsatz wenn Lager voll (Option A)'],
-        typ: 'Konter–Reaktiv', schwierigkeit: 'Komplex',
+        pros: ['Münze startet aktiv wie alle anderen', 'Schleicher kann überleben wenn kein Feind', 'Reaktiv auch im Gegnerzug'],
+        cons: ['Nur bei Schleicher-Tod einsetzbar', 'Feind auf Feld → Schleicher stirbt trotzdem', 'Münze deaktiviert nach Einsatz'],
+        typ: 'Reaktiv', schwierigkeit: 'Intuitiv',
       },
       {
         abilityName: 'Mondsprung',
@@ -1955,7 +1921,7 @@
         { t:'body',    s:'Trägt ein sterbender Schleicher einen Edelstein, fällt dieser auf das Feld. Ein eigener Schleicher ohne Edelstein, der danach auf das Feld tritt, hebt ihn sofort auf.' },
         { t:'gap' },
         { t:'heading', s:'Beute nach dem Kampf' },
-        { t:'body',    s:'Für Kampferfolge erhält man Gold (in der Beutephase): Wächter getötet → +2 Gold  ·  Wächter degradiert (→S) → +1 Gold  ·  Schleicher getötet → +1 Gold  ·  Büsche geben kein Gold.' },
+        { t:'body',    s:'Für Kampferfolge erhält man Gold (in der Beutephase): Wächter getötet → +2 Gold  ·  Wächter degradiert (→S) → +1 Gold  ·  Schleicher getötet → +1 Gold  ·  Treants geben kein Gold.' },
       ],
 
       // ── Seite 6: Gebäude ────────────────────────────────────────────────────
@@ -2072,7 +2038,6 @@
         { t:'body',    s:'· Schleicher (2 ATK): Kann einen Wächter töten statt ihn nur zu degradieren.' },
         { t:'body',    s:'· Wächter (3 ATK): Kann 3 feindliche Schleicher gleichzeitig treffen statt 2.' },
         { t:'body',    s:'· Reaktiv: Wenn ein Wächter Tarraks einen S-Gegner angreift, erscheint eine Abfrage.' },
-        { t:'body',    s:'· Glutbeute (passiv): Tötet ein Schleicher mit Feuerinfusion einen feindlichen Wächter, gibt es +1 Gold extra – beide sterben dabei.' },
         { t:'gap' },
         { t:'chapter', s:'2  ·  JANA FROSTWIND  –  ❄ Nordwind' },
         { t:'gap' },
@@ -2082,22 +2047,22 @@
         { t:'body',    s:'· Unverbrauchte Züge verfallen am Zugend – dafür erhält Jana +1 Trank.' },
         { t:'body',    s:'· Normale Trank-Bewegungen bleiben zusätzlich möglich.' },
         { t:'gap' },
-        { t:'chapter', s:'3  ·  NADORIS WALDGEIST  –  🌿 Dornenbusch' },
+        { t:'chapter', s:'3  ·  NADORIS WALDGEIST  –  🌿 Treant' },
         { t:'gap' },
         { t:'body',    s:'Typ: Kontrolle  ·  Schwierigkeit: Strategisch' },
-        { t:'body',    s:'Beschwört einen permanenten Dornenbusch auf einem Feld mit eigenem Schleicher. Busch + Schleicher agieren als Kombo (2 ATK, 2 HP) – wie ein Wächter.' },
+        { t:'body',    s:'Aktiver Treant (🌿) schützt das Feld und wird zuerst angegriffen. Stirbt er, bleibt er als inaktiver Treant (💀) auf dem Feld – 0 ATK, 0 HP, belegt nur den Platz.' },
         { t:'gap' },
-        { t:'body',    s:'· Der Schleicher bleibt voll aktiv: Minen, Brunnen, Edelsteine und Bewegung sind weiterhin möglich.' },
+        { t:'sub',     s:'Im eigenen Zug (aktiv)' },
+        { t:'body',    s:'· Neuer Treant setzen: Münze-Button → Feld mit eigener Einheit wählen.' },
+        { t:'body',    s:'· Wiederbelebung per Münze: inaktiven Treant anklicken → Münze (kostenlos, 1× pro Runde).' },
+        { t:'body',    s:'· Wiederbelebung per Trank: inaktiven Treant anklicken → 1 Trank (mehrmals pro Runde möglich).' },
+        { t:'body',    s:'· Feind auf Feld beim Erwachen: Treant greift sofort mit 1 ATK an (W→S, S stirbt). Treant bleibt danach inaktiv.' },
         { t:'gap' },
-        { t:'body',    s:'· 1 Schaden: Busch → Ruine (💀), Schleicher überlebt.' },
-        { t:'body',    s:'· 2 Schaden (selbe Runde): Busch → Ruine (💀), Schleicher stirbt.' },
+        { t:'sub',     s:'Im Gegnerzug (reaktiv)' },
+        { t:'body',    s:'· Münze bereit + Treant wird inaktiv → sofortige Abfrage: Münze einsetzen? → Treant sofort wiederbelebt.' },
         { t:'gap' },
-        { t:'body',    s:'· Auto-Regen: Steht ein eigener Schleicher auf der Ruine, wenn Nadoris seinen Zug beginnt, erwacht der Busch kostenlos automatisch.' },
-        { t:'body',    s:'· Manuell regenerieren: Ruine (💀) anklicken – für 1 Trank wird die Ruine wieder zum aktiven Busch. Steht ein Feind auf dem Feld, greift der Busch beim Erwachen mit 1 ATK an (W→S, S stirbt).' },
-        { t:'gap' },
-        { t:'body',    s:'· Ruinen zählen zum Busch-Maximum und blockieren die Busch-Beschwörung auf diesem Feld.' },
-        { t:'body',    s:'· Maximum erreicht: Dialog erscheint. Bei Bestätigung neuen Busch platzieren und einen bestehenden auswählen, um ihn zu vernichten.' },
-        { t:'body',    s:'· Limit: 2 Spieler = 1  ·  3–4 Spieler = 2  ·  5–6 Spieler = 3 Büsche/Ruinen' },
+        { t:'body',    s:'· Maximum erreicht: Dialog erscheint. Neuen Treant setzen und einen bestehenden entfernen.' },
+        { t:'body',    s:'· Limit: 2 Spieler = 1  ·  3–4 Spieler = 2  ·  5–6 Spieler = 3 Treants' },
       ],
 
       // ── Seite 10: Charakterfähigkeiten Teil 2 ───────────────────────────────
@@ -2114,19 +2079,22 @@
         { t:'body',    s:'· Trifft Schleicher: stirbt. Trifft Wächter: wird zu Schleicher degradiert.' },
         { t:'body',    s:'· Marker ungenutzt am Zugend: automatisch +1 Gold.' },
         { t:'gap' },
-        { t:'chapter', s:'5  ·  MORVINA ASCHENGRUND  –  💀 Totenerweckung' },
+        { t:'chapter', s:'5  ·  MORVINA ASCHEGRUND  –  💀 Totenerweckung' },
         { t:'gap' },
-        { t:'body',    s:'Typ: Konter-Reaktiv  ·  Schwierigkeit: Komplex' },
-        { t:'body',    s:'Morvinas Münze startet jeden Zug deaktiviert. Sobald ein eigener Schleicher stirbt, wird die Münze aktiviert.' },
+        { t:'body',    s:'Typ: Reaktiv  ·  Schwierigkeit: Intuitiv' },
+        { t:'body',    s:'Morvinas Münze aktiviert sich zu Beginn ihres Zuges – wie bei allen anderen. Stirbt ein eigener Schleicher und die Münze ist aktiv, kann Morvina ihn auf dem Kampffeld wiederbeleben.' },
         { t:'gap' },
-        { t:'body',    s:'Option A – eigener Zug: Münze einsetzen → ein Wächter erscheint kostenlos im Lager. Münze wird deaktiviert.' },
-        { t:'body',    s:'Option B – nicht einsetzen: Münze bleibt aktiv und kann reaktiv eingesetzt werden.' },
+        { t:'sub',     s:'Im eigenen Zug' },
+        { t:'body',    s:'· Stirbt ein Schleicher im Kampf → sofortige Abfrage: Münze einsetzen?' },
         { t:'gap' },
-        { t:'body',    s:'Reaktiv (Gegnerzug): Stirbt ein Schleicher auf dem Feld, solange die Münze aktiv ist, kann Morvina ihn kurz zurückrufen.' },
-        { t:'body',    s:'· Der Schleicher erwacht auf dem Feld, schlägt einmal zurück (1 ATK) – und stirbt dann endgültig.' },
-        { t:'body',    s:'· Trifft Wächter: W → Schleicher. Trifft Schleicher: Angreifer stirbt.' },
-        { t:'body',    s:'· Der zweite Tod aktiviert die Münze nicht erneut.' },
-        { t:'body',    s:'· Bedingung für Option A: Lager hat weniger als 3 Einheiten.' },
+        { t:'sub',     s:'Im Gegnerzug' },
+        { t:'body',    s:'· Stirbt ein Schleicher → Abfrage am Ende des Gegnerzuges: Münze einsetzen?' },
+        { t:'gap' },
+        { t:'sub',     s:'Nach der Wiederbelebung' },
+        { t:'body',    s:'· Feind auf Feld → Schleicher greift sofort automatisch an (1 ATK). Trifft W: W→S, S stirbt. Trifft S: beide sterben.' },
+        { t:'body',    s:'· Kein Feind auf Feld → Schleicher bleibt am Leben.' },
+        { t:'body',    s:'· In beiden Fällen: Münze wird deaktiviert.' },
+        { t:'body',    s:'· Einschränkung: Keine Wiederbelebung auf feindlichen Lagerfeldern oder violetten Zentrumsfeldern.' },
         { t:'gap' },
         { t:'chapter', s:'6  ·  ILLYRIA MONDLICHT  –  🌙 Mondsprung' },
         { t:'gap' },
@@ -2696,11 +2664,11 @@
 
     function drawMovinaRevivePrompt() {
       const cx = canvas.width / 2, cy = canvas.height / 2;
-      const w = 380, h = 180;
+      const w = 420, h = 190;
       const bx = cx - w / 2, by = cy - h / 2;
       const movCh  = CHARACTERS[4];
-      const btnW   = 120, btnH = 36, btnY = by + h - 52;
-      const btn1X  = cx - btnW - 12, btn2X = cx + 12;
+      const btnW   = 150, btnH = 40, btnY = by + h - 58;
+      const btn1X  = cx - btnW - 14, btn2X = cx + 14;
       ctx.fillStyle = 'rgba(0,0,0,0.62)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       ctx.save();
@@ -2713,18 +2681,18 @@
       ctx.fillStyle  = movCh.colorLight;
       ctx.font       = 'bold 16px "Exo 2",sans-serif';
       ctx.textAlign  = 'center'; ctx.textBaseline = 'middle';
-      ctx.fillText('💀  Totenerweckung – Gegenschlag?', cx, by + 38);
+      ctx.fillText('💀  Totenerweckung – Münze einsetzen?', cx, by + 38);
       ctx.fillStyle = '#c0c0dd'; ctx.font = '13px "Exo 2",sans-serif';
-      ctx.fillText('Ein Schleicher ist gefallen. Morvina kann ihn kurz zurückrufen.', cx, by + 66);
+      ctx.fillText('Ein Schleicher ist gefallen. Morvina kann ihn wiederbeleben.', cx, by + 66);
       ctx.fillStyle = '#8888cc'; ctx.font = 'italic 12px "Exo 2",sans-serif';
-      ctx.fillText('Er erwacht, schlägt einmal zurück – und stirbt endgültig. Oder Münze für Wächter im Lager sparen.', cx, by + 86);
+      ctx.fillText('Feind auf Feld → Schleicher greift sofort an. Kein Feind → Schleicher bleibt am Leben.', cx, by + 88);
       ctx.fillStyle   = 'rgba(15,20,55,0.97)';
       ctx.strokeStyle = '#5566cc'; ctx.lineWidth = 1.5;
       ctx.shadowColor = '#3344aa'; ctx.shadowBlur = 10;
       ctx.beginPath(); ctx.roundRect(btn1X, btnY, btnW, btnH, 8); ctx.fill(); ctx.stroke();
       ctx.shadowBlur  = 0;
       ctx.fillStyle   = '#99aaff'; ctx.font = 'bold 14px "Exo 2",sans-serif';
-      ctx.fillText('💀  Ja, erwecken', btn1X + btnW / 2, btnY + btnH / 2);
+      ctx.fillText('💀  Ja, wiederbeleben', btn1X + btnW / 2, btnY + btnH / 2);
       ctx.fillStyle   = 'rgba(40,18,18,0.97)';
       ctx.strokeStyle = '#884444'; ctx.lineWidth = 1.5;
       ctx.beginPath(); ctx.roundRect(btn2X, btnY, btnW, btnH, 8); ctx.fill(); ctx.stroke();
@@ -2763,9 +2731,9 @@
       ctx.fillText('🌿  Maximum erreicht!', cx, by + 38);
 
       ctx.fillStyle = '#c0c0dd'; ctx.font = '13px "Exo 2",sans-serif';
-      ctx.fillText('Ein neuer Dornenbusch soll platziert werden.', cx, by + 66);
+      ctx.fillText('Ein neuer Treant soll platziert werden.', cx, by + 66);
       ctx.fillStyle = '#8888cc'; ctx.font = 'italic 12px "Exo 2",sans-serif';
-      ctx.fillText('Wähle einen bestehenden Busch zum Vernichten, oder breche ab.', cx, by + 86);
+      ctx.fillText('Wähle einen bestehenden Treant zum Entfernen, oder breche ab.', cx, by + 86);
 
       ctx.fillStyle   = 'rgba(15,40,15,0.97)';
       ctx.strokeStyle = '#44aa55'; ctx.lineWidth = 1.5;
@@ -2791,13 +2759,13 @@
     function drawNadorRegenPrompt() {
       if (!nadorRegenPrompt) return;
       const nadorCh = CHARACTERS[2];
+      const { canUseMünze } = nadorRegenPrompt;
       const cx = canvas.width / 2, cy = canvas.height / 2;
-      const w = 400, h = 190;
+      const w = 460, h = canUseMünze ? 230 : 200;
       const bx = cx - w / 2, by = cy - h / 2;
-      const btnW = 160, btnH = 40, btnY = by + h - 58;
-      const btn1X = cx - btnW - 14, btn2X = cx + 14;
+      const btnW = 140, btnH = 40, btnY = by + h - 58;
       const p = players[currentPlayerIdx];
-      const canAfford = p.nachtrank >= 1;
+      const canAffordTrank = p.nachtrank >= 1;
 
       ctx.fillStyle = 'rgba(0,0,0,0.62)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -2813,36 +2781,58 @@
       ctx.fillStyle  = nadorCh.colorLight;
       ctx.font       = 'bold 16px "Exo 2",sans-serif';
       ctx.textAlign  = 'center'; ctx.textBaseline = 'middle';
-      ctx.fillText('💀  Dornenbusch-Ruine regenerieren?', cx, by + 38);
-
+      ctx.fillText('💀  Treant wiederbeleben?', cx, by + 36);
       ctx.fillStyle = '#c0c0dd'; ctx.font = '13px "Exo 2",sans-serif';
-      ctx.fillText('Der Busch erwacht und greift sofort an, falls Feinde auf dem Feld stehen.', cx, by + 66);
-      ctx.fillStyle = canAfford ? '#88cc99' : '#cc6666';
-      ctx.font = 'bold 13px "Exo 2",sans-serif';
-      ctx.fillText(`Kosten: −1 Trank  (verfügbar: ${p.nachtrank})`, cx, by + 90);
+      ctx.fillText('Der Treant erwacht und greift sofort an, falls Feinde auf dem Feld stehen.', cx, by + 62);
 
-      // Bestätigen
-      const okAlpha = canAfford ? 1 : 0.45;
+      let btnCount = canUseMünze ? 3 : 2;
+      const totalBtnW = btnCount * btnW + (btnCount - 1) * 12;
+      const btn1X = cx - totalBtnW / 2;
+
+      if (canUseMünze) {
+        ctx.fillStyle = '#aaddbb'; ctx.font = 'bold 12px "Exo 2",sans-serif';
+        ctx.fillText('Münze: kostenlos  ·  Trank: −1 Trank', cx, by + 86);
+        ctx.fillStyle = '#666688'; ctx.font = 'italic 12px "Exo 2",sans-serif';
+        ctx.fillText(`Tränke verfügbar: ${p.nachtrank}`, cx, by + 106);
+
+        // Münze-Button
+        ctx.fillStyle   = 'rgba(10,30,40,0.97)';
+        ctx.strokeStyle = '#44aacc'; ctx.lineWidth = 1.5;
+        ctx.shadowColor = '#226688'; ctx.shadowBlur = 10;
+        ctx.beginPath(); ctx.roundRect(btn1X, btnY, btnW, btnH, 8); ctx.fill(); ctx.stroke();
+        ctx.shadowBlur  = 0;
+        ctx.fillStyle   = '#88ccee'; ctx.font = 'bold 13px "Exo 2",sans-serif';
+        ctx.fillText('🪙  Münze', btn1X + btnW / 2, btnY + btnH / 2);
+        spielActionBtns.push({ x: btn1X, y: btnY, w: btnW, h: btnH, action: 'nadorRegenMünze' });
+      } else {
+        ctx.fillStyle = canAffordTrank ? '#88cc99' : '#cc6666';
+        ctx.font = 'bold 13px "Exo 2",sans-serif';
+        ctx.fillText(`Kosten: −1 Trank  (verfügbar: ${p.nachtrank})`, cx, by + 86);
+      }
+
+      // Trank-Button
+      const trankBtnX = canUseMünze ? btn1X + btnW + 12 : cx - btnW - 6;
+      const okAlpha = canAffordTrank ? 1 : 0.45;
       ctx.globalAlpha = okAlpha;
       ctx.fillStyle   = 'rgba(15,40,15,0.97)';
       ctx.strokeStyle = '#44aa55'; ctx.lineWidth = 1.5;
-      ctx.shadowColor = '#226633'; ctx.shadowBlur = canAfford ? 10 : 0;
-      ctx.beginPath(); ctx.roundRect(btn1X, btnY, btnW, btnH, 8); ctx.fill(); ctx.stroke();
+      ctx.shadowColor = '#226633'; ctx.shadowBlur = canAffordTrank ? 10 : 0;
+      ctx.beginPath(); ctx.roundRect(trankBtnX, btnY, btnW, btnH, 8); ctx.fill(); ctx.stroke();
       ctx.shadowBlur  = 0;
-      ctx.fillStyle   = '#88ee99'; ctx.font = 'bold 14px "Exo 2",sans-serif';
-      ctx.fillText('🌿  Regenerieren', btn1X + btnW / 2, btnY + btnH / 2);
+      ctx.fillStyle   = '#88ee99'; ctx.font = 'bold 13px "Exo 2",sans-serif';
+      ctx.fillText('🌿  Trank (−1)', trankBtnX + btnW / 2, btnY + btnH / 2);
       ctx.globalAlpha = 1;
+      if (canAffordTrank) spielActionBtns.push({ x: trankBtnX, y: btnY, w: btnW, h: btnH, action: 'nadorRegenYes' });
 
       // Abbrechen
+      const cancelBtnX = canUseMünze ? btn1X + (btnW + 12) * 2 : cx + 6;
       ctx.fillStyle   = 'rgba(40,18,18,0.97)';
       ctx.strokeStyle = '#884444'; ctx.lineWidth = 1.5;
-      ctx.beginPath(); ctx.roundRect(btn2X, btnY, btnW, btnH, 8); ctx.fill(); ctx.stroke();
-      ctx.fillStyle   = '#cc8888'; ctx.font = 'bold 14px "Exo 2",sans-serif';
-      ctx.fillText('✕  Abbrechen', btn2X + btnW / 2, btnY + btnH / 2);
+      ctx.beginPath(); ctx.roundRect(cancelBtnX, btnY, btnW, btnH, 8); ctx.fill(); ctx.stroke();
+      ctx.fillStyle   = '#cc8888'; ctx.font = 'bold 13px "Exo 2",sans-serif';
+      ctx.fillText('✕  Abbrechen', cancelBtnX + btnW / 2, btnY + btnH / 2);
       ctx.restore();
-
-      if (canAfford) spielActionBtns.push({ x: btn1X, y: btnY, w: btnW, h: btnH, action: 'nadorRegenYes' });
-      spielActionBtns.push({ x: btn2X, y: btnY, w: btnW, h: btnH, action: 'nadorRegenNo' });
+      spielActionBtns.push({ x: cancelBtnX, y: btnY, w: btnW, h: btnH, action: 'nadorRegenNo' });
     }
 
     function drawNadorReaktivPrompt() {
@@ -2869,11 +2859,11 @@
       ctx.fillStyle  = nadorCh.colorLight;
       ctx.font       = 'bold 16px "Exo 2",sans-serif';
       ctx.textAlign  = 'center'; ctx.textBaseline = 'middle';
-      ctx.fillText('🌿  Münze für Regeneration einsetzen?', cx, by + 36);
+      ctx.fillText('🌿  Münze für Wiederbelebung einsetzen?', cx, by + 36);
       ctx.fillStyle = '#c0c0dd'; ctx.font = '13px "Exo 2",sans-serif';
-      ctx.fillText('Dein Dornenbusch wurde angegriffen und ist zur Ruine geworden.', cx, by + 64);
+      ctx.fillText('Dein Treant wurde inaktiv.', cx, by + 64);
       ctx.fillStyle = '#aaddbb'; ctx.font = '13px "Exo 2",sans-serif';
-      ctx.fillText('Münze einsetzen → Busch sofort regenerieren (kostenlos).', cx, by + 84);
+      ctx.fillText('Münze einsetzen → Treant sofort wiederbeleben (kostenlos).', cx, by + 84);
       ctx.fillStyle = '#888899'; ctx.font = 'italic 12px "Exo 2",sans-serif';
       ctx.fillText(`Tränke: ${tränke}  ·  Münze wird verbraucht`, cx, by + 106);
 
@@ -3649,19 +3639,23 @@
 
     // ── Morvina: Totenerweckung – Schleichers-Tod verfolgen ─────────────────
     function trackMovinaTod(unit) {
+      if (!useAbilities) return;
       if (!unit || unit.type !== 'S' || unit.ownerIdx < 0) return;
-      if (players[unit.ownerIdx]?.charIdx !== 4) return;
-      if (movinaReaktivUsed) return; // Gegenschlag bereits erfolgt – keine zweite Aktivierung
-      const movPIdx = unit.ownerIdx;
-      movinaSchleicherTod = true;
-      if (useAbilities) players[movPIdx].abilityReady = true;
-      // Feld-Tod im Gegnerzug merken (nicht im eigenen Lager)
-      if (useAbilities && movPIdx !== currentPlayerIdx) {
-        const cp = players[movPIdx];
-        if (unit.q !== cp.campQ || unit.r !== cp.campR) {
-          movinaFeldTod = { q: unit.q, r: unit.r };
-        }
+      const movPIdx = players.findIndex(p => p.charIdx === 4 && !p.eliminated);
+      if (movPIdx === -1 || unit.ownerIdx !== movPIdx) return;
+      if (!players[movPIdx].abilityReady) return;
+      // Feld merken (nicht eigenes Lager, nicht feindliche Lager, nicht Zentrum)
+      const cp = players[movPIdx];
+      if (unit.q === cp.campQ && unit.r === cp.campR) return;
+      if (unit.q === 0 && unit.r === 0) return;
+      if (players.some((p, i) => i !== movPIdx && !p.eliminated && p.campQ === unit.q && p.campR === unit.r)) return;
+      movinaFeldTod = { q: unit.q, r: unit.r };
+      // Im eigenen Zug: Prompt sofort zeigen
+      if (movPIdx === currentPlayerIdx) {
+        movinaReviveIsOwnTurn = true;
+        movinaRevivePrompt    = true;
       }
+      // Im Gegnerzug: Prompt erscheint am Zugende (triggerPhase4)
     }
 
     // ── Spielphase: Layout-Helfer ─────────────────────────────────────────────
@@ -6984,7 +6978,6 @@
       if (rp.wKills > 0)    rows.push({ label: `◈ Wächter getötet  ×${rp.wKills}`,       gold: rp.wKills * 2 });
       if (rp.wDegrades > 0) rows.push({ label: `◈ Wächter degradiert  ×${rp.wDegrades}`, gold: rp.wDegrades });
       if (rp.sKills > 0)    rows.push({ label: `◇ Schleicher getötet  ×${rp.sKills}`,    gold: rp.sKills });
-      if (rp.tarrakFireBonus > 0) rows.push({ label: `⚔ Glutbeute  ×${rp.tarrakFireBonus}`, gold: rp.tarrakFireBonus });
       const ph = 48 + rows.length * 28 + 32 + bh + 16;
       const px = canvas.width / 2 - pw / 2;
       const py = canvas.height / 2 - ph / 2;
@@ -7027,7 +7020,7 @@
       ctx.beginPath(); ctx.moveTo(px + 16, sumY); ctx.lineTo(px + pw - 16, sumY); ctx.stroke();
       ctx.fillStyle = '#ffdd66'; ctx.font = 'bold 14px "Exo 2",sans-serif';
       ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
-      ctx.fillText(`Gesamt: +${rp.goldEarned + (rp.thorgrimGold ?? 0) + (rp.tarrakFireBonus ?? 0)} Gold`, px + pw - 20, sumY + 16);
+      ctx.fillText(`Gesamt: +${rp.goldEarned + (rp.thorgrimGold ?? 0)} Gold`, px + pw - 20, sumY + 16);
 
       // Weiter-Button
       const bbY = sumY + 32, bbX = px + pw / 2 - 80;
@@ -7091,52 +7084,55 @@
       return true;
     }
 
-    // ── Nadoris: Busch-Ruine anklicken ──────────────────────────────────────
+    // ── Nadoris: Inaktiver Treant anklicken ─────────────────────────────────
     function handleBuschRuineClick(bdIdx, bq, br) {
-      if (!useAbilities) { spielLog = '💀 Dornenbusch-Ruine (Fähigkeiten deaktiviert).'; return; }
+      if (!useAbilities) { spielLog = '💀 Inaktiver Treant (Fähigkeiten deaktiviert).'; return; }
       const p = players[currentPlayerIdx];
-      if (p.charIdx !== 2) { spielLog = '💀 Dornenbusch-Ruine – nur Nadoris kann sie regenerieren.'; return; }
-      // Bestätigungsdialog öffnen
-      nadorRegenPrompt = { bdIdx, bq, br };
-      spielLog = '🌿 Dornenbusch regenerieren?';
+      if (p.charIdx !== 2) { spielLog = '💀 Inaktiver Treant – nur Nadoris kann ihn wiederbeleben.'; return; }
+      const canUseMünze = !!p.abilityReady;
+      nadorRegenPrompt = { bdIdx, bq, br, canUseMünze };
+      spielLog = '🌿 Treant wiederbeleben?';
       return;
     }
 
-    function executeNadorRegen(bdIdx, bq, br) {
+    function executeNadorRegen(bdIdx, bq, br, useMünze = false) {
       const p = players[currentPlayerIdx];
       const enemies = spielUnits
         .map((u, i) => ({ u, i }))
         .filter(({ u }) => u.q === bq && u.r === br && u.ownerIdx !== currentPlayerIdx && u.type !== 'BD');
 
       saveSpielState();
-      p.nachtrank -= 1;
+      if (useMünze) {
+        p.abilityReady = false;
+      } else {
+        p.nachtrank -= 1;
+      }
+
+      const kostLabel = useMünze ? 'Münze' : '1 Trank';
 
       if (enemies.length === 0) {
-        // No enemies: just regenerate
         spielUnits[bdIdx].type = 'B';
-        spielPhase3Log.push({ label: '🌿 Dornenbusch', detail: 'regeneriert (1 Trank)' });
-        spielLog = '🌿 Dornenbusch regeneriert!';
+        spielPhase3Log.push({ label: '🌿 Treant', detail: `wiederbelebt (${kostLabel})` });
+        spielLog = '🌿 Treant wiederbelebt!';
         return;
       }
 
-      // Enemy on field: Busch attacks (1 ATK), enemy counter-attacks (1 ATK) → Bush bleibt Ruine
+      // Treant erwacht mit Feinden auf Feld: greift mit 1 ATK an, Gegenangriff → bleibt inaktiv
       const enemy = enemies[0].u;
       const eIdx  = enemies[0].i;
       const droppedGems = [];
-      let msg = '🌿 Busch greift an! ';
+      let msg = '🌿 Treant erwacht und greift an! ';
 
       if (enemy.type === 'W') {
-        // Busch (1 ATK) trifft W → W→S. W schlägt zurück (1 ATK) → Busch→Ruine bleibt.
         spielUnits[eIdx].type = 'S';
         spielTurnKills.push('WD');
-        msg += 'Feindlicher Wächter → Schleicher. Dornenbusch bleibt Ruine.';
+        msg += 'Feindlicher Wächter → Schleicher. Treant bleibt inaktiv.';
       } else {
-        // Busch (1 ATK) trifft S → S stirbt. S schlägt zurück (1 ATK) → Busch bleibt Ruine.
         if (enemy.hasGem) droppedGems.push({ q: enemy.q, r: enemy.r });
         spielTurnKills.push('S');
         trackMovinaTod(enemy);
         spielUnits.splice(eIdx, 1);
-        msg += 'Feindlicher Schleicher stirbt. Dornenbusch bleibt Ruine.';
+        msg += 'Feindlicher Schleicher stirbt. Treant bleibt inaktiv.';
       }
 
       droppedGems.forEach(g => {
@@ -7144,8 +7140,9 @@
         if (free >= 0) spielUnits[free].hasGem = true;
       });
 
-      spielPhase3Log.push({ label: '🌿 Dornenbusch → Ruine', detail: `Angriff (1 Trank)` });
-      spielLog = msg + ` (${p.nachtrank} Tränke übrig – erneut klicken zum Wiederholen)`;
+      spielPhase3Log.push({ label: '🌿 Treant → inaktiv', detail: `Angriff (${kostLabel})` });
+      const extra = useMünze ? '' : ` (${p.nachtrank} Tränke übrig – erneut klicken zum Wiederholen)`;
+      spielLog = msg + extra;
     }
 
     // ── Allgemeiner Klick-Handler: Menü + Versionsnummer ────────────────────
@@ -7353,7 +7350,7 @@
           if (mx >= btn.x && mx <= btn.x + btn.w && my >= btn.y && my <= btn.y + btn.h) {
             if (btn.action === 'nadorReplaceYes') {
               nadorBuschReplaceMode.selecting = true;
-              spielLog = '🌿 Wähle den Dornenbusch, der vernichtet werden soll.';
+              spielLog = '🌿 Wähle den Treant, der entfernt werden soll.';
               render(); return;
             }
             if (btn.action === 'nadorReplaceNo') {
@@ -7389,8 +7386,8 @@
             else if (spielSelectedIdx !== null && spielSelectedIdx > removeIdx) spielSelectedIdx--;
           }
           spielUnits.push({ q: nadorBuschReplaceMode.newQ, r: nadorBuschReplaceMode.newR, type: 'B', ownerIdx: nadorBuschReplaceMode.nadorPIdx });
-          spielPhase3Log.push({ label: '🌿 Dornenbusch', detail: 'neu + ersetzt' });
-          spielLog = '🌿 Dornenbusch gesetzt – alter Busch vernichtet!';
+          spielPhase3Log.push({ label: '🌿 Treant', detail: 'neu + ersetzt' });
+          spielLog = '🌿 Treant gesetzt – alter Treant entfernt!';
           nadorBuschReplaceMode = null;
         } else {
           nadorBuschReplaceMode = null;
@@ -7471,7 +7468,7 @@
           nadorReaktivSelect = null;
           const bd = spielUnits.find(u => u.type === 'BD' && u.q === bq && u.r === br2 && u.ownerIdx === nPIdx);
           if (bd) bd.type = 'B';
-          spielLog = '🌿 Nadoris setzt Münze ein – Dornenbusch regeneriert!';
+          spielLog = '🌿 Nadoris setzt Münze ein – Treant wiederbelebt!';
           advanceToNextPlayerAnimated();
         }
         render(); return;
@@ -7493,28 +7490,38 @@
         })();
         const bk = key(bq, br2);
         if (nadorBuschMode.eligibleKeys.includes(bk)) {
-          const { nadorPIdx } = nadorBuschMode;
-          const playerCount = players.filter(p => !p.eliminated).length;
-          const maxBushes   = playerCount <= 2 ? 1 : playerCount <= 4 ? 2 : 3;
-          const bushes      = spielUnits.map((u, i) => ({ u, i })).filter(({ u }) => u.ownerIdx === nadorPIdx && (u.type === 'B' || u.type === 'BD'));
+          const { nadorPIdx, eligibleReviveKeys, eligibleNewKeys } = nadorBuschMode;
           nadorBuschMode = null;
-          if (bushes.length >= maxBushes) {
-            nadorBuschReplaceMode = {
-              nadorPIdx,
-              newQ: bq, newR: br2,
-              eligibleBushKeys: bushes.map(({ u }) => key(u.q, u.r)),
-              selecting: false,
-            };
-            spielLog = '🌿 Maximum erreicht – soll ein bestehender Busch vernichtet werden?';
+
+          // Wiederbelebung: BD auf diesem Feld
+          if (eligibleReviveKeys && eligibleReviveKeys.includes(bk)) {
+            const bdUnit = spielUnits.find(u => u.type === 'BD' && u.q === bq2 && u.r === br2 && u.ownerIdx === nadorPIdx);
+            if (bdUnit) {
+              const bdIdx = spielUnits.indexOf(bdUnit);
+              executeNadorRegen(bdIdx, bq2, br2, true);
+            }
           } else {
-            saveSpielState();
-            spielUnits.push({ q: bq, r: br2, type: 'B', ownerIdx: nadorPIdx });
-            spielPhase3Log.push({ label: '🌿 Dornenbusch', detail: 'beschworen' });
-            spielLog = '🌿 Dornenbusch beschworen!';
+            // Neuer Treant setzen
+            const playerCount = players.filter(p => !p.eliminated).length;
+            const maxBushes   = playerCount <= 2 ? 1 : playerCount <= 4 ? 2 : 3;
+            const bushes      = spielUnits.map((u, i) => ({ u, i })).filter(({ u }) => u.ownerIdx === nadorPIdx && (u.type === 'B' || u.type === 'BD'));
+            if (bushes.length >= maxBushes) {
+              nadorBuschReplaceMode = {
+                nadorPIdx,
+                newQ: bq2, newR: br2,
+                eligibleBushKeys: bushes.map(({ u }) => key(u.q, u.r)),
+                selecting: false,
+              };
+              spielLog = '🌿 Maximum erreicht – soll ein bestehender Treant entfernt werden?';
+            } else {
+              spielUnits.push({ q: bq2, r: br2, type: 'B', ownerIdx: nadorPIdx });
+              spielPhase3Log.push({ label: '🌿 Treant', detail: 'beschworen' });
+              spielLog = '🌿 Treant beschworen!';
+            }
           }
         } else {
           nadorBuschMode = null;
-          spielLog = '🌿 Beschwörung abgebrochen.';
+          spielLog = '🌿 Aktion abgebrochen.';
         }
         render(); return;
       }
@@ -7567,7 +7574,7 @@
                 trackNadorBuschAngegriffen(spielUnits[blitzBushIdx]);
                 spielUnits[blitzBushIdx].type = 'BD';
                 msg += '🌿 Busch → Ruine. Schleicher überlebt.';
-                spielPhase3Log.push({ label: '⚡ Donnerblitz', detail: '→ Busch-Ruine' });
+                spielPhase3Log.push({ label: '⚡ Donnerblitz', detail: '→ Treant inaktiv' });
               } else if (tgt.type === 'W') {
                 spielUnits[tgtIdx].type = 'S';
                 if (isNeutralTgt) { players[currentPlayerIdx].machtsteine += 1; msg += 'Neutraler Wächter → S. +1 MP.'; }
@@ -7577,7 +7584,7 @@
                 if (tgt.type === 'S' && tgt.hasGem) droppedGems.push({ q: tq, r: tr });
                 if (!isNeutralTgt) { trackMovinaTod(tgt); spielTurnKills.push(tgt.type); }
                 if (isNeutralTgt) { players[currentPlayerIdx].machtsteine += 1; msg += 'Neutraler Schleicher stirbt. +1 MP.'; }
-                else msg += `${tgt.type === 'B' ? 'Dornenbusch' : 'Schleicher'} stirbt.`;
+                else msg += `${tgt.type === 'B' ? 'Treant inaktiv.' : 'Schleicher stirbt.'}`;
                 spielUnits.splice(tgtIdx, 1);
                 spielPhase3Log.push({ label: '⚡ Donnerblitz', detail: `${tgt.type} stirbt` });
               }
@@ -7685,12 +7692,12 @@
               if (positions.length === 1) {
                 const bd = spielUnits.find(u => u.type === 'BD' && u.q === positions[0].q && u.r === positions[0].r && u.ownerIdx === nPIdx);
                 if (bd) bd.type = 'B';
-                spielLog = '🌿 Nadoris setzt Münze ein – Dornenbusch regeneriert!';
+                spielLog = '🌿 Nadoris setzt Münze ein – Treant wiederbelebt!';
                 advanceToNextPlayerAnimated();
               } else {
                 const eligibleKeys = positions.map(p => key(p.q, p.r));
                 nadorReaktivSelect = { eligibleKeys, nPIdx };
-                spielLog = '🌿 Klicke auf eine Ruine (💀) zum Regenerieren.';
+                spielLog = '🌿 Klicke auf einen inaktiven Treant (💀) zum Wiederbeleben.';
               }
             } else {
               nadorReaktivPrompt = null;
@@ -7702,50 +7709,73 @@
             nadorReaktivPrompt = null;
             advanceToNextPlayerAnimated(); return;
           }
+          if (btn.action === 'nadorRegenMünze') {
+            const { bdIdx, bq, br } = nadorRegenPrompt;
+            nadorRegenPrompt = null;
+            executeNadorRegen(bdIdx, bq, br, true);
+            render(); return;
+          }
           if (btn.action === 'nadorRegenYes') {
             const { bdIdx, bq, br } = nadorRegenPrompt;
             nadorRegenPrompt = null;
-            executeNadorRegen(bdIdx, bq, br);
+            executeNadorRegen(bdIdx, bq, br, false);
             render(); return;
           }
           if (btn.action === 'nadorRegenNo') {
             nadorRegenPrompt = null;
-            spielLog = '🌿 Regeneration abgebrochen.';
+            spielLog = '🌿 Wiederbelebung abgebrochen.';
             render(); return;
           }
           if (btn.action === 'movinaReviveYes') {
             const movPIdx = players.findIndex(p => p.charIdx === 4 && !p.eliminated);
             if (movPIdx !== -1 && movinaFeldTod) {
               const { q: fq, r: fr } = movinaFeldTod;
-              const atkIdx = spielUnits.findIndex(u => u.q === fq && u.r === fr && u.ownerIdx === currentPlayerIdx);
-              if (atkIdx !== -1) {
-                const atk = spielUnits[atkIdx];
-                if (atk.type === 'W') {
-                  spielUnits[atkIdx].type = 'S';
-                  spielLog = '💀 Totenerweckung: Schleicher erwacht, trifft Wächter → Wächter → Schleicher. Schleicher stirbt.';
-                } else {
-                  if (atk.hasGem) droppedGems.push({ q: atk.q, r: atk.r });
-                  spielTurnKills.push(atk.type);
-                  spielUnits.splice(atkIdx, 1);
-                  spielLog = '💀 Totenerweckung: Schleicher erwacht, tötet Angreifer – und stirbt.';
-                }
-              } else {
-                spielLog = '💀 Totenerweckung: Schleicher erwacht kurz – kein Angreifer mehr auf dem Feld.';
-              }
-              movinaReaktivUsed = true;
+              // Schleicher wiederbeleben
+              spielUnits.push({ q: fq, r: fr, type: 'S', ownerIdx: movPIdx });
               players[movPIdx].abilityReady = false;
-              movinaSchleicherTod = false;
               movinaFeldTod = null;
-              spielPhase3Log.push({ label: '💀 Totenerweckung (reaktiv)', detail: 'Gegenschlag' });
+              // Feinde auf Feld prüfen
+              const enemies = spielUnits
+                .map((u, i) => ({ u, i }))
+                .filter(({ u }) => u.q === fq && u.r === fr && u.ownerIdx !== movPIdx && u.type !== 'BD');
+              if (enemies.length > 0) {
+                const { u: enemy, i: eIdx } = enemies[0];
+                if (enemy.type === 'W') {
+                  spielUnits[eIdx].type = 'S';
+                  spielTurnKills.push('WD');
+                  // Wächter schlägt zurück → Schleicher stirbt
+                  const sIdx = spielUnits.findIndex(u => u.q === fq && u.r === fr && u.ownerIdx === movPIdx && u.type === 'S');
+                  if (sIdx !== -1) spielUnits.splice(sIdx, 1);
+                  spielLog = '💀 Totenerweckung: Schleicher erwacht, greift Wächter an → W→S. Schleicher stirbt.';
+                } else {
+                  if (enemy.hasGem) droppedGems.push({ q: enemy.q, r: enemy.r });
+                  spielTurnKills.push('S');
+                  spielUnits.splice(eIdx, 1);
+                  // Feind schlägt zurück → Schleicher stirbt
+                  const sIdx = spielUnits.findIndex(u => u.q === fq && u.r === fr && u.ownerIdx === movPIdx && u.type === 'S');
+                  if (sIdx !== -1) spielUnits.splice(sIdx, 1);
+                  spielLog = '💀 Totenerweckung: Schleicher erwacht, tötet Feind – und stirbt.';
+                }
+                spielPhase3Log.push({ label: '💀 Totenerweckung', detail: 'Angriff' });
+              } else {
+                spielLog = '💀 Totenerweckung: Schleicher erwacht – kein Feind auf dem Feld. Schleicher am Leben.';
+                spielPhase3Log.push({ label: '💀 Totenerweckung', detail: 'Schleicher am Leben' });
+              }
               checkEliminations();
             }
             movinaRevivePrompt = false;
-            advanceToNextPlayerAnimated(); render(); return;
+            const wasOwnTurn = movinaReviveIsOwnTurn;
+            movinaReviveIsOwnTurn = false;
+            if (!wasOwnTurn) advanceToNextPlayerAnimated();
+            render(); return;
           }
           if (btn.action === 'movinaReviveNo') {
             movinaRevivePrompt = false;
             movinaFeldTod = null;
-            advanceToNextPlayerAnimated(); render(); return;
+            const wasOwnTurn = movinaReviveIsOwnTurn;
+            movinaReviveIsOwnTurn = false;
+            if (!wasOwnTurn) advanceToNextPlayerAnimated();
+            render(); return;
           }
           if (btn.action === 'confirmRecovery') {
             const nPIdx = useAbilities ? players.findIndex(p => p.charIdx === 2 && !p.eliminated) : -1;
@@ -7756,7 +7786,7 @@
               render(); return;
             }
             const movPIdx = useAbilities ? players.findIndex(p => p.charIdx === 4 && !p.eliminated) : -1;
-            if (movPIdx !== -1 && players[movPIdx].abilityReady && movinaFeldTod && movPIdx !== currentPlayerIdx) {
+            if (movPIdx !== -1 && players[movPIdx].abilityReady && movinaFeldTod && movPIdx !== currentPlayerIdx && !movinaReviveIsOwnTurn) {
               if (phase3TimeoutId) { clearTimeout(phase3TimeoutId); phase3TimeoutId = null; }
               movinaRevivePrompt = true;
               render(); return;
@@ -7795,20 +7825,26 @@
 
             if (charIdx === 2) {
               const nadorPIdx = btn.pIdx;
-              const eligibleKeys = [...new Set(
-                spielUnits.filter(u => u.ownerIdx === nadorPIdx && u.type === 'S').map(u => key(u.q, u.r))
+              // Felder für neuen Treant: eigene Einheit (W/S) vorhanden, noch kein Treant
+              const eligibleNewKeys = [...new Set(
+                spielUnits.filter(u => u.ownerIdx === nadorPIdx && (u.type === 'S' || u.type === 'W')).map(u => key(u.q, u.r))
               )].filter(k => {
                 const [bq2, br2] = k.split(',').map(Number);
-                return !spielUnits.some(u => u.ownerIdx === nadorPIdx && (u.type === 'B' || u.type === 'BD') && u.q === bq2 && u.r === br2);
+                return !spielUnits.some(u => (u.type === 'B' || u.type === 'BD') && u.q === bq2 && u.r === br2);
               });
-              if (eligibleKeys.length === 0) {
+              // Felder mit inaktivem Treant (BD) zur Wiederbelebung
+              const eligibleReviveKeys = spielUnits
+                .filter(u => u.ownerIdx === nadorPIdx && u.type === 'BD')
+                .map(u => key(u.q, u.r));
+              const allEligible = [...new Set([...eligibleNewKeys, ...eligibleReviveKeys])];
+              if (allEligible.length === 0) {
                 players[btn.pIdx].abilityReady = true;
-                spielLog = '🌿 Kein eigener Schleicher verfügbar – Dornenbusch kann nicht beschworen werden.';
+                spielLog = '🌿 Kein geeignetes Feld – Treant kann nicht gesetzt oder wiederbelebt werden.';
                 render(); return;
               }
               saveSpielState();
-              nadorBuschMode = { nadorPIdx, eligibleKeys };
-              spielLog = '🌿 Dornenbusch: Klicke auf ein Feld mit eigenem Schleicher.';
+              nadorBuschMode = { nadorPIdx, eligibleKeys: allEligible, eligibleNewKeys, eligibleReviveKeys };
+              spielLog = '🌿 Treant: Klicke auf ein Feld zum Setzen oder auf einen inaktiven Treant (💀) zum Wiederbeleben.';
               render(); return;
             }
 
@@ -7820,21 +7856,8 @@
             }
 
             if (charIdx === 4) {
-              const movPIdx2 = btn.pIdx;
-              const campUnits2 = spielUnits.filter(u =>
-                u.ownerIdx === movPIdx2 &&
-                u.q === players[movPIdx2].campQ && u.r === players[movPIdx2].campR);
-              if (campUnits2.length >= 3) {
-                players[movPIdx2].abilityReady = true;
-                spielLog = '💀 Lager ist voll – Totenerweckung nicht möglich.';
-                render(); return;
-              }
-              saveSpielState();
-              spielUnits.push({ q: players[movPIdx2].campQ, r: players[movPIdx2].campR, type: 'W', ownerIdx: movPIdx2 });
-              players[movPIdx2].abilityReady = false;
-              movinaSchleicherTod = false;
-              spielPhase3Log.push({ label: '💀 Totenerweckung', detail: 'Wächter ins Lager' });
-              spielLog = '💀 Totenerweckung: Ein Wächter erwacht im Lager.';
+              players[btn.pIdx].abilityReady = true; // Münze zurückgeben
+              spielLog = '💀 Totenerweckung – Münze wird automatisch eingesetzt, wenn ein Schleicher stirbt.';
               render(); return;
             }
 
@@ -8137,12 +8160,12 @@
 
           if (isBushCombo) {
             const res = resolveSpielCombat(selUnit, { type: 'W' }, fireInfusionAtkBonus, 0);
-            let msg = `Kampf: ${selUnit.type}${fireInfusionAtkBonus > 0 ? '⚔' : ''} → 🌿Busch-S. `;
+            let msg = `Kampf: ${selUnit.type}${fireInfusionAtkBonus > 0 ? '⚔' : ''} → 🌿Treant-S. `;
             if (res.defenderDowngraded) {
               // Busch → Ruine; Schleicher überlebt
               trackNadorBuschAngegriffen(spielUnits[bushComboIdx]);
               spielUnits[bushComboIdx].type = 'BD';
-              msg += 'Busch zerstört → Ruine. Schleicher überlebt. ';
+              msg += 'Treant inaktiv. Schleicher überlebt.';
             } else if (!res.defenderSurvives) {
               // Busch → Ruine; Schleicher stirbt
               trackNadorBuschAngegriffen(spielUnits[bushComboIdx]);
@@ -8154,7 +8177,7 @@
               spielUnits.splice(defIdx, 1);
               if (spielSelectedIdx === defIdx) spielSelectedIdx = null;
               else if (spielSelectedIdx !== null && spielSelectedIdx > defIdx) spielSelectedIdx--;
-              msg += 'Busch → Ruine. Schleicher stirbt. ';
+              msg += 'Treant inaktiv. Schleicher stirbt. ';
             }
             if (!res.attackerSurvives) {
               if (selUnit.hasGem) droppedGems.push({ q: selUnit.q, r: selUnit.r });
@@ -8173,7 +8196,7 @@
             janaFreeMoves -= janaFreeUsedB;
             players[currentPlayerIdx].nachtrank -= (cost - janaFreeUsedB);
             const bushFreeNote = janaFreeUsedB > 0 ? ` ❄${janaFreeUsedB} frei` : '';
-            spielPhase3Log.push({ label: `⚔ Kampf  ${selUnit.type}→🌿Busch-S`, detail: `−${cost - janaFreeUsedB} Trank${bushFreeNote}` });
+            spielPhase3Log.push({ label: `⚔ Kampf  ${selUnit.type}→🌿Treant-S`, detail: `−${cost - janaFreeUsedB} Trank${bushFreeNote}` });
             spielLog = msg + ` (−${cost - janaFreeUsedB} Trank, ${players[currentPlayerIdx].nachtrank} übrig)`;
             checkEliminations();
 
@@ -8190,8 +8213,8 @@
             janaFreeMoves -= janaFreeUsedBs;
             players[currentPlayerIdx].nachtrank -= (cost - janaFreeUsedBs);
             const bsFreeNote = janaFreeUsedBs > 0 ? ` ❄${janaFreeUsedBs} frei` : '';
-            spielPhase3Log.push({ label: '⚔ Kampf  S→🌿Busch', detail: `−${cost - janaFreeUsedBs} Trank${bsFreeNote}` });
-            spielLog = `Kampf: Schleicher → Dornenbusch. Busch → Ruine. Schleicher stirbt. (−${cost - janaFreeUsedBs} Trank, ${players[currentPlayerIdx].nachtrank} übrig)`;
+            spielPhase3Log.push({ label: '⚔ Kampf  S→🌿Treant', detail: `−${cost - janaFreeUsedBs} Trank${bsFreeNote}` });
+            spielLog = `Kampf: Schleicher → Treant. Treant inaktiv. Schleicher stirbt. (−${cost - janaFreeUsedBs} Trank, ${players[currentPlayerIdx].nachtrank} übrig)`;
             checkEliminations();
             render(); return;
           }
@@ -8239,7 +8262,7 @@
                 // Busch nimmt Schaden → wird immer zur Ruine, nie entfernt
                 trackNadorBuschAngegriffen(spielUnits[defIdx]);
                 spielUnits[defIdx].type = 'BD';
-                msg += 'Dornenbusch → Ruine. ';
+                msg += 'Treant inaktiv. ';
               } else {
                 if (isNeutralDef) {
                   if (defender.type === 'W') { players[currentPlayerIdx].machtsteine += 2; msg += '+2 MP. '; }
@@ -8253,12 +8276,8 @@
             }
             if (!res.attackerSurvives) {
               if (selUnit.type === 'S' && selUnit.hasGem) droppedGems.push({ q: selUnit.q, r: selUnit.r });
-              trackMovinaTod(selUnit);
+              trackMovinaTod({ ...selUnit, q, r });
               spielUnits.splice(spielSelectedIdx, 1); spielSelectedIdx = null; msg += 'Angreifer stirbt.';
-              if (fireInfusionAtkBonus > 0 && selUnit.type === 'S' && defender.type === 'W' && !isNeutralDef && !res.defenderSurvives) {
-                tarrakFireGold++;
-                msg += ' ⚔ +1 Gold (Glutbeute).';
-              }
             } else {
               if (res.attackerDowngraded) { spielUnits[spielSelectedIdx].type = 'S'; msg += 'Angreifer → S. '; }
               const neutralsRemain = isNeutralDef && spielUnits.some(u => u.ownerIdx === -1 && u.q === q && u.r === r);
@@ -8302,7 +8321,7 @@
             janaFreeMoves -= janaFreeUsedAtk;
             players[currentPlayerIdx].nachtrank -= (cost - janaFreeUsedAtk);
             const atkLabel = selUnit.type === 'W' ? 'Wächter' : 'Schleicher';
-            const defLabel = defender.type === 'W' ? 'Wächter' : defender.type === 'B' ? 'Dornenbusch' : 'Schleicher';
+            const defLabel = defender.type === 'W' ? 'Wächter' : defender.type === 'B' ? 'Treant' : 'Schleicher';
             const neutralKillNote = isNeutralDef && !res.defenderSurvives && !res.defenderDowngraded
               ? (defender.type === 'W' ? ', +2 MP' : ', +1 MP') : '';
             const neutralHitNote  = isNeutralDef && res.defenderDowngraded ? ', +1 MP' : '';
@@ -8398,7 +8417,7 @@
               render(); return;
             }
             if (u.type === 'B') {
-              spielLog = '🌿 Dornenbusch ist unbeweglich.';
+              spielLog = '🌿 Treant ist unbeweglich.';
               render(); return;
             }
             spielSelectedIdx = nearest.idx;

@@ -134,6 +134,15 @@
     }
 
     .ability-sub p:last-child { margin-bottom: 0; }
+    .ability-section {
+      font-size: 0.72rem !important;
+      font-weight: 700;
+      color: var(--ct) !important;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-top: 8px !important;
+      margin-bottom: 2px !important;
+    }
 
     /* ── Stärken / Schwächen ──────────────────────────────────────── */
     .pros-cons {
@@ -329,7 +338,6 @@
                 <div class="ability-sub">
                   <p><strong>Schleicher (2 ATK):</strong> Kann einen Wächter töten statt ihn nur zu degradieren.</p>
                   <p><strong>Wächter (3 ATK):</strong> Kann 3 feindliche Schleicher gleichzeitig treffen statt 2.</p>
-                  <p><strong>Glutbeute (passiv):</strong> Tötet ein Schleicher mit Feuerinfusion einen feindlichen Wächter, gibt es +1 Gold extra – beide sterben dabei.</p>
                 </div>
               </div>
             </div>
@@ -383,15 +391,19 @@
               <div>
                 <div class="ability-label">🌳 Fähigkeit – Treant</div>
                 <p class="ability-text">
-                  Nadoris beschwört einen <strong>Treant</strong> auf einem Feld mit eigenem Schleicher.
-                  Der Treant ist mit dem Boden verwurzelt und kann sich nicht bewegen –
-                  er verleiht dem Feld <strong>+1 Angriff</strong> und <strong>+1 Leben</strong>
-                  und bewahrt den letzten Schleicher vor dem Tod.
+                  Nadoris beschwört einen <strong>Treant</strong> auf einem Feld mit eigener Einheit.
+                  Aktiver Treant (🌿) schützt das Feld und wird zuerst angegriffen.
+                  Stirbt er, bleibt er als <strong>inaktiver Treant</strong> (💀) auf dem Feld –
+                  kein Schutz, kein Angriff, belegt nur den Platz.
                 </p>
                 <div class="ability-sub">
-                  <p><strong>Auto-Regen:</strong> Steht nach einem Angriff noch ein Schleicher auf dem Feld, erwacht der Treant erneut – ohne Kosten.</p>
-                  <p><strong>Kein Schleicher:</strong> Ist kein Schleicher mehr auf dem Feld, kann Nadoris 1 Trank zahlen, um den Treant neu zu erwecken.</p>
-                  <p><strong>Reaktive Münze:</strong> Greift ein Gegner den Treant an, solange die Münze noch aktiv ist, kann Nadoris ihn unmittelbar danach erneut beschwören.</p>
+                  <p class="ability-section">Im eigenen Zug</p>
+                  <p><strong>Neuer Treant:</strong> Münze-Button → Feld mit eigener Einheit wählen.</p>
+                  <p><strong>Wiederbelebung (Münze):</strong> Inaktiven Treant anklicken → Münze einsetzen (kostenlos, 1× pro Runde).</p>
+                  <p><strong>Wiederbelebung (Trank):</strong> Inaktiven Treant anklicken → 1 Trank. Mehrmals pro Runde möglich.</p>
+                  <p><strong>Feind auf Feld:</strong> Treant greift beim Erwachen mit 1 ATK an. Treant bleibt danach inaktiv.</p>
+                  <p class="ability-section">Im Gegnerzug</p>
+                  <p><strong>Reaktive Münze:</strong> Treant wird inaktiv + Münze bereit → sofortige Abfrage: Münze einsetzen → Treant sofort wiederbelebt.</p>
                   <p style="line-height:1.8"><strong>Limit:</strong><br>
                     bis 2 Spieler = 1 Treant<br>
                     3–4 Spieler = 2 Treants<br>
@@ -427,6 +439,7 @@
                   <p><strong>Trifft Schleicher:</strong> Feindlicher Schleicher stirbt sofort.</p>
                   <p><strong>Trifft Wächter:</strong> Feindlicher Wächter wird zu einem Schleicher degradiert.</p>
                   <p><strong>Der eigene Wächter</strong> bewegt sich nicht und erleidet keinen Schaden.</p>
+                  <p><strong>Marker ungenutzt:</strong> Wird am Zugend nicht eingesetzt, wandelt er sich automatisch in <strong>+1 Gold</strong> um.</p>
                 </div>
               </div>
             </div>
@@ -451,15 +464,18 @@
               <div>
                 <div class="ability-label">💀 Fähigkeit – Totenerweckung</div>
                 <p class="ability-text">
-                  Morvinas Münze startet jeden Zug <strong>deaktiviert</strong> – sie erwacht erst, wenn ein eigener
-                  Schleicher stirbt. Dann hat Morvina zwei Optionen:
+                  Morvinas Münze aktiviert sich zu Beginn ihres Zuges – wie bei allen anderen.
+                  Stirbt ein eigener Schleicher und die Münze ist aktiv, kann Morvina ihn auf dem Kampffeld wiederbeleben.
                 </p>
                 <div class="ability-sub">
-                  <p><strong>Option A – eigener Zug:</strong> Münze einsetzen → ein <strong>Wächter</strong> erscheint kostenlos im Lager. Münze wird danach deaktiviert. (Lager muss Platz haben.)</p>
-                  <p><strong>Option B – warten:</strong> Münze bleibt aktiv und kann reaktiv genutzt werden.</p>
-                  <p><strong>Reaktiv (Gegnerzug):</strong> Stirbt ein Schleicher auf dem Feld, solange die Münze aktiv ist, kann Morvina ihn kurz zurückrufen – er erwacht, schlägt einmal zurück und stirbt dann endgültig.</p>
-                  <p><strong>Gegenschlag:</strong> Trifft er einen Wächter → W wird zu Schleicher. Trifft er einen Schleicher → Angreifer stirbt.</p>
-                  <p><strong>Kein zweites Erwachen:</strong> Der zweite Tod aktiviert die Münze nicht erneut.</p>
+                  <p class="ability-section">Im eigenen Zug</p>
+                  <p>Stirbt ein Schleicher im Kampf → sofortige Abfrage: Münze einsetzen?</p>
+                  <p class="ability-section">Im Gegnerzug</p>
+                  <p>Stirbt ein Schleicher → Abfrage am Ende des Gegnerzuges: Münze einsetzen?</p>
+                  <p class="ability-section">Nach der Wiederbelebung</p>
+                  <p><strong>Feind auf Feld:</strong> Schleicher greift sofort automatisch an (1 ATK). Trifft W: W→S, S stirbt. Trifft S: beide sterben.</p>
+                  <p><strong>Kein Feind:</strong> Schleicher bleibt am Leben. Münze wird deaktiviert.</p>
+                  <p><strong>Einschränkung:</strong> Keine Wiederbelebung auf feindlichen Lagerfeldern oder violetten Zentrumsfeldern.</p>
                 </div>
               </div>
             </div>

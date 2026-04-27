@@ -74,6 +74,15 @@
       margin-bottom: 4px;
     }
     .fa-rules p:last-child { margin-bottom: 0; }
+    .fa-section-label {
+      font-size: 0.72rem !important;
+      font-weight: 700;
+      color: var(--ct) !important;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-top: 8px !important;
+      margin-bottom: 2px !important;
+    }
     .fa-tag {
       display: inline-block;
       font-size: 0.62rem;
@@ -495,10 +504,10 @@
                     <span class="fa-charname">Tarrak Feuerfaust</span>
                   </div>
                   <div class="fa-name">Feuerinfusion</div>
-                  <p class="fa-desc">Eine eigene Einheit erhält für diesen Zug <strong>+1 Angriffskraft</strong>. Kein Lagerangriff möglich. Einsetzbar beim Angriff und bei der Verteidigung.</p>
+                  <p class="fa-desc">Tarrak belegt eine eigene Einheit mit Feuerinfusion und verleiht ihr für diesen Kampf <strong>+1 Angriffskraft</strong>. Die Fähigkeit ist sowohl beim Angriff als auch bei der Verteidigung einsetzbar. Ein Lagerangriff ist unter Feuerinfusion nicht möglich.</p>
                   <div class="fa-rules">
-                    <p><strong>Schleicher (2 ATK):</strong> Kann einen Wächter töten statt ihn nur zu degradieren.</p>
-                    <p><strong>Wächter (3 ATK):</strong> Kann 3 feindliche Schleicher gleichzeitig treffen statt 2.</p>
+                    <p>Ein <strong>Schleicher</strong> kämpft unter Feuerinfusion mit 2 ATK und kann einen feindlichen Wächter töten, anstatt ihn lediglich zu degradieren.</p>
+                    <p>Ein <strong>Wächter</strong> kämpft unter Feuerinfusion mit 3 ATK und trifft bis zu drei feindliche Schleicher gleichzeitig, statt der üblichen zwei.</p>
                   </div>
                   <p style="margin-top:10px; padding:0 16px;"><span class="fa-tag">Aktiv</span><span class="fa-tag">Offensiv</span></p>
                 </div>
@@ -510,9 +519,9 @@
                     <span class="fa-charname">Jana Frostwind</span>
                   </div>
                   <div class="fa-name">Nordwind</div>
-                  <p class="fa-desc">Jana erhält <strong>2 kostenlose Bewegungen</strong>. Jede Bewegung bewegt eine beliebige eigene Einheit ein Feld weiter, ohne Tränke zu kosten. Beide Züge können auf dieselbe oder auf zwei verschiedene Einheiten angewendet werden.</p>
+                  <p class="fa-desc">Jana erhält <strong>2 kostenlose Bewegungspunkte</strong>, die sie in ihrem Zug beliebig auf eigene Einheiten verteilen kann. Jeder Punkt bewegt eine Einheit ein Feld weiter, ohne Tränke zu verbrauchen. Beide Punkte dürfen auf dieselbe oder auf zwei verschiedene Einheiten aufgeteilt werden.</p>
                   <div class="fa-rules">
-                    <p><strong>Ungenutzte Züge:</strong> Verfallen in der Beutephase – dafür erhält Jana <strong>+1 Trank</strong>.</p>
+                    <p>Werden die Bewegungspunkte bis zum Ende des Zuges nicht vollständig eingesetzt, verfallen sie in der Beutephase. Für jeden ungenutzten Punkt erhält Jana <strong>+1 Trank</strong> als Ausgleich.</p>
                   </div>
                   <p style="margin-top:10px; padding:0 16px;"><span class="fa-tag">Aktiv</span><span class="fa-tag">Mobil</span></p>
                 </div>
@@ -524,12 +533,13 @@
                     <span class="fa-charname">Nadoris Waldgeist</span>
                   </div>
                   <div class="fa-name">Treant</div>
-                  <p class="fa-desc">Nadoris beschwört einen <strong>Treant</strong> auf einem Feld mit eigenem Schleicher. Der Treant ist mit dem Boden verwurzelt und kann sich nicht bewegen – er verleiht dem Feld <strong>+1 ATK</strong> und <strong>+1 Leben</strong> und bewahrt den letzten Schleicher vor dem Tod.</p>
+                  <p class="fa-desc">Nadoris beschwört einen <strong>Treant</strong> auf einem Feld, das bereits eine eigene Einheit enthält. Der aktive Treant schützt das Feld und wird bei feindlichen Angriffen stets zuerst getroffen. Wird er besiegt, verbleibt er als <strong>inaktiver Treant</strong> auf dem Feld – ohne Schutzwirkung und ohne Angriffsstärke, belegt aber weiterhin einen Platz.</p>
                   <div class="fa-rules">
-                    <p><strong>Auto-Regen:</strong> Steht nach einem Angriff noch ein Schleicher auf dem Feld, erwacht der Treant erneut – kostenlos.</p>
-                    <p><strong>Kein Schleicher:</strong> Ist kein Schleicher mehr auf dem Feld, kann Nadoris 1 Trank zahlen um den Treant neu zu erwecken.</p>
-                    <p><strong>Reaktive Münze:</strong> Greift ein Gegner den Treant an, solange die Münze aktiv ist, kann Nadoris ihn unmittelbar danach erneut beschwören.</p>
-                    <p><strong>Max. Treants:</strong> 2 Spieler → 1 · 3–4 Spieler → 2 · 5–6 Spieler → 3</p>
+                    <p class="fa-section-label">Im eigenen Zug</p>
+                    <p>Nadoris aktiviert die Münze und wählt ein Feld mit einer eigenen Einheit, um dort einen neuen Treant zu beschwören. Liegt auf dem Feld bereits ein inaktiver Treant, kann dieser stattdessen per Münze (einmalig, kostenlos) oder per Trank (1 Trank, beliebig oft) wiederbelebt werden. Erwacht ein Treant auf einem Feld mit einer feindlichen Einheit, greift er diese sofort mit 1 ATK an und verbleibt danach im inaktiven Zustand.</p>
+                    <p class="fa-section-label">Im Gegnerzug</p>
+                    <p>Wird ein aktiver Treant im Gegnerzug besiegt und ist die Münze noch nicht eingesetzt, erscheint eine sofortige Abfrage. Bestätigt Nadoris, wird die Münze eingesetzt und der Treant umgehend wiederbelebt.</p>
+                    <p>Die maximale Anzahl gleichzeitiger Treants richtet sich nach der Spielerzahl: bei 2 Spielern 1, bei 3–4 Spielern 2, bei 5–6 Spielern 3.</p>
                   </div>
                   <p style="margin-top:10px; padding:0 16px;"><span class="fa-tag">Aktiv</span><span class="fa-tag">Reaktiv</span><span class="fa-tag">Kontrolle</span></p>
                 </div>
@@ -541,11 +551,11 @@
                     <span class="fa-charname">Thorgrim Donneraxt</span>
                   </div>
                   <div class="fa-name">Donnerblitz</div>
-                  <p class="fa-desc">Aktivieren setzt einen <strong>gelben Donnerblitz-Marker</strong>. Über den Marker kann ein eigener Wächter ein direkt <strong>angrenzendes Feld</strong> mit Schleicher-Stärke (1 ATK) angreifen – ohne eigenen Verlust oder Gegentreffer.</p>
+                  <p class="fa-desc">Thorgrim setzt einen <strong>Donnerblitz-Marker</strong> auf das Spielfeld. Solange der Marker aktiv ist, kann ein eigener Wächter ein direkt angrenzendes Feld mit 1 ATK angreifen, ohne dabei selbst Schaden zu nehmen oder einen Gegentreffer zu erleiden.</p>
                   <div class="fa-rules">
-                    <p><strong>Trifft Schleicher:</strong> Feindlicher Schleicher stirbt sofort.</p>
-                    <p><strong>Trifft Wächter:</strong> Feindlicher Wächter wird zu einem Schleicher degradiert.</p>
-                    <p><strong>Marker ungenutzt:</strong> Wird in der Beutephase in <strong>+1 Gold</strong> umgewandelt.</p>
+                    <p>Trifft der Blitz einen feindlichen <strong>Schleicher</strong>, stirbt dieser sofort.</p>
+                    <p>Trifft der Blitz einen feindlichen <strong>Wächter</strong>, wird dieser zu einem Schleicher degradiert.</p>
+                    <p>Wird der Marker bis zum Ende des Zuges nicht eingesetzt, wandelt er sich in der Beutephase automatisch in <strong>+1 Gold</strong> um.</p>
                   </div>
                   <p style="margin-top:10px; padding:0 16px;"><span class="fa-tag">Marker</span><span class="fa-tag">Positionell</span></p>
                 </div>
@@ -557,12 +567,15 @@
                     <span class="fa-charname">Morvina Aschegrund</span>
                   </div>
                   <div class="fa-name">Totenerweckung</div>
-                  <p class="fa-desc">Morvinas Münze startet jeden Zug <strong>deaktiviert</strong>. Sobald ein eigener Schleicher stirbt, wird sie aktiviert. Dann hat Morvina zwei Optionen.</p>
+                  <p class="fa-desc">Morvinas Münze aktiviert sich zu Beginn ihres Zuges wie bei allen anderen Charakteren. Stirbt ein eigener Schleicher, solange die Münze aktiv ist, kann Morvina ihn auf dem Kampffeld wiederbeleben – unabhängig davon, wer gerade am Zug ist.</p>
                   <div class="fa-rules">
-                    <p><strong>Option A – eigener Zug:</strong> Münze einsetzen → ein <strong>Wächter</strong> erscheint kostenlos im Lager. Münze wird deaktiviert. (Lager muss Platz haben.)</p>
-                    <p><strong>Option B – warten:</strong> Münze bleibt aktiv für reaktiven Einsatz im Gegnerzug.</p>
-                    <p><strong>Reaktiv (Gegnerzug):</strong> Stirbt ein Schleicher auf dem Feld, kann Morvina ihn kurz zurückrufen – er erwacht, schlägt einmal zurück (1 ATK) und stirbt endgültig. Trifft Wächter: W → S. Trifft Schleicher: Angreifer stirbt.</p>
-                    <p><strong>Kein zweites Erwachen:</strong> Der zweite Tod aktiviert die Münze nicht erneut.</p>
+                    <p class="fa-section-label">Im eigenen Zug</p>
+                    <p>Stirbt ein Schleicher im Kampf, erscheint sofort eine Abfrage. Wird die Münze eingesetzt, wird der Schleicher auf genau dem Feld wiederbelebt, auf dem er gefallen ist.</p>
+                    <p class="fa-section-label">Im Gegnerzug</p>
+                    <p>Stirbt ein Schleicher durch einen feindlichen Angriff, erscheint die Abfrage am Ende des gegnerischen Zuges. Morvina entscheidet dann, ob sie die Münze einsetzt.</p>
+                    <p class="fa-section-label">Nach der Wiederbelebung</p>
+                    <p>Befindet sich noch eine feindliche Einheit auf dem Feld, greift der wiederbelebte Schleicher diese sofort automatisch an. Trifft er einen feindlichen Wächter, wird dieser zu einem Schleicher degradiert und der wiederbelebte Schleicher stirbt. Trifft er einen feindlichen Schleicher, sterben beide. Ist das Feld frei, bleibt der Schleicher am Leben. In jedem Fall wird die Münze nach der Wiederbelebung deaktiviert.</p>
+                    <p><strong>Einschränkung:</strong> Die Wiederbelebung ist nicht möglich, wenn der Schleicher auf einem feindlichen Lagerfeld oder einem violetten Zentrumsfeld (Bereich der neutralen Wächter) gestorben ist.</p>
                   </div>
                   <p style="margin-top:10px; padding:0 16px;"><span class="fa-tag">Reaktiv</span><span class="fa-tag">Konter</span></p>
                 </div>
@@ -574,10 +587,10 @@
                     <span class="fa-charname">Illyria Mondlicht</span>
                   </div>
                   <div class="fa-name">Mondsprung</div>
-                  <p class="fa-desc">Illyria teleportiert Schleicher augenblicklich – überall auf der Karte. Zwei Richtungen wählbar.</p>
+                  <p class="fa-desc">Illyria kann einen eigenen Schleicher augenblicklich an jeden beliebigen Ort der Karte teleportieren. Die Fähigkeit bietet zwei Einsatzmöglichkeiten, die jeweils entgegengesetzte Richtungen darstellen.</p>
                   <div class="fa-rules">
-                    <p><strong>Lager → Feld:</strong> Ein Schleicher springt vom Lager auf ein beliebiges Feld mit genau einem eigenen Schleicher. Beim Landen erscheint ein dritter Schleicher – <strong>3 Schleicher</strong> auf dem Feld. (Kein Wächter, kein Busch auf dem Zielfeld.)</p>
-                    <p><strong>Feld → Lager:</strong> Einen beliebigen eigenen Schleicher <strong>ohne Edelstein</strong> sofort ins Lager zurückrufen.</p>
+                    <p><strong>Lager ins Feld:</strong> Ein Schleicher springt vom Lager auf ein beliebiges Feld, das genau einen eigenen Schleicher enthält. Beim Landen erscheinen dort insgesamt <strong>3 Schleicher</strong>. Das Zielfeld darf keinen eigenen Wächter oder Treant enthalten.</p>
+                    <p><strong>Feld ins Lager:</strong> Ein beliebiger eigener Schleicher <strong>ohne Edelstein</strong> wird sofort ins eigene Lager zurückgerufen.</p>
                   </div>
                   <p style="margin-top:10px; padding:0 16px;"><span class="fa-tag">Aktiv</span><span class="fa-tag">Taktisch</span></p>
                 </div>
