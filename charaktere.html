@@ -403,7 +403,7 @@
                   <p><strong>Wiederbelebung (Trank):</strong> Inaktiven Treant anklicken → 1 Trank. Mehrmals pro Runde möglich.</p>
                   <p><strong>Feind auf Feld:</strong> Treant greift beim Erwachen mit 1 ATK an. Treant bleibt danach inaktiv.</p>
                   <p class="ability-section">Im Gegnerzug</p>
-                  <p><strong>Reaktive Münze:</strong> Treant wird inaktiv + Münze bereit → sofortige Abfrage: Münze einsetzen → Treant sofort wiederbelebt.</p>
+                  <p><strong>Reaktive Münze:</strong> Wird ein Treant inaktiv und die Münze ist noch aktiv, erscheint sofort eine Abfrage – noch während des Gegnerzuges. Bei „Ja" wird der Treant umgehend wiederbelebt und der Gegnerzug läuft weiter.</p>
                   <p style="line-height:1.8"><strong>Limit:</strong><br>
                     bis 2 Spieler = 1 Treant<br>
                     3–4 Spieler = 2 Treants<br>
@@ -469,9 +469,9 @@
                 </p>
                 <div class="ability-sub">
                   <p class="ability-section">Im eigenen Zug</p>
-                  <p>Stirbt ein Schleicher im Kampf → sofortige Abfrage: Münze einsetzen?</p>
+                  <p>Stirbt ein eigener Schleicher im Kampf → sofortige Abfrage: Münze einsetzen?</p>
                   <p class="ability-section">Im Gegnerzug</p>
-                  <p>Stirbt ein Schleicher → Abfrage am Ende des Gegnerzuges: Münze einsetzen?</p>
+                  <p>Stirbt ein eigener Schleicher → sofortige Abfrage noch während des Gegnerzuges: Münze einsetzen? Bei „Ja" wird der Schleicher sofort wiederbelebt und der Gegnerzug läuft weiter.</p>
                   <p class="ability-section">Nach der Wiederbelebung</p>
                   <p><strong>Feind auf Feld:</strong> Schleicher greift sofort automatisch an (1 ATK). Trifft W: W→S, S stirbt. Trifft S: beide sterben.</p>
                   <p><strong>Kein Feind:</strong> Schleicher bleibt am Leben. Münze wird deaktiviert.</p>
@@ -500,11 +500,13 @@
               <div>
                 <div class="ability-label">🌙 Fähigkeit – Mondsprung</div>
                 <p class="ability-text">
-                  Illyria teleportiert Schleicher augenblicklich – überall auf der Karte. Zwei Richtungen wählbar.
+                  Illyrias Münze wirkt auf zwei Arten – aktiv im eigenen Zug und reaktiv als Schutzschild im Gegnerzug.
                 </p>
                 <div class="ability-sub">
-                  <p><strong>Lager → Feld:</strong> Ein Schleicher springt vom Lager auf ein beliebiges Feld mit genau einem eigenen Schleicher. Beim Landen erscheint ein dritter Schleicher – <strong>3 Schleicher</strong> auf dem Feld. (Kein Wächter, kein Busch auf dem Zielfeld.)</p>
-                  <p><strong>Feld → Lager:</strong> Einen beliebigen eigenen Schleicher <strong>ohne Edelstein</strong> sofort ins Lager zurückrufen – rettet bedrohte Einheiten oder repositioniert sie für die nächste Runde.</p>
+                  <p class="ability-section">Im eigenen Zug – Mondsprung</p>
+                  <p>Wähle einen beliebigen eigenen Schleicher <strong>ohne Edelstein</strong> als Startpunkt (von jedem Feld). Er springt auf ein Feld mit genau einem anderen eigenen Schleicher. Ergebnis: <strong>2 Schleicher</strong> auf dem Zielfeld. (Kein Wächter, kein Treant auf dem Zielfeld.)</p>
+                  <p class="ability-section">Im Gegnerzug – Schutzschild</p>
+                  <p>Solange die Münze aktiv ist, kostet der <strong>erste Angriff</strong> auf eine Einheit von Illyria den Angreifer <strong>+1 Trank extra</strong>. Nach diesem Angriff wird Illyrias Münze sofort deaktiviert und bleibt es bis zum nächsten eigenen Zug.</p>
                 </div>
               </div>
             </div>

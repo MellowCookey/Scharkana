@@ -1172,7 +1172,7 @@
           'Wiederbelebung per Trank: inaktiven Treant anklicken → 1 Trank (mehrmals möglich).',
           'Feind auf Feld beim Erwachen: Treant greift sofort mit 1 ATK an.',
           '— Im Gegnerzug (reaktiv) —',
-          'Münze bereit + Treant wird inaktiv → sofortige Abfrage: Münze einsetzen?',
+          'Treant wird inaktiv + Münze aktiv → sofortige Abfrage noch während des Gegnerzuges. Bei Ja: Treant wiederbelebt, Gegnerzug läuft weiter.',
         ],
         pros: ['Feldbeschützter ohne Einheitenkosten', 'Trank-Wiederbelebung mehrmals pro Runde', 'Reaktive Münze bei Angriff'],
         cons: ['Inaktiver Treant schützt nicht', 'Münze nur 1× pro Runde', 'Kein Lagerangriff'],
@@ -1199,7 +1199,7 @@
           '— Im eigenen Zug —',
           'Stirbt ein eigener Schleicher im Kampf → sofortige Abfrage: Münze einsetzen?',
           '— Im Gegnerzug —',
-          'Stirbt ein eigener Schleicher → Abfrage am Zugende: Münze einsetzen?',
+          'Stirbt ein eigener Schleicher → sofortige Abfrage noch während des Gegnerzuges. Bei Ja: Schleicher wiederbelebt, Gegnerzug läuft weiter.',
           '— Nach der Wiederbelebung —',
           'Feind auf Feld → Schleicher greift sofort automatisch an (1 ATK). Kein Feind → Schleicher bleibt am Leben.',
           'In beiden Fällen: Münze wird deaktiviert.',
@@ -1209,16 +1209,20 @@
         typ: 'Reaktiv', schwierigkeit: 'Intuitiv',
       },
       {
-        abilityName: 'Mondsprung',
+        abilityName: 'Mondsprung & Schutzschild',
         icon: '🌙',
-        desc: 'Zwei Richtungen: Lager → Feld: Ein Schleicher springt vom Lager auf ein Feld mit genau einem eigenen Schleicher – beim Landen erscheint ein dritter Schleicher (3 total). Feld → Lager: Beliebigen Schleicher ohne Edelstein sofort ins Lager zurückrufen.',
+        desc: 'Aktiv: Ein beliebiger eigener Schleicher springt zu einem anderen Schleicher – 2 Schleicher auf dem Zielfeld. Reaktiv: Der erste Angriff auf Illyrias Einheiten kostet den Angreifer +1 Trank extra.',
         details: [
-          'Lager → Feld: Zielfeld muss genau 1 eigenen Schleicher haben (kein Wächter, kein Busch, kein Edelstein).',
-          'Beim Landen: Lager-S kommt an + 1 neuer Schleicher erscheint = 3 Schleicher total.',
-          'Feld → Lager: Jeder eigene Schleicher ohne Edelstein kann sofort zurückgerufen werden.',
+          '— Im eigenen Zug – Mondsprung —',
+          'Wähle jeden eigenen Schleicher ohne Edelstein als Startpunkt (von jedem Feld).',
+          'Er springt auf ein Feld mit genau 1 anderen eigenen Schleicher → 2 Schleicher auf dem Zielfeld.',
+          'Zielfeld: genau 1 eigener Schleicher, kein Wächter, kein Treant.',
+          '— Im Gegnerzug – Schutzschild —',
+          'Münze aktiv → erster Angriff auf eine Illyria-Einheit kostet +1 Trank extra (2 statt 1).',
+          'Nach diesem Angriff: Münze sofort deaktiviert.',
         ],
-        pros: ['Sofortige Verstärkung auf jedem Feld', 'Bedrohte Schleicher retten', 'Ganzkarten-Reichweite'],
-        cons: ['Lager → Feld nur bei genau 1 Schleicher auf Zielfeld', 'Kein Edelstein-Schleicher zurückrufbar', 'Kein passiver Fallback'],
+        pros: ['Schleicher von jedem Feld springbar', 'Schutzschild erhöht Angriffskosten', 'Zwei unabhängige Einsatzmöglichkeiten'],
+        cons: ['Zielfeld braucht genau 1 Schleicher', 'Schutzschild nur beim ersten Angriff', 'Münze deaktiviert nach Schild-Einsatz'],
         typ: 'Taktisch', schwierigkeit: 'Komplex',
       },
     ];
@@ -2059,7 +2063,7 @@
         { t:'body',    s:'· Feind auf Feld beim Erwachen: Treant greift sofort mit 1 ATK an (W→S, S stirbt). Treant bleibt danach inaktiv.' },
         { t:'gap' },
         { t:'sub',     s:'Im Gegnerzug (reaktiv)' },
-        { t:'body',    s:'· Münze bereit + Treant wird inaktiv → sofortige Abfrage: Münze einsetzen? → Treant sofort wiederbelebt.' },
+        { t:'body',    s:'· Treant wird inaktiv + Münze ist aktiv → sofortige Abfrage noch während des Gegnerzuges: Münze einsetzen? → Treant sofort wiederbelebt, Gegnerzug läuft weiter.' },
         { t:'gap' },
         { t:'body',    s:'· Maximum erreicht: Dialog erscheint. Neuen Treant setzen und einen bestehenden entfernen.' },
         { t:'body',    s:'· Limit: 2 Spieler = 1  ·  3–4 Spieler = 2  ·  5–6 Spieler = 3 Treants' },
@@ -2085,10 +2089,10 @@
         { t:'body',    s:'Morvinas Münze aktiviert sich zu Beginn ihres Zuges – wie bei allen anderen. Stirbt ein eigener Schleicher und die Münze ist aktiv, kann Morvina ihn auf dem Kampffeld wiederbeleben.' },
         { t:'gap' },
         { t:'sub',     s:'Im eigenen Zug' },
-        { t:'body',    s:'· Stirbt ein Schleicher im Kampf → sofortige Abfrage: Münze einsetzen?' },
+        { t:'body',    s:'· Stirbt ein eigener Schleicher im Kampf → sofortige Abfrage: Münze einsetzen?' },
         { t:'gap' },
         { t:'sub',     s:'Im Gegnerzug' },
-        { t:'body',    s:'· Stirbt ein Schleicher → Abfrage am Ende des Gegnerzuges: Münze einsetzen?' },
+        { t:'body',    s:'· Stirbt ein eigener Schleicher → sofortige Abfrage noch während des Gegnerzuges: Münze einsetzen? → Schleicher sofort wiederbelebt, Gegnerzug läuft weiter.' },
         { t:'gap' },
         { t:'sub',     s:'Nach der Wiederbelebung' },
         { t:'body',    s:'· Feind auf Feld → Schleicher greift sofort automatisch an (1 ATK). Trifft W: W→S, S stirbt. Trifft S: beide sterben.' },
@@ -2096,16 +2100,17 @@
         { t:'body',    s:'· In beiden Fällen: Münze wird deaktiviert.' },
         { t:'body',    s:'· Einschränkung: Keine Wiederbelebung auf feindlichen Lagerfeldern oder violetten Zentrumsfeldern.' },
         { t:'gap' },
-        { t:'chapter', s:'6  ·  ILLYRIA MONDLICHT  –  🌙 Mondsprung' },
+        { t:'chapter', s:'6  ·  ILLYRIA MONDLICHT  –  🌙 Mondsprung & Schutzschild' },
         { t:'gap' },
         { t:'body',    s:'Typ: Taktisch  ·  Schwierigkeit: Komplex' },
-        { t:'body',    s:'Zwei Richtungen wählbar – je nach Situation.' },
+        { t:'body',    s:'Illyrias Münze wirkt auf zwei Arten – aktiv im eigenen Zug und reaktiv als Schutzschild im Gegnerzug.' },
         { t:'gap' },
-        { t:'body',    s:'Lager → Feld: Ein Schleicher springt vom Lager auf ein beliebiges Feld der Karte mit genau einem eigenen Schleicher. Beim Landen erscheint ein dritter Schleicher – 3 Schleicher auf dem Feld.' },
-        { t:'body',    s:'· Zielfeld: genau 1 eigener Schleicher, kein Wächter, kein Busch, kein Edelstein.' },
+        { t:'sub',     s:'Im eigenen Zug – Mondsprung' },
+        { t:'body',    s:'Wähle einen beliebigen eigenen Schleicher ohne Edelstein (von jedem Feld). Er springt auf ein Feld mit genau einem anderen eigenen Schleicher. Ergebnis: 2 Schleicher auf dem Zielfeld – es erscheint kein dritter.' },
+        { t:'body',    s:'· Zielfeld: genau 1 eigener Schleicher, kein Wächter, kein Treant.' },
         { t:'gap' },
-        { t:'body',    s:'Feld → Lager: Einen beliebigen eigenen Schleicher ohne Edelstein sofort ins Lager zurückrufen.' },
-        { t:'body',    s:'· Rettet bedrohte Einheiten oder repositioniert Schleicher für die nächste Runde.' },
+        { t:'sub',     s:'Im Gegnerzug – Schutzschild' },
+        { t:'body',    s:'Solange die Münze aktiv ist, kostet der erste Angriff auf eine Einheit von Illyria den Angreifer +1 Trank extra (also 2 statt 1). Nach diesem Angriff wird Illyrias Münze sofort deaktiviert.' },
       ],
 
     ];
@@ -3634,7 +3639,9 @@
       const nPIdx = players.findIndex(p => p.charIdx === 2 && !p.eliminated);
       if (nPIdx === -1 || nPIdx === currentPlayerIdx) return;
       if (bushUnit.ownerIdx !== nPIdx) return;
-      nadorBuschAngegriffen.push({ q: bushUnit.q, r: bushUnit.r });
+      if (players[nPIdx].abilityReady) {
+        nadorReaktivPrompt = { positions: [{ q: bushUnit.q, r: bushUnit.r }], immediate: true };
+      }
     }
 
     // ── Morvina: Totenerweckung – Schleichers-Tod verfolgen ─────────────────
@@ -3650,12 +3657,9 @@
       if (unit.q === 0 && unit.r === 0) return;
       if (players.some((p, i) => i !== movPIdx && !p.eliminated && p.campQ === unit.q && p.campR === unit.r)) return;
       movinaFeldTod = { q: unit.q, r: unit.r };
-      // Im eigenen Zug: Prompt sofort zeigen
-      if (movPIdx === currentPlayerIdx) {
-        movinaReviveIsOwnTurn = true;
-        movinaRevivePrompt    = true;
-      }
-      // Im Gegnerzug: Prompt erscheint am Zugende (triggerPhase4)
+      // Sofortiger Prompt – Zug soll danach nicht automatisch weitergehen
+      movinaReviveIsOwnTurn = true;
+      movinaRevivePrompt    = true;
     }
 
     // ── Spielphase: Layout-Helfer ─────────────────────────────────────────────
@@ -4943,10 +4947,9 @@
           for (const k of mondsprungMode.eligibleKeys) {
             const [mq2, mr2] = k.split(',').map(Number);
             const { x: mx2, y: my2 } = hexToPixel(mq2, mr2);
-            const isCampDest = isDestStep && !mondsprungMode.sourceAtCamp;
-            drawHex(mx2, my2, isCampDest ? 'rgba(187,153,255,0.35)' : 'rgba(136,153,187,0.35)',
-              isCampDest ? '#ccaaff' : '#ddeeff', 2.5);
-            ctx.fillStyle = isCampDest ? '#ccaaff' : '#ddeeff';
+            drawHex(mx2, my2, isDestStep ? 'rgba(187,153,255,0.35)' : 'rgba(136,153,187,0.35)',
+              isDestStep ? '#ccaaff' : '#ddeeff', 2.5);
+            ctx.fillStyle = isDestStep ? '#ccaaff' : '#ddeeff';
             ctx.font = `bold ${Math.round(SIZE * 0.30)}px "Exo 2",sans-serif`;
             ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
             ctx.fillText('🌙', mx2, my2);
@@ -7495,10 +7498,10 @@
 
           // Wiederbelebung: BD auf diesem Feld
           if (eligibleReviveKeys && eligibleReviveKeys.includes(bk)) {
-            const bdUnit = spielUnits.find(u => u.type === 'BD' && u.q === bq2 && u.r === br2 && u.ownerIdx === nadorPIdx);
+            const bdUnit = spielUnits.find(u => u.type === 'BD' && u.q === bq && u.r === br2 && u.ownerIdx === nadorPIdx);
             if (bdUnit) {
               const bdIdx = spielUnits.indexOf(bdUnit);
-              executeNadorRegen(bdIdx, bq2, br2, true);
+              executeNadorRegen(bdIdx, bq, br2, true);
             }
           } else {
             // Neuer Treant setzen
@@ -7508,13 +7511,13 @@
             if (bushes.length >= maxBushes) {
               nadorBuschReplaceMode = {
                 nadorPIdx,
-                newQ: bq2, newR: br2,
+                newQ: bq, newR: br2,
                 eligibleBushKeys: bushes.map(({ u }) => key(u.q, u.r)),
                 selecting: false,
               };
               spielLog = '🌿 Maximum erreicht – soll ein bestehender Treant entfernt werden?';
             } else {
-              spielUnits.push({ q: bq2, r: br2, type: 'B', ownerIdx: nadorPIdx });
+              spielUnits.push({ q: bq, r: br2, type: 'B', ownerIdx: nadorPIdx });
               spielPhase3Log.push({ label: '🌿 Treant', detail: 'beschworen' });
               spielLog = '🌿 Treant beschworen!';
             }
@@ -7620,37 +7623,24 @@
 
         if (mondsprungMode.step === 'selectSource') {
           if (mondsprungMode.eligibleKeys.includes(tk)) {
-            const sourceAtCamp = tq === cp.campQ && tr === cp.campR;
             const sourceIdx = spielUnits.findIndex(u => u.ownerIdx === pIdx && u.type === 'S' && u.q === tq && u.r === tr && !u.hasGem);
-            if (sourceAtCamp) {
-              // Richtung 1: Lager → Feld (3 Schleicher)
-              const destKeys = [...new Set(
-                spielUnits
-                  .filter(u => u.ownerIdx === pIdx && u.type === 'S' && !(u.q === cp.campQ && u.r === cp.campR))
-                  .map(u => key(u.q, u.r))
-              )].filter(k => {
-                const [dq5, dr5] = k.split(',').map(Number);
-                const sCount = spielUnits.filter(u => u.ownerIdx === pIdx && u.type === 'S' && u.q === dq5 && u.r === dr5).length;
-                const hasBush = spielUnits.some(u => u.type === 'B' && u.q === dq5 && u.r === dr5);
-                const hasW    = spielUnits.some(u => u.type === 'W' && u.q === dq5 && u.r === dr5);
-                return sCount === 1 && !hasBush && !hasW;
-              });
-              if (destKeys.length === 0) {
-                mondsprungMode = null;
-                spielLog = '🌙 Kein gültiges Zielfeld – Mondsprung abgebrochen.';
-              } else {
-                mondsprungMode = { pIdx, step: 'selectDest', sourceIdx, eligibleKeys: destKeys };
-                spielLog = '🌙 Klicke auf das Zielfeld (genau 1 eigener Schleicher) – 3 Schleicher erscheinen.';
-              }
-            } else {
-              // Richtung 2: Feld → Lager (sofort ausführen)
-              spielUnits[sourceIdx].q = cp.campQ;
-              spielUnits[sourceIdx].r = cp.campR;
-              spielPhase3Log.push({ label: '🌙 Mondsprung', detail: 'Feld-S → Lager' });
-              spielLog = '🌙 Mondsprung! Schleicher ins Lager zurückgerufen.';
+            const destKeys = [...new Set(
+              spielUnits
+                .filter(u => u.ownerIdx === pIdx && u.type === 'S' && !(u.q === tq && u.r === tr))
+                .map(u => key(u.q, u.r))
+            )].filter(dk => {
+              const [dq5, dr5] = dk.split(',').map(Number);
+              const sCount = spielUnits.filter(u => u.ownerIdx === pIdx && u.type === 'S' && u.q === dq5 && u.r === dr5).length;
+              const hasBush = spielUnits.some(u => (u.type === 'B' || u.type === 'BD') && u.q === dq5 && u.r === dr5);
+              const hasW    = spielUnits.some(u => u.type === 'W' && u.q === dq5 && u.r === dr5);
+              return sCount === 1 && !hasBush && !hasW;
+            });
+            if (destKeys.length === 0) {
               mondsprungMode = null;
-              checkEliminations();
-              render(); return;
+              spielLog = '🌙 Kein gültiges Zielfeld – Mondsprung abgebrochen.';
+            } else {
+              mondsprungMode = { pIdx, step: 'selectDest', sourceIdx, eligibleKeys: destKeys };
+              spielLog = '🌙 Klicke auf das Zielfeld (genau 1 eigener Schleicher) – 2 Schleicher vereint.';
             }
           } else {
             mondsprungMode = null;
@@ -7662,12 +7652,10 @@
         if (mondsprungMode.step === 'selectDest') {
           if (mondsprungMode.eligibleKeys.includes(tk)) {
             const { sourceIdx } = mondsprungMode;
-            // Lager-Schleicher zum Zielfeld bewegen + 1 neuen Schleicher spawnen
             spielUnits[sourceIdx].q = tq;
             spielUnits[sourceIdx].r = tr;
-            spielUnits.push({ q: tq, r: tr, type: 'S', ownerIdx: pIdx });
-            spielPhase3Log.push({ label: '🌙 Mondsprung', detail: 'Lager-S → Feld: 3×S' });
-            spielLog = '🌙 Mondsprung! Drei Schleicher erscheinen auf dem Feld.';
+            spielPhase3Log.push({ label: '🌙 Mondsprung', detail: '2×S auf Feld' });
+            spielLog = '🌙 Mondsprung! Schleicher springt – 2 Schleicher auf dem Feld.';
             checkEliminations();
           } else {
             spielLog = '🌙 Ungültiges Ziel – Mondsprung abgebrochen.';
@@ -7685,6 +7673,7 @@
           }
           if (btn.action === 'nadorReaktivYes') {
             const nPIdx = players.findIndex(p => p.charIdx === 2 && !p.eliminated);
+            const isImmediate = !!nadorReaktivPrompt?.immediate;
             if (nPIdx !== -1 && players[nPIdx].abilityReady) {
               players[nPIdx].abilityReady = false;
               const positions = nadorReaktivPrompt.positions;
@@ -7693,7 +7682,7 @@
                 const bd = spielUnits.find(u => u.type === 'BD' && u.q === positions[0].q && u.r === positions[0].r && u.ownerIdx === nPIdx);
                 if (bd) bd.type = 'B';
                 spielLog = '🌿 Nadoris setzt Münze ein – Treant wiederbelebt!';
-                advanceToNextPlayerAnimated();
+                if (!isImmediate) advanceToNextPlayerAnimated();
               } else {
                 const eligibleKeys = positions.map(p => key(p.q, p.r));
                 nadorReaktivSelect = { eligibleKeys, nPIdx };
@@ -7701,13 +7690,15 @@
               }
             } else {
               nadorReaktivPrompt = null;
-              advanceToNextPlayerAnimated();
+              if (!isImmediate) advanceToNextPlayerAnimated();
             }
             render(); return;
           }
           if (btn.action === 'nadorReaktivNo') {
+            const isImmediate = !!nadorReaktivPrompt?.immediate;
             nadorReaktivPrompt = null;
-            advanceToNextPlayerAnimated(); return;
+            if (!isImmediate) advanceToNextPlayerAnimated();
+            render(); return;
           }
           if (btn.action === 'nadorRegenMünze') {
             const { bdIdx, bq, br } = nadorRegenPrompt;
@@ -7863,20 +7854,18 @@
 
             if (charIdx === 5) {
               const pIdx = btn.pIdx;
-              const cp   = players[pIdx];
-              const hasCampS  = spielUnits.some(u => u.ownerIdx === pIdx && u.type === 'S' && u.q === cp.campQ && u.r === cp.campR);
-              const hasFieldS = spielUnits.some(u => u.ownerIdx === pIdx && u.type === 'S' && !u.hasGem && !(u.q === cp.campQ && u.r === cp.campR));
-              if (!hasCampS && !hasFieldS) {
-                players[pIdx].abilityReady = true;
-                spielLog = '🌙 Keine Schleicher verfügbar – Mondsprung nicht möglich.';
-                render(); return;
-              }
               const eligibleSourceKeys = [...new Set(
                 spielUnits.filter(u => u.ownerIdx === pIdx && u.type === 'S' && !u.hasGem).map(u => key(u.q, u.r))
               )];
+              const allFields = [...new Set(spielUnits.filter(u => u.ownerIdx === pIdx && u.type === 'S').map(u => key(u.q, u.r)))];
+              if (eligibleSourceKeys.length === 0 || allFields.length < 2) {
+                players[pIdx].abilityReady = true;
+                spielLog = '🌙 Mondsprung nicht möglich – mindestens 2 Schleicher auf verschiedenen Feldern nötig.';
+                render(); return;
+              }
               saveSpielState();
               mondsprungMode = { pIdx, step: 'selectSource', eligibleKeys: eligibleSourceKeys };
-              spielLog = '🌙 Mondsprung: Lager-Schleicher wählen (→ Feld, 3×S) oder Feld-Schleicher wählen (→ Lager).';
+              spielLog = '🌙 Mondsprung: Wähle den Schleicher, der springen soll.';
               render(); return;
             }
 
@@ -8108,7 +8097,7 @@
       // ── Bewegung/Angriff hat Vorrang wenn Feld erreichbar ─────────────────
       const selUnit = spielSelectedIdx !== null ? spielUnits[spielSelectedIdx] : null;
       if (selUnit && spielReachable.has(k)) {
-        const cost       = spielReachable.get(k);
+        let cost         = spielReachable.get(k);
 
         // ── Angriffspriorität: Wächter → Schleicher → Lager ─────────────────
         // 1. Feindliche Einheiten auf dem Feld (W hat Vorrang vor S)
@@ -8150,6 +8139,14 @@
             fireInfusionAtkBonus = 1;
             players[currentPlayerIdx].abilityReady = false;
             spielLog = '⚔ Feuerinfusion aktiv!';
+          }
+
+          // ── Illyria Schutzschild: erster Angriff auf Illyrias Einheit kostet +1 Trank ──
+          const illyriaPIdx = useAbilities ? players.findIndex(p => p.charIdx === 5 && !p.eliminated) : -1;
+          if (!isNeutralDef && illyriaPIdx !== -1 && illyriaPIdx !== currentPlayerIdx && !!players[illyriaPIdx].abilityReady && defender.ownerIdx === illyriaPIdx) {
+            cost += 1;
+            players[illyriaPIdx].abilityReady = false;
+            spielLog = '🛡 Illyria-Schutzschild! Angriff kostet +1 Trank extra.';
           }
 
           // ── Dornenbusch-Combo: Schleicher + Busch als Wächter-Equivalent ────
