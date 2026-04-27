@@ -12,16 +12,17 @@
     .fa-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 14px;
-      margin-top: 14px;
+      gap: 28px;
+      margin-top: 18px;
     }
     @media (max-width: 700px) { .fa-grid { grid-template-columns: 1fr; } }
 
     .fa-card {
       border: 1px solid var(--border);
-      border-top: 3px solid var(--c, var(--border));
+      border-top: 5px solid var(--c, var(--border));
       background: var(--bg-card);
-      padding: 16px 18px 18px;
+      padding: 0 0 18px;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.40);
     }
     .fa-card.tarrak  { --c: var(--fire-l);    --ct: #ff8866; }
     .fa-card.jana    { --c: var(--ice-l);     --ct: #88bbff; }
@@ -32,13 +33,16 @@
 
     .fa-header {
       display: flex;
-      align-items: baseline;
+      align-items: center;
       gap: 10px;
-      margin-bottom: 10px;
+      padding: 12px 16px 11px;
+      border-bottom: 1px solid color-mix(in srgb, var(--c) 30%, transparent);
+      background: color-mix(in srgb, var(--c) 10%, transparent);
+      margin-bottom: 14px;
     }
-    .fa-icon { font-size: 1.1rem; }
+    .fa-icon { font-size: 1.2rem; }
     .fa-charname {
-      font-size: 0.68rem;
+      font-size: 0.72rem;
       font-weight: 700;
       letter-spacing: 0.14em;
       text-transform: uppercase;
@@ -49,17 +53,19 @@
       font-weight: 700;
       color: var(--ct);
       margin-bottom: 6px;
+      padding: 0 16px;
     }
     .fa-desc {
       font-size: 0.84rem;
       color: var(--text-muted);
       line-height: 1.6;
       margin-bottom: 8px;
+      padding: 0 16px;
     }
     .fa-rules {
       border-left: 2px solid var(--c);
       padding-left: 10px;
-      margin-top: 8px;
+      margin: 8px 16px 0;
     }
     .fa-rules p {
       font-size: 0.80rem;
@@ -104,13 +110,18 @@
         <div class="nav-logo-title">Scharkana</div>
         <div class="nav-logo-sub">Das Erbe der Zeitenwächterin</div>
       </div>
-      <a class="nav-btn" href="index.html" data-page="willkommen">Willkommen</a>
-      <a class="nav-btn" href="regelwerk.html" data-page="regelwerk">Regelwerk</a>
-      <a class="nav-btn" href="charaktere.html" data-page="charaktere">Charaktere</a>
-      <a class="nav-btn" href="changelog.html" data-page="changelog">Changelog</a>
-      <a class="nav-btn" href="ueber.html" data-page="ueber">Über mich</a>
-      <a class="nav-btn" href="melden.html" data-page="melden">Bugreport</a>
+      <div class="nav-links">
+        <a class="nav-btn" href="index.html" data-page="willkommen">Willkommen</a>
+        <a class="nav-btn" href="regelwerk.html" data-page="regelwerk">Regelwerk</a>
+        <a class="nav-btn" href="charaktere.html" data-page="charaktere">Charaktere</a>
+        <a class="nav-btn" href="changelog.html" data-page="changelog">Changelog</a>
+        <a class="nav-btn" href="ueber.html" data-page="ueber">Über mich</a>
+        <a class="nav-btn" href="melden.html" data-page="melden">Bugreport</a>
+      </div>
       <a href="Scharkana_v0.1.26.html" class="nav-play" target="_blank" rel="noopener">▶ Spielen</a>
+      <button class="nav-hamburger" aria-label="Menü öffnen" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </nav>
 
@@ -122,7 +133,10 @@
       <div class="regel-layout">
 
         <!-- Inhaltsverzeichnis (Sidebar) -->
-        <aside class="regel-toc">
+        <button class="toc-toggle" id="toc-toggle-btn" aria-expanded="false">
+          Inhaltsverzeichnis <span class="toc-toggle-arrow">▾</span>
+        </button>
+        <aside class="regel-toc toc-hidden" id="regel-toc-aside">
           <div class="regel-toc-title">Inhalt</div>
           <a href="#regel-ziel">Spielziel</a>
           <a href="#regel-felder">Die Felder</a>
@@ -167,7 +181,8 @@
             <div class="regel-block">
               <h3>Startpunkte</h3>
               <p>Jeder Spieler beginnt mit bis zu 5 MP – je weiter das Lager vom Mittelpunkt entfernt liegt, desto mehr Startpunkte.</p>
-              <table class="unit-table" style="margin-top:10px;">
+              <div class="unit-table-wrap" style="margin-top:10px;">
+              <table class="unit-table">
                 <thead><tr><th>Entfernung vom Startfeld</th><th>Startpunkte</th></tr></thead>
                 <tbody>
                   <tr><td>1 Feld</td><td>1 MP</td></tr>
@@ -177,6 +192,7 @@
                   <tr><td>5+ Felder</td><td>5 MP (Maximum)</td></tr>
                 </tbody>
               </table>
+              </div>
             </div>
           </div>
 
@@ -199,7 +215,8 @@
             <div class="regel-section-title">Phase 1 · Aufbauphase</div>
             <div class="regel-block">
               <h3>Züge pro Spieler</h3>
-              <table class="unit-table" style="margin-top:8px;">
+              <div class="unit-table-wrap" style="margin-top:8px;">
+              <table class="unit-table">
                 <thead><tr><th>Spielerzahl</th><th>Züge</th></tr></thead>
                 <tbody>
                   <tr><td>2 Spieler</td><td>10 Züge</td></tr>
@@ -209,6 +226,7 @@
                   <tr><td>6 Spieler</td><td>14 Züge</td></tr>
                 </tbody>
               </table>
+              </div>
             </div>
             <div class="regel-block">
               <h3>Ablauf</h3>
@@ -262,6 +280,7 @@
           <div class="regel-section" id="regel-einheiten">
             <div class="regel-section-title">Einheiten</div>
             <div class="regel-block">
+              <div class="unit-table-wrap">
               <table class="unit-table">
                 <thead>
                   <tr>
@@ -289,6 +308,7 @@
                   </tr>
                 </tbody>
               </table>
+              </div>
               <p style="margin-top:12px; font-size:0.86rem; color:var(--text-muted);">Jeder Spieler startet mit 1 Schattenwächter am Lager. Pro Feld: max. 3 Objekte gesamt (Einheiten + Gebäude + Lager).</p>
             </div>
           </div>
@@ -480,7 +500,7 @@
                     <p><strong>Schleicher (2 ATK):</strong> Kann einen Wächter töten statt ihn nur zu degradieren.</p>
                     <p><strong>Wächter (3 ATK):</strong> Kann 3 feindliche Schleicher gleichzeitig treffen statt 2.</p>
                   </div>
-                  <p style="margin-top:8px;"><span class="fa-tag">Aktiv</span><span class="fa-tag">Offensiv</span></p>
+                  <p style="margin-top:10px; padding:0 16px;"><span class="fa-tag">Aktiv</span><span class="fa-tag">Offensiv</span></p>
                 </div>
 
                 <!-- JANA -->
@@ -494,7 +514,7 @@
                   <div class="fa-rules">
                     <p><strong>Ungenutzte Züge:</strong> Verfallen in der Beutephase – dafür erhält Jana <strong>+1 Trank</strong>.</p>
                   </div>
-                  <p style="margin-top:8px;"><span class="fa-tag">Aktiv</span><span class="fa-tag">Mobil</span></p>
+                  <p style="margin-top:10px; padding:0 16px;"><span class="fa-tag">Aktiv</span><span class="fa-tag">Mobil</span></p>
                 </div>
 
                 <!-- NADORIS -->
@@ -511,7 +531,7 @@
                     <p><strong>Reaktive Münze:</strong> Greift ein Gegner den Treant an, solange die Münze aktiv ist, kann Nadoris ihn unmittelbar danach erneut beschwören.</p>
                     <p><strong>Max. Treants:</strong> 2 Spieler → 1 · 3–4 Spieler → 2 · 5–6 Spieler → 3</p>
                   </div>
-                  <p style="margin-top:8px;"><span class="fa-tag">Aktiv</span><span class="fa-tag">Reaktiv</span><span class="fa-tag">Kontrolle</span></p>
+                  <p style="margin-top:10px; padding:0 16px;"><span class="fa-tag">Aktiv</span><span class="fa-tag">Reaktiv</span><span class="fa-tag">Kontrolle</span></p>
                 </div>
 
                 <!-- THORGRIM -->
@@ -527,7 +547,7 @@
                     <p><strong>Trifft Wächter:</strong> Feindlicher Wächter wird zu einem Schleicher degradiert.</p>
                     <p><strong>Marker ungenutzt:</strong> Wird in der Beutephase in <strong>+1 Gold</strong> umgewandelt.</p>
                   </div>
-                  <p style="margin-top:8px;"><span class="fa-tag">Marker</span><span class="fa-tag">Positionell</span></p>
+                  <p style="margin-top:10px; padding:0 16px;"><span class="fa-tag">Marker</span><span class="fa-tag">Positionell</span></p>
                 </div>
 
                 <!-- MORVINA -->
@@ -544,7 +564,7 @@
                     <p><strong>Reaktiv (Gegnerzug):</strong> Stirbt ein Schleicher auf dem Feld, kann Morvina ihn kurz zurückrufen – er erwacht, schlägt einmal zurück (1 ATK) und stirbt endgültig. Trifft Wächter: W → S. Trifft Schleicher: Angreifer stirbt.</p>
                     <p><strong>Kein zweites Erwachen:</strong> Der zweite Tod aktiviert die Münze nicht erneut.</p>
                   </div>
-                  <p style="margin-top:8px;"><span class="fa-tag">Reaktiv</span><span class="fa-tag">Konter</span></p>
+                  <p style="margin-top:10px; padding:0 16px;"><span class="fa-tag">Reaktiv</span><span class="fa-tag">Konter</span></p>
                 </div>
 
                 <!-- ILLYRIA -->
@@ -559,7 +579,7 @@
                     <p><strong>Lager → Feld:</strong> Ein Schleicher springt vom Lager auf ein beliebiges Feld mit genau einem eigenen Schleicher. Beim Landen erscheint ein dritter Schleicher – <strong>3 Schleicher</strong> auf dem Feld. (Kein Wächter, kein Busch auf dem Zielfeld.)</p>
                     <p><strong>Feld → Lager:</strong> Einen beliebigen eigenen Schleicher <strong>ohne Edelstein</strong> sofort ins Lager zurückrufen.</p>
                   </div>
-                  <p style="margin-top:8px;"><span class="fa-tag">Aktiv</span><span class="fa-tag">Taktisch</span></p>
+                  <p style="margin-top:10px; padding:0 16px;"><span class="fa-tag">Aktiv</span><span class="fa-tag">Taktisch</span></p>
                 </div>
 
               </div><!-- /fa-grid -->
@@ -768,8 +788,38 @@
       if (!target) return;
       history.pushState(null, '', this.getAttribute('href'));
       target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      /* TOC auf Mobile nach Klick schließen */
+      if (window.innerWidth <= 768) {
+        var toc = document.getElementById('regel-toc-aside');
+        var btn = document.getElementById('toc-toggle-btn');
+        if (toc) toc.classList.add('toc-hidden');
+        if (btn) { btn.classList.remove('open'); btn.setAttribute('aria-expanded', 'false'); }
+      }
     });
   });
+
+  /* TOC Toggle auf Mobile */
+  (function() {
+    var btn = document.getElementById('toc-toggle-btn');
+    var toc = document.getElementById('regel-toc-aside');
+    if (!btn || !toc) return;
+    function syncVisibility() {
+      if (window.innerWidth > 768) {
+        toc.classList.remove('toc-hidden');
+        btn.style.display = 'none';
+      } else {
+        btn.style.display = 'flex';
+        if (!btn.classList.contains('open')) toc.classList.add('toc-hidden');
+      }
+    }
+    btn.addEventListener('click', function() {
+      var open = btn.classList.toggle('open');
+      btn.setAttribute('aria-expanded', open);
+      toc.classList.toggle('toc-hidden', !open);
+    });
+    window.addEventListener('resize', syncVisibility);
+    syncVisibility();
+  })();
   </script>
   <script src="nav.js"></script>
 </body>

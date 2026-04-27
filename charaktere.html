@@ -42,24 +42,23 @@
     .char-card-header {
       position: relative;
       height: 300px;
-      max-height: 300px;
       overflow: hidden;
-      clip-path: inset(0);
       flex-shrink: 0;
     }
 
-    .char-card-header img {
-      display: block;
-      width: 100%;
-      height: 100%;
-      max-height: 300px;
-      object-fit: cover;
-      object-position: center top;
+    .char-card-header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: var(--char-img);
+      background-size: cover;
+      background-position: center top;
       filter: brightness(0.6) saturate(0.85);
       transition: filter 0.3s, transform 0.3s;
+      will-change: transform;
     }
 
-    .char-card:hover .char-card-header img {
+    .char-card:hover .char-card-header::before {
       filter: brightness(0.75) saturate(1.05);
       transform: scale(1.04);
     }
@@ -307,8 +306,7 @@
 
           <!-- ── TARRAK ───────────────────────────────────────────── -->
           <div class="char-card tarrak">
-            <div class="char-card-header">
-              <img src="Charakterbilder/Tarrak Feuerfaust.jpg" alt="Tarrak Feuerfaust">
+            <div class="char-card-header" style="--char-img: url('Charakterbilder/Tarrak Feuerfaust.jpg')">
               <div class="char-card-overlay"></div>
               <div class="char-card-label">
                 <h3>Tarrak Feuerfaust</h3>
@@ -339,8 +337,7 @@
 
           <!-- ── JANA ─────────────────────────────────────────────── -->
           <div class="char-card jana">
-            <div class="char-card-header">
-              <img src="Charakterbilder/Jana Frostwind.jpg" alt="Jana Frostwind">
+            <div class="char-card-header" style="--char-img: url('Charakterbilder/Jana Frostwind.jpg')">
               <div class="char-card-overlay"></div>
               <div class="char-card-label">
                 <h3>Jana Frostwind</h3>
@@ -369,8 +366,7 @@
 
           <!-- ── NADORIS ───────────────────────────────────────────── -->
           <div class="char-card nadoris">
-            <div class="char-card-header">
-              <img src="Charakterbilder/Nadoris Waldgeist.jpg" alt="Nadoris Waldgeist">
+            <div class="char-card-header" style="--char-img: url('Charakterbilder/Nadoris Waldgeist.jpg')">
               <div class="char-card-overlay"></div>
               <div class="char-card-label">
                 <h3>Nadoris Waldgeist</h3>
@@ -407,8 +403,7 @@
 
           <!-- ── THORGRIM ──────────────────────────────────────────── -->
           <div class="char-card thorgrim">
-            <div class="char-card-header">
-              <img src="Charakterbilder/Thorgrim Donneraxt.jpg" alt="Thorgrim Donneraxt">
+            <div class="char-card-header" style="--char-img: url('Charakterbilder/Thorgrim Donneraxt.jpg')">
               <div class="char-card-overlay"></div>
               <div class="char-card-label">
                 <h3>Thorgrim Donneraxt</h3>
@@ -439,8 +434,7 @@
 
           <!-- ── MORVINA ───────────────────────────────────────────── -->
           <div class="char-card morvina">
-            <div class="char-card-header">
-              <img src="Charakterbilder/Morvina Aschegrund.jpg" alt="Morvina Aschegrund">
+            <div class="char-card-header" style="--char-img: url('Charakterbilder/Morvina Aschegrund.jpg')">
               <div class="char-card-overlay"></div>
               <div class="char-card-label">
                 <h3>Morvina Aschegrund</h3>
@@ -473,8 +467,7 @@
 
           <!-- ── ILLYRIA ───────────────────────────────────────────── -->
           <div class="char-card illyria">
-            <div class="char-card-header">
-              <img src="Charakterbilder/Illyria Mondlicht.jpg" alt="Illyria Mondlicht">
+            <div class="char-card-header" style="--char-img: url('Charakterbilder/Illyria Mondlicht.jpg')">
               <div class="char-card-overlay"></div>
               <div class="char-card-label">
                 <h3>Illyria Mondlicht</h3>
