@@ -127,7 +127,7 @@
         <a class="nav-btn" href="ueber.html" data-page="ueber">Über mich</a>
         <a class="nav-btn" href="melden.html" data-page="melden">Bugreport</a>
       </div>
-      <a href="Scharkana_v0.1.26.html" class="nav-play" target="_blank" rel="noopener">▶ Spielen</a>
+      <a href="Scharkana_v0.1.28.html" class="nav-play" target="_blank" rel="noopener">▶ Spielen</a>
       <button class="nav-hamburger" aria-label="Menü öffnen" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
@@ -178,14 +178,14 @@
               <h3>0-MP-Zustand (Geschwächt)</h3>
               <p>Fällt ein Spieler auf 0 MP, scheidet er <strong>nicht aus</strong> – er ist geschwächt. Solange er 0 MP hat, gelten folgende Einschränkungen:</p>
               <ul>
-                <li>Münze und Sonderfähigkeiten sind deaktiviert.</li>
+                <li>Siegel und Sonderfähigkeiten sind deaktiviert.</li>
                 <li>Einheitenfähigkeiten (Wächter aufteilen / Schleicher zusammenführen) gesperrt.</li>
                 <li>Minen und Brunnen können nicht genutzt werden (kein Abbau, kein Sofortabbau).</li>
                 <li>Treants (Nadoris) verschwinden vom Feld.</li>
                 <li>Einheiten können sich bewegen und kämpfen (auch feindliche Einheiten und feindliche Lager angreifen).</li>
               </ul>
               <p style="margin-top:8px;"><strong>Grundeinkommen bei 0 MP:</strong> Immer +3 Gold und +3 Tränke pro Runde, unabhängig von der Einheitenzahl. Kein Abbau über Gebäude.</p>
-              <p style="margin-top:8px;"><strong>Erholung:</strong> Sobald der Spieler wieder 1 MP erhält (z.&nbsp;B. durch Angriff auf neutrale Einheiten im Zentrum oder feindliche Lager), wird die Münze sofort aktiviert – noch bevor der nächste Zug beginnt.</p>
+              <p style="margin-top:8px;"><strong>Erholung:</strong> Sobald der Spieler wieder 1 MP erhält (z.&nbsp;B. durch Angriff auf neutrale Einheiten im Zentrum oder feindliche Lager), wird das Siegel sofort aktiviert – noch bevor der nächste Zug beginnt.</p>
             </div>
             <div class="regel-block">
               <h3>Startpunkte</h3>
@@ -489,10 +489,24 @@
             <div class="regel-block">
               <h3>Das Markersystem</h3>
               <div class="marker-intro">
-                Jeder Spieler besitzt eine <strong>Fähigkeitsmünze</strong> mit einer aktiven und einer inaktiven Seite.
-                Die Fähigkeit kann <strong>einmal pro Runde</strong> eingesetzt werden – danach dreht sich die Münze auf die inaktive Seite.
-                Zu Beginn der eigenen <strong>Versorgungsphase</strong> wird sie automatisch zurückgesetzt.
-                Solange die Münze noch aktiv ist, kann die Fähigkeit auch <strong>reaktiv während eines Gegnerzuges</strong> eingesetzt werden.
+                Jeder Spieler besitzt ein <strong>Siegel</strong> mit einer aktiven und einer inaktiven Seite.
+                Das Siegel kann <strong>einmal pro Runde</strong> eingesetzt werden – danach wechselt es auf die inaktive Seite.
+                Zu Beginn der eigenen <strong>Versorgungsphase</strong> wird es automatisch zurückgesetzt.
+                Solange das Siegel noch aktiv ist, kann die Fähigkeit auch <strong>reaktiv während eines Gegnerzuges</strong> eingesetzt werden.
+              </div>
+              <div class="regel-block">
+                <h3>Siegel-Ränge</h3>
+                <p>Jeder Charakter setzt sein Siegel <strong>1× pro Runde</strong> ein und wählt einen Rang:</p>
+                <ul>
+                  <li><strong>Rang 1</strong> – Standardeffekt &nbsp;·&nbsp; generiert <strong>+1 Splitter</strong>, kein weiterer Effekt</li>
+                  <li><strong>Rang 2</strong> – Boost-Effekt &nbsp;·&nbsp; verbraucht <strong>3 Splitter</strong></li>
+                  <li><strong>Rang 3</strong> – Starker Effekt &nbsp;·&nbsp; verbraucht <strong>6 Splitter</strong></li>
+                </ul>
+                <p style="margin-top:8px;">Überschüssige Splitter bleiben erhalten (kein Reset, kein Limit).</p>
+                <h3 style="margin-top:14px;">Passive Splitter</h3>
+                <p>Immer wenn ein Gegner eine deiner Einheiten tötet oder degradiert, erhältst du Splitter:</p>
+                <p>Schleicher getötet → <strong>+1</strong> &nbsp;·&nbsp; Wächter degradiert → <strong>+1</strong> &nbsp;·&nbsp; Wächter getötet → <strong>+2</strong></p>
+                <p style="margin-top:6px; font-size:0.86rem; color:var(--text-muted);">Diese Regel gilt für alle Charaktere gleichermassen.</p>
               </div>
 
               <div class="fa-grid">
@@ -503,11 +517,14 @@
                     <span class="fa-icon">⚔</span>
                     <span class="fa-charname">Tarrak Feuerfaust</span>
                   </div>
-                  <div class="fa-name">Feuerinfusion</div>
-                  <p class="fa-desc">Tarrak belegt eine eigene Einheit mit Feuerinfusion und verleiht ihr für diesen Kampf <strong>+1 Angriffskraft</strong>. Die Fähigkeit ist sowohl beim Angriff als auch bei der Verteidigung einsetzbar. Ein Lagerangriff ist unter Feuerinfusion nicht möglich.</p>
+                  <div class="fa-name">Feuerinfusion &amp; Rachsplitter</div>
                   <div class="fa-rules">
-                    <p>Ein <strong>Schleicher</strong> kämpft unter Feuerinfusion mit 2 ATK und kann einen feindlichen Wächter töten, anstatt ihn lediglich zu degradieren.</p>
-                    <p>Ein <strong>Wächter</strong> kämpft unter Feuerinfusion mit 3 ATK und trifft bis zu drei feindliche Schleicher gleichzeitig, statt der üblichen zwei.</p>
+                    <p class="fa-section-label">Siegel Rang 1 – +1 Rachsplitter</p>
+                    <p>Kein weiterer Effekt.</p>
+                    <p class="fa-section-label">Siegel Rang 2 – kostet 3 Rachsplitter</p>
+                    <p>Eine angreifende Einheit erhält <strong>+1 ATK</strong>.</p>
+                    <p class="fa-section-label">Siegel Rang 3 – kostet 6 Rachsplitter</p>
+                    <p>Nächster Angriff erhält <strong>+1 ATK</strong>. Alle weiteren Angriffe auf dasselbe Feld in diesem Zug kosten keine Tränke.</p>
                   </div>
                   <p style="margin-top:10px; padding:0 16px;"><span class="fa-tag">Aktiv</span><span class="fa-tag">Offensiv</span></p>
                 </div>
@@ -518,10 +535,14 @@
                     <span class="fa-icon">❄</span>
                     <span class="fa-charname">Jana Frostwind</span>
                   </div>
-                  <div class="fa-name">Nordwind</div>
-                  <p class="fa-desc">Jana erhält <strong>2 kostenlose Bewegungspunkte</strong>, die sie in ihrem Zug beliebig auf eigene Einheiten verteilen kann. Jeder Punkt bewegt eine Einheit ein Feld weiter, ohne Tränke zu verbrauchen. Beide Punkte dürfen auf dieselbe oder auf zwei verschiedene Einheiten aufgeteilt werden.</p>
+                  <div class="fa-name">Frostschritt &amp; Frostsplitter</div>
                   <div class="fa-rules">
-                    <p>Werden die Bewegungspunkte bis zum Ende des Zuges nicht vollständig eingesetzt, verfallen sie in der Beutephase. Für jeden ungenutzten Punkt erhält Jana <strong>+1 Trank</strong> als Ausgleich.</p>
+                    <p class="fa-section-label">Siegel Rang 1 – +1 Frostsplitter</p>
+                    <p>Kein weiterer Effekt.</p>
+                    <p class="fa-section-label">Siegel Rang 2 – kostet 3 Frostsplitter</p>
+                    <p>Jana erhält <strong>+2 kostenlose Bewegungen</strong>. Für jede nicht genutzte Bewegung am Zugende erhält sie <strong>+1 Trank</strong>.</p>
+                    <p class="fa-section-label">Siegel Rang 3 – kostet 6 Frostsplitter</p>
+                    <p>Jana erhält sofort <strong>+4 Tränke</strong>.</p>
                   </div>
                   <p style="margin-top:10px; padding:0 16px;"><span class="fa-tag">Aktiv</span><span class="fa-tag">Mobil</span></p>
                 </div>
@@ -532,16 +553,17 @@
                     <span class="fa-icon">🌳</span>
                     <span class="fa-charname">Nadoris Waldgeist</span>
                   </div>
-                  <div class="fa-name">Treant</div>
-                  <p class="fa-desc">Nadoris beschwört einen <strong>Treant</strong> auf einem Feld, das bereits eine eigene Einheit enthält. Der aktive Treant schützt das Feld und wird bei feindlichen Angriffen stets zuerst getroffen. Wird er besiegt, verbleibt er als <strong>inaktiver Treant</strong> auf dem Feld – ohne Schutzwirkung und ohne Angriffsstärke, belegt aber weiterhin einen Platz.</p>
+                  <div class="fa-name">Waldgeist &amp; Wurzelsplitter</div>
+                  <p class="fa-desc">Nadoris beschwört <strong>Treants</strong> auf Feldern mit eigenen Einheiten. Aktive Treants werden stets zuerst angegriffen. Stirbt ein Treant, bleibt er inaktiv auf dem Feld und kann für <strong>2 Tränke</strong> jederzeit wiederbelebt werden. Max. Treants: <strong>2–4 Spieler: 2 &nbsp;·&nbsp; 5–6 Spieler: 3</strong></p>
                   <div class="fa-rules">
-                    <p class="fa-section-label">Im eigenen Zug</p>
-                    <p>Nadoris aktiviert die Münze und wählt ein Feld mit einer eigenen Einheit, um dort einen neuen Treant zu beschwören. Liegt auf dem Feld bereits ein inaktiver Treant, kann dieser stattdessen per Münze (einmalig, kostenlos) oder per Trank (1 Trank, beliebig oft) wiederbelebt werden. Erwacht ein Treant auf einem Feld mit einer feindlichen Einheit, greift er diese sofort mit 1 ATK an und verbleibt danach im inaktiven Zustand.</p>
-                    <p class="fa-section-label">Im Gegnerzug</p>
-                    <p>Wird ein aktiver Treant im Gegnerzug besiegt und ist die Münze noch nicht eingesetzt, erscheint eine sofortige Abfrage. Bestätigt Nadoris, wird die Münze eingesetzt und der Treant umgehend wiederbelebt.</p>
-                    <p>Die maximale Anzahl gleichzeitiger Treants richtet sich nach der Spielerzahl: bei 2 Spielern 1, bei 3–4 Spielern 2, bei 5–6 Spielern 3.</p>
+                    <p class="fa-section-label">Siegel Rang 1 – +1 Wurzelsplitter</p>
+                    <p>Kein weiterer Effekt.</p>
+                    <p class="fa-section-label">Siegel Rang 2 – kostet 3 Wurzelsplitter</p>
+                    <p>Ein eigener Schleicher pflanzt einen Treant auf seinem Feld.</p>
+                    <p class="fa-section-label">Siegel Rang 3 – kostet 6 Wurzelsplitter</p>
+                    <p>Alle toten Treants werden sofort wiederbelebt.</p>
                   </div>
-                  <p style="margin-top:10px; padding:0 16px;"><span class="fa-tag">Aktiv</span><span class="fa-tag">Reaktiv</span><span class="fa-tag">Kontrolle</span></p>
+                  <p style="margin-top:10px; padding:0 16px;"><span class="fa-tag">Aktiv</span><span class="fa-tag">Kontrolle</span></p>
                 </div>
 
                 <!-- THORGRIM -->
@@ -550,14 +572,16 @@
                     <span class="fa-icon">⚡</span>
                     <span class="fa-charname">Thorgrim Donneraxt</span>
                   </div>
-                  <div class="fa-name">Donnerblitz</div>
-                  <p class="fa-desc">Thorgrim setzt einen <strong>Donnerblitz-Marker</strong> auf das Spielfeld. Solange der Marker aktiv ist, kann ein eigener Wächter ein direkt angrenzendes Feld mit 1 ATK angreifen, ohne dabei selbst Schaden zu nehmen oder einen Gegentreffer zu erleiden.</p>
+                  <div class="fa-name">Gewitterzorn &amp; Donnersplitter</div>
                   <div class="fa-rules">
-                    <p>Trifft der Blitz einen feindlichen <strong>Schleicher</strong>, stirbt dieser sofort.</p>
-                    <p>Trifft der Blitz einen feindlichen <strong>Wächter</strong>, wird dieser zu einem Schleicher degradiert.</p>
-                    <p>Wird der Marker bis zum Ende des Zuges nicht eingesetzt, wandelt er sich in der Beutephase automatisch in <strong>+1 Gold</strong> um.</p>
+                    <p class="fa-section-label">Siegel Rang 1 – +1 Donnersplitter</p>
+                    <p>Kein weiterer Effekt.</p>
+                    <p class="fa-section-label">Siegel Rang 2 – kostet 3 Donnersplitter</p>
+                    <p>Ein eigener Wächter schickt einen Blitz auf ein anliegendes Feld – Schleicher stirbt, Wächter wird degradiert.</p>
+                    <p class="fa-section-label">Siegel Rang 3 – kostet 6 Donnersplitter</p>
+                    <p>Ein eigener Wächter schickt einen Doppelblitz auf ein anliegendes Feld – Schleicher stirbt, Wächter wird direkt getötet (statt nur degradiert).</p>
                   </div>
-                  <p style="margin-top:10px; padding:0 16px;"><span class="fa-tag">Marker</span><span class="fa-tag">Positionell</span></p>
+                  <p style="margin-top:10px; padding:0 16px;"><span class="fa-tag">Aktiv</span><span class="fa-tag">Positionell</span></p>
                 </div>
 
                 <!-- MORVINA -->
@@ -566,18 +590,16 @@
                     <span class="fa-icon">💀</span>
                     <span class="fa-charname">Morvina Aschegrund</span>
                   </div>
-                  <div class="fa-name">Totenerweckung</div>
-                  <p class="fa-desc">Morvinas Münze aktiviert sich zu Beginn ihres Zuges wie bei allen anderen Charakteren. Stirbt ein eigener Schleicher, solange die Münze aktiv ist, kann Morvina ihn auf dem Kampffeld wiederbeleben – unabhängig davon, wer gerade am Zug ist.</p>
+                  <div class="fa-name">Totenerweckung &amp; Seelensplitter</div>
                   <div class="fa-rules">
-                    <p class="fa-section-label">Im eigenen Zug</p>
-                    <p>Stirbt ein Schleicher im Kampf, erscheint sofort eine Abfrage. Wird die Münze eingesetzt, wird der Schleicher auf genau dem Feld wiederbelebt, auf dem er gefallen ist.</p>
-                    <p class="fa-section-label">Im Gegnerzug</p>
-                    <p>Stirbt ein Schleicher durch einen feindlichen Angriff, erscheint die Abfrage am Ende des gegnerischen Zuges. Morvina entscheidet dann, ob sie die Münze einsetzt.</p>
-                    <p class="fa-section-label">Nach der Wiederbelebung</p>
-                    <p>Befindet sich noch eine feindliche Einheit auf dem Feld, greift der wiederbelebte Schleicher diese sofort automatisch an. Trifft er einen feindlichen Wächter, wird dieser zu einem Schleicher degradiert und der wiederbelebte Schleicher stirbt. Trifft er einen feindlichen Schleicher, sterben beide. Ist das Feld frei, bleibt der Schleicher am Leben. In jedem Fall wird die Münze nach der Wiederbelebung deaktiviert.</p>
-                    <p><strong>Einschränkung:</strong> Die Wiederbelebung ist nicht möglich, wenn der Schleicher auf einem feindlichen Lagerfeld oder einem violetten Zentrumsfeld (Bereich der neutralen Wächter) gestorben ist.</p>
+                    <p class="fa-section-label">Siegel Rang 1 – +1 Seelensplitter</p>
+                    <p>Kein weiterer Effekt.</p>
+                    <p class="fa-section-label">Siegel Rang 2 – kostet 3 Seelensplitter</p>
+                    <p>1 Schleicher erscheint sofort am Lager + <strong>+1 Trank sofort</strong>.</p>
+                    <p class="fa-section-label">Siegel Rang 3 – kostet 6 Seelensplitter</p>
+                    <p>1 Wächter erscheint sofort am Lager + <strong>+2 Tränke sofort</strong>.</p>
                   </div>
-                  <p style="margin-top:10px; padding:0 16px;"><span class="fa-tag">Reaktiv</span><span class="fa-tag">Konter</span></p>
+                  <p style="margin-top:10px; padding:0 16px;"><span class="fa-tag">Aktiv</span><span class="fa-tag">Konter</span></p>
                 </div>
 
                 <!-- ILLYRIA -->
@@ -586,11 +608,14 @@
                     <span class="fa-icon">🌙</span>
                     <span class="fa-charname">Illyria Mondlicht</span>
                   </div>
-                  <div class="fa-name">Mondsprung</div>
-                  <p class="fa-desc">Illyria kann einen eigenen Schleicher augenblicklich an jeden beliebigen Ort der Karte teleportieren. Die Fähigkeit bietet zwei Einsatzmöglichkeiten, die jeweils entgegengesetzte Richtungen darstellen.</p>
+                  <div class="fa-name">Mondlicht &amp; Mondsplitter</div>
                   <div class="fa-rules">
-                    <p><strong>Lager ins Feld:</strong> Ein Schleicher springt vom Lager auf ein beliebiges Feld, das genau einen eigenen Schleicher enthält. Beim Landen erscheinen dort insgesamt <strong>3 Schleicher</strong>. Das Zielfeld darf keinen eigenen Wächter oder Treant enthalten.</p>
-                    <p><strong>Feld ins Lager:</strong> Ein beliebiger eigener Schleicher <strong>ohne Edelstein</strong> wird sofort ins eigene Lager zurückgerufen.</p>
+                    <p class="fa-section-label">Siegel Rang 1 – +1 Mondsplitter</p>
+                    <p>Kein weiterer Effekt.</p>
+                    <p class="fa-section-label">Siegel Rang 2 – kostet 3 Mondsplitter</p>
+                    <p>Der nächste eigene Schleicher, der in ein feindliches Feld fährt, erhält <strong>+1 HP</strong> – er überlebt den Kampf gegen einen feindlichen Schleicher. Nur anwendbar wenn sich genau <strong>1 feindlicher Schleicher</strong> auf dem Zielfeld befindet.</p>
+                    <p class="fa-section-label">Siegel Rang 3 – kostet 6 Mondsplitter</p>
+                    <p>Wie Rang 2, aber der Schleicher wird nach dem Kampf sofort zu einem <strong>Wächter</strong> aufgewertet. Nur anwendbar wenn sich genau <strong>1 feindlicher Schleicher</strong> auf dem Zielfeld befindet.</p>
                   </div>
                   <p style="margin-top:10px; padding:0 16px;"><span class="fa-tag">Aktiv</span><span class="fa-tag">Taktisch</span></p>
                 </div>
@@ -647,7 +672,7 @@
 
             <div class="tip-category">Endspiel &amp; Siegplanung</div>
             <div class="tip-list">
-              <div class="tip-item"><span class="tip-num">11</span><span>Bei 0 MP: Schleicher ins Zentrum schicken und neutralen Wächter degradieren → sofort +1 MP und Münze aktiv. Oder ein feindliches Lager angreifen für +4 MP – riskanter, aber schneller.</span></div>
+              <div class="tip-item"><span class="tip-num">11</span><span>Bei 0 MP: Schleicher ins Zentrum schicken und neutralen Wächter degradieren → sofort +1 MP und Siegel aktiv. Oder ein feindliches Lager angreifen für +4 MP – riskanter, aber schneller.</span></div>
               <div class="tip-item"><span class="tip-num">12</span><span>30 MP ist das Ziel. Behalte den Punktestand aller Spieler im Blick – wer nahe dran ist, muss aktiv gebremst werden.</span></div>
               <div class="tip-item"><span class="tip-num">13</span><span>Plane den letzten Push: Ein Lagerangriff mit Wächter (+4 MP) kombiniert mit einem Edelstein am Brunnen (+5 MP) kann in einer einzigen Runde entscheidend sein.</span></div>
               <div class="tip-item"><span class="tip-num">14</span><span>Charakterfähigkeiten im Endspiel gezielt einsetzen – eine gut getimte Reaktion in einem Gegnerzug kann den eigenen Sieg retten oder den des Gegners verhindern.</span></div>
@@ -670,7 +695,7 @@
   <footer>
     <div class="footer-inner">
       <p>Scharkana – Das Erbe der Zeitenwächterin &nbsp;·&nbsp; created by GoodGooseGames</p>
-      <span class="footer-version">v0.1.26</span>
+      <span class="footer-version">v0.1.28</span>
     </div>
   </footer>
 
